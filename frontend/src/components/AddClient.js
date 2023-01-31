@@ -157,16 +157,31 @@ const AddClient = () => {
 						</li>
 					</ul>
 
-					<div className='mb-6'>
-						<label htmlFor='budget' className='inline-block mb-2'>
-							Budget
-						</label>
-						<input
-							type='number'
-							id='budget'
-							className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
-						/>
-					</div>
+					<ul className='grid w-full gap-6 grid-cols-2 mb-6'>
+						<li className='col-span-2'>
+							<label
+								htmlFor='budget'
+								className='inline-block mb-2'>
+								Budget
+							</label>
+							<input
+								type='number'
+								id='budget'
+								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+							/>
+						</li>
+						{/* when client is buyer then show this */}
+						{/* <li className='flex items-end'>
+							<select
+								name='loan'
+								id='loan'
+								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
+								<option selected>Select Loan option</option>
+								<option value='yes'>Yes</option>
+								<option value='no'>No</option>
+							</select>
+						</li> */}
+					</ul>
 
 					<ul className='grid w-full gap-6 grid-cols-2 mb-6'>
 						<li>
