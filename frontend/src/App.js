@@ -1,11 +1,18 @@
+import { Route, Routes } from 'react-router-dom';
 import AddClient from './components/AddClient';
 import ClientList from './components/ClientList';
+import Navbar from './components/Navbar';
 
 function App() {
 	return (
-		<div className='App bg-gradient-bg text-white min-h-screen h-full flex flex-col items-center justify-center'>
-			<AddClient />
-			{/* <ClientList /> */}
+		<div className='App bg-gradient-bg text-white min-h-screen h-full'>
+			<Navbar />
+			<div className='flex flex-col items-center justify-center h-full'>
+				<Routes>
+					<Route path='/' element={<ClientList />} />
+					<Route path='/addClient' element={<AddClient />} />
+				</Routes>
+			</div>
 		</div>
 	);
 }

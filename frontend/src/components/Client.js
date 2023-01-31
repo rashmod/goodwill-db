@@ -2,7 +2,7 @@ import React from 'react';
 
 const Client = () => {
 	return (
-		<div className='card m-2 cursor-pointer bg-light-black border border-gray-200 border-opacity-30 rounded-lg hover:shadow-md hover:border-white transform hover:-translate-y-1 transition-all duration-200'>
+		<div className='card cursor-pointer bg-light-black border border-gray-200 border-opacity-30 rounded-lg hover:shadow-md hover:border-white transform hover:-translate-y-1 transition-all duration-200'>
 			<div className='m-3 text-[#BFC0C0]'>
 				<div className='flex justify-between mb-2'>
 					<h2 className='text-lg'>Name Name</h2>
