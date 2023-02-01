@@ -1,9 +1,18 @@
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AddClient from './components/AddClient';
 import ClientList from './components/ClientList';
 import Navbar from './components/Navbar';
+import { fetchAllClients } from './features/ClientsSlice';
 
 function App() {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(fetchAllClients());
+	}, [dispatch]);
+
 	return (
 		<div className='App bg-gradient-bg text-white min-h-screen h-full'>
 			<Navbar />
