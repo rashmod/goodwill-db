@@ -34,6 +34,7 @@ module.exports.AddClientController = async (req, res) => {
 			address,
 			clientType,
 			saleParty,
+			loan,
 			rentParty,
 			size,
 			sqft,
@@ -47,6 +48,7 @@ module.exports.AddClientController = async (req, res) => {
 			address,
 			clientType,
 			saleParty,
+			loan,
 			rentParty,
 			size,
 			sqft,
@@ -60,6 +62,39 @@ module.exports.AddClientController = async (req, res) => {
 			success: true,
 			data: client,
 		});
+	} catch (error) {
+		console.log('===========ERROR===========');
+		console.log(error);
+		res.status(500).json({
+			success: false,
+			error: 'Server Error',
+			message: error,
+		});
+	}
+};
+
+// @desc Delete client
+// @route DELETE /api/clients/:clientId
+// @access Public
+module.exports.DeleteClientController = async (req, res) => {
+	try {
+		const { clientId } = req.params;
+
+		const client = await ClientModel.findById(clientId);
+
+		if (client) {
+			await ClientModel.findByIdAndDelete(clientId);
+
+			res.status(200).json({
+				success: true,
+				data: client,
+			});
+		} else {
+			res.status(404).json({
+				success: false,
+				error: 'Could not find the client',
+			});
+		}
 	} catch (error) {
 		console.log('===========ERROR===========');
 		console.log(error);
