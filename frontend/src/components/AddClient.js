@@ -2,7 +2,6 @@ import React from 'react';
 
 const AddClient = () => {
 	return (
-		// todo add loan field
 		<div className='my-20 w-full'>
 			<h1 className='text-center text-4xl font-bold mb-6'>
 				Add Client Information
@@ -50,7 +49,7 @@ const AddClient = () => {
 							<input
 								type='radio'
 								value='rent'
-								name='type'
+								name='client-type'
 								id='rent'
 								className='peer hidden'
 							/>
@@ -64,7 +63,7 @@ const AddClient = () => {
 							<input
 								type='radio'
 								value='sale'
-								name='type'
+								name='client-type'
 								id='sale'
 								className='peer hidden'
 							/>
