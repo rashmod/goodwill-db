@@ -26,6 +26,8 @@ module.exports.getAllClientsController = async (req, res) => {
 // @desc Add client
 // @route POST /api/clients
 // @access Public
+
+// todo format user input appropriately
 module.exports.AddClientController = async (req, res) => {
 	try {
 		const {
