@@ -19,6 +19,7 @@ const ClientSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		propertyType: { type: String, required: true },
 		clientType: { type: String, required: true },
 		size: {
 			type: String,
@@ -41,7 +42,7 @@ const ClientSchema = new Schema(
 		leadAgentName: { type: String },
 		leadOnlineName: { type: String },
 	},
-	{ discriminatorKey: 'clientType' }
+	{ discriminatorKey: 'clientType', timestamps: true }
 );
 
 const ClientModel = mongoose.model('Client', ClientSchema);
