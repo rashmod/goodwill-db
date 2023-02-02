@@ -38,6 +38,8 @@ const ClientSchema = new Schema(
 			type: String,
 			required: true,
 		},
+		leadAgentName: { type: String },
+		leadOnlineName: { type: String },
 	},
 	{ discriminatorKey: 'clientType' }
 );

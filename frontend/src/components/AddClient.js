@@ -1,13 +1,63 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const AddClient = () => {
+	// * when saving to backend check property key
+
+	const [formData, setFormData] = useState({
+		clientName: '',
+		mobile: '',
+		address: '',
+		clientType: '',
+		rentParty: '',
+		saleParty: '',
+		loan: false,
+		size: '',
+		sqft: 0,
+		budget: 0,
+		lead: '',
+		leadAgentName: '',
+		leadOnlineName: '',
+	});
+
+	const submitHandler = (e) => {
+		e.preventDefault();
+	};
+
+	const handleInputChange = (e) => {
+		// if the input name is mobile and the input is anything other than number return
+		// turn input into and check if NaN
+		if (e.target.name === 'mobile' && isNaN(+e.target.value)) {
+			return;
+		} else if (e.target.name === 'loan') {
+			setFormData({
+				...formData,
+				[e.target.name]: isTrue(e.target.value),
+			});
+		} else if (e.target.name === 'sqft' || e.target.name === 'budget') {
+			// if the input is 0 let it be ''
+			if (!Boolean(Number(e.target.value))) {
+				setFormData({
+					...formData,
+					[e.target.name]: '',
+				});
+			} else {
+				setFormData({
+					...formData,
+					[e.target.name]: Number(e.target.value),
+				});
+			}
+		} else {
+			setFormData({ ...formData, [e.target.name]: e.target.value });
+		}
+	};
+
 	return (
 		<div className='my-20 w-full'>
 			<h1 className='text-center text-4xl font-bold mb-6'>
 				Add Client Information
 			</h1>
 			<div className='p-6 rounded-lg min-w-[500px] w-1/3 mx-auto bg-light-black shadow-[0_15px_25px_rgba(0,0,0,.6)] text-xl'>
-				<form action=''>
+				<form action='' onSubmit={submitHandler}>
 					<div className='mb-6'>
 						<label
 							htmlFor='client-name'
@@ -17,6 +67,9 @@ const AddClient = () => {
 						<input
 							type='text'
 							id='client-name'
+							name='clientName'
+							onChange={handleInputChange}
+							value={formData.clientName}
 							className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
@@ -28,7 +81,10 @@ const AddClient = () => {
 						<input
 							type='tel'
 							id='phone'
-							pattern='[0-9]{10}'
+							name='mobile'
+							onChange={handleInputChange}
+							value={formData.mobile}
+							pattern='^[6-9]\d{9}$'
 							className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
@@ -40,6 +96,9 @@ const AddClient = () => {
 						<input
 							type='text'
 							id='address'
+							name='address'
+							onChange={handleInputChange}
+							value={formData.address}
 							className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
@@ -48,9 +107,10 @@ const AddClient = () => {
 						<li>
 							<input
 								type='radio'
-								value='rent'
-								name='client-type'
 								id='rent'
+								name='clientType'
+								onChange={handleInputChange}
+								value='rent'
 								className='peer hidden'
 							/>
 							<label
@@ -62,9 +122,10 @@ const AddClient = () => {
 						<li>
 							<input
 								type='radio'
-								value='sale'
-								name='client-type'
 								id='sale'
+								name='clientType'
+								onChange={handleInputChange}
+								value='sale'
 								className='peer hidden'
 							/>
 							<label
@@ -79,9 +140,10 @@ const AddClient = () => {
 						<li>
 							<input
 								type='radio'
-								value='renter'
-								name='rent'
 								id='renter'
+								name='rentParty'
+								onChange={handleInputChange}
+								value='renter'
 								className='peer hidden'
 							/>
 							<label
@@ -93,9 +155,10 @@ const AddClient = () => {
 						<li>
 							<input
 								type='radio'
-								value='homeowner'
-								name='rent'
 								id='homeowner'
+								name='rentParty'
+								onChange={handleInputChange}
+								value='homeowner'
 								className='peer hidden'
 							/>
 							<label
@@ -110,9 +173,10 @@ const AddClient = () => {
 						<li>
 							<input
 								type='radio'
-								value='buyer'
-								name='sale'
 								id='buyer'
+								name='saleParty'
+								onChange={handleInputChange}
+								value='buyer'
 								className='peer hidden'
 							/>
 							<label
@@ -124,9 +188,10 @@ const AddClient = () => {
 						<li>
 							<input
 								type='radio'
-								value='Seller'
-								name='sale'
 								id='Seller'
+								name='saleParty'
+								onChange={handleInputChange}
+								value='Seller'
 								className='peer hidden'
 							/>
 							<label
@@ -142,16 +207,22 @@ const AddClient = () => {
 							<label htmlFor='size'>Size</label>
 							<input
 								type='text'
-								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 								id='size'
+								name='size'
+								onChange={handleInputChange}
+								value={formData.size}
+								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
 						<li>
 							<label htmlFor='sq-ft'>Sq. Ft.</label>
 							<input
-								type='text'
-								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+								type='number'
 								id='sq-ft'
+								name='sqft'
+								onChange={handleInputChange}
+								value={formData.sqft}
+								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
 					</ul>
@@ -166,45 +237,57 @@ const AddClient = () => {
 							<input
 								type='number'
 								id='budget'
+								name='budget'
+								onChange={handleInputChange}
+								value={formData.budget}
 								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
 						{/* when client is buyer then show this */}
-						{/* <li className='flex items-end'>
+						<li className='flex items-end'>
 							<select
-								name='loan'
 								id='loan'
+								name='loan'
+								onChange={handleInputChange}
+								// value={formData.loan}
 								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
-								<option selected>Select Loan option</option>
-								<option value='yes'>Yes</option>
-								<option value='no'>No</option>
+								<option value=''>Select Loan option</option>
+								<option value={true}>Yes</option>
+								<option value={false}>No</option>
 							</select>
-						</li> */}
+						</li>
 					</ul>
 
 					<ul className='grid w-full gap-6 grid-cols-2 mb-6'>
 						<li>
 							<select
-								name='lead'
 								id='lead'
+								name='lead'
+								onChange={handleInputChange}
+								value={formData.lead}
 								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
-								<option selected>Select Lead option</option>
+								<option value=''>Select Lead option</option>
 								<option value='walk-in'>Walk In</option>
 								<option value='online'>Online</option>
 								<option value='reference'>Reference</option>
 							</select>
 						</li>
 						<li>
-							{/* <input
+							<input
 								type='text'
+								name='leadAgentName'
+								onChange={handleInputChange}
+								value={formData.leadAgentName}
 								placeholder='Agent Name'
 								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
-							/> */}
+							/>
 							<select
-								name='lead'
-								id='lead'
+								id='lead-online'
+								name='leadOnlineName'
+								onChange={handleInputChange}
+								value={formData.leadOnlineName}
 								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
-								<option selected>Select online option</option>
+								<option value=''>Select online option</option>
 								<option value='unknown'>Unknown</option>
 								<option value='justdial'>Just dial</option>
 								<option value='square-yards'>
@@ -221,6 +304,12 @@ const AddClient = () => {
 			</div>
 		</div>
 	);
+};
+
+// check if the string is true or false
+const isTrue = (str) => {
+	if (str === 'true') return true;
+	return false;
 };
 
 export default AddClient;
