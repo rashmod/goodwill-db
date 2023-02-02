@@ -110,7 +110,7 @@ const AddClient = () => {
 								id='rent'
 								name='clientType'
 								onChange={handleInputChange}
-								value='rent'
+								value='RENT'
 								className='peer hidden'
 							/>
 							<label
@@ -125,7 +125,7 @@ const AddClient = () => {
 								id='sale'
 								name='clientType'
 								onChange={handleInputChange}
-								value='sale'
+								value='SALE'
 								className='peer hidden'
 							/>
 							<label
@@ -143,7 +143,7 @@ const AddClient = () => {
 								id='renter'
 								name='rentParty'
 								onChange={handleInputChange}
-								value='renter'
+								value='RENTER'
 								className='peer hidden'
 							/>
 							<label
@@ -158,7 +158,7 @@ const AddClient = () => {
 								id='homeowner'
 								name='rentParty'
 								onChange={handleInputChange}
-								value='homeowner'
+								value='HOMEOWNER'
 								className='peer hidden'
 							/>
 							<label
@@ -176,7 +176,7 @@ const AddClient = () => {
 								id='buyer'
 								name='saleParty'
 								onChange={handleInputChange}
-								value='buyer'
+								value='BUYER'
 								className='peer hidden'
 							/>
 							<label
@@ -191,7 +191,7 @@ const AddClient = () => {
 								id='Seller'
 								name='saleParty'
 								onChange={handleInputChange}
-								value='Seller'
+								value='SELLER'
 								className='peer hidden'
 							/>
 							<label
@@ -267,9 +267,9 @@ const AddClient = () => {
 								value={formData.lead}
 								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
 								<option value=''>Select Lead option</option>
-								<option value='walk-in'>Walk In</option>
-								<option value='online'>Online</option>
-								<option value='reference'>Reference</option>
+								<option value='WALK-IN'>Walk In</option>
+								<option value='ONLINE'>Online</option>
+								<option value='REFERENCE'>Reference</option>
 							</select>
 						</li>
 						<li>
@@ -288,9 +288,9 @@ const AddClient = () => {
 								value={formData.leadOnlineName}
 								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
 								<option value=''>Select online option</option>
-								<option value='unknown'>Unknown</option>
-								<option value='justdial'>Just dial</option>
-								<option value='square-yards'>
+								<option value='UNKNOWN'>Unknown</option>
+								<option value='JUST-DIAL'>Just dial</option>
+								<option value='SQUARE-YARDS'>
 									square yards
 								</option>
 							</select>
