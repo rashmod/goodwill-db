@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
 	return (
-		<nav className='flex justify-between container text-sm sm:text-base py-4 w-72 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto'>
+		<nav className='flex justify-between container text-sm sm:text-base py-4 px-4 sm:px-0 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto'>
 			<span>Goodwill DB</span>
 			<ul className='flex gap-6 sm:gap-16'>
 				<li>

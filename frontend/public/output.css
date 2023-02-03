@@ -910,6 +910,11 @@ video {
   padding-bottom: 1rem;
 }
 
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+
 .text-center {
   text-align: center;
 }
@@ -1103,6 +1108,11 @@ video {
   .sm\:gap-x-6 {
     -webkit-column-gap: 1.5rem;
             column-gap: 1.5rem;
+  }
+
+  .sm\:px-0 {
+    padding-left: 0px;
+    padding-right: 0px;
   }
 
   .sm\:text-xl {
