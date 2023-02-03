@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const AddClient = () => {
 	// * when saving to backend check property key
-	// todo make form input conditional render based on property type input
+	// todo make form input conditional based on property type input
 
 	const [formData, setFormData] = useState({
 		clientName: '',
@@ -70,15 +70,15 @@ const AddClient = () => {
 
 	return (
 		<div className='my-20 w-full'>
-			<h1 className='text-center text-4xl font-bold mb-6'>
+			<h1 className='text-center text-2xl sm:text-4xl font-bold mb-6'>
 				Add Client Information
 			</h1>
-			<div className='p-6 rounded-lg min-w-[500px] w-1/3 mx-auto bg-light-black shadow-[0_15px_25px_rgba(0,0,0,.6)] text-xl'>
+			<div className='p-6 rounded-lg min-w-[300px] sm:min-w-[500px] w-1/3 mx-auto bg-light-black shadow-[0_15px_25px_rgba(0,0,0,.6)] sm:text-xl'>
 				<form action='' onSubmit={submitHandler}>
-					<div className='mb-6'>
+					<div className='mb-3 sm:mb-6'>
 						<label
 							htmlFor='client-name'
-							className='inline-block mb-2'>
+							className='inline-block mb-1 sm:mb-2'>
 							Name
 						</label>
 						<input
@@ -87,12 +87,14 @@ const AddClient = () => {
 							name='clientName'
 							onChange={handleInputChange}
 							value={formData.clientName}
-							className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
 
-					<div className='mb-6'>
-						<label htmlFor='phone' className='inline-block mb-2'>
+					<div className='mb-3 sm:mb-6'>
+						<label
+							htmlFor='phone'
+							className='inline-block mb-1 sm:mb-2'>
 							Mobile
 						</label>
 						<input
@@ -102,12 +104,14 @@ const AddClient = () => {
 							onChange={handleInputChange}
 							value={formData.mobile}
 							pattern='^[6-9]\d{9}$'
-							className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
 
-					<div className='mb-8'>
-						<label htmlFor='address' className='inline-block mb-2'>
+					<div className='mb-5 sm:mb-8'>
+						<label
+							htmlFor='address'
+							className='inline-block mb-1 sm:mb-2'>
 							Requirement
 						</label>
 						<input
@@ -116,11 +120,11 @@ const AddClient = () => {
 							name='address'
 							onChange={handleInputChange}
 							value={formData.address}
-							className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
 
-					<div className='mb-6'>
+					<div className='mb-3 sm:mb-6'>
 						<select
 							id='propertyType'
 							name='propertyType'
@@ -138,8 +142,10 @@ const AddClient = () => {
 
 					<ul
 						className={
-							'grid w-full gap-x-6 gap-y-2 grid-cols-2 ' +
-							(formData.clientType === '' ? 'mb-6' : 'mb-2')
+							'w-full grid gap-x-6 gap-y-2 grid-cols-2 ' +
+							(formData.clientType === ''
+								? 'mb-3 sm:mb-6'
+								: 'mb-2')
 						}>
 						<p className='col-span-2'>Client Type</p>
 						<li>
@@ -175,7 +181,7 @@ const AddClient = () => {
 					</ul>
 
 					{formData.clientType === 'RENT' && (
-						<ul className='grid w-full gap-6 grid-cols-2 mb-6'>
+						<ul className='grid w-full gap-6 grid-cols-2 mb-3 sm:mb-6'>
 							<li>
 								<input
 									type='radio'
@@ -212,7 +218,7 @@ const AddClient = () => {
 					)}
 
 					{formData.clientType === 'SALE' && (
-						<ul className='grid w-full gap-6 grid-cols-2 mb-6'>
+						<ul className='grid w-full gap-6 grid-cols-2 mb-3 sm:mb-6'>
 							<li>
 								<input
 									type='radio'
@@ -248,7 +254,7 @@ const AddClient = () => {
 						</ul>
 					)}
 
-					<ul className='grid w-full gap-6 grid-cols-2 mb-6'>
+					<ul className='grid w-full gap-3 sm:gap-6 grid-cols-1 sm:grid-cols-2 mb-3 sm:mb-6'>
 						<li>
 							<label htmlFor='size' className='inline-block mb-2'>
 								Size
@@ -259,7 +265,7 @@ const AddClient = () => {
 								name='size'
 								onChange={handleInputChange}
 								value={formData.size}
-								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
 						<li>
@@ -274,12 +280,12 @@ const AddClient = () => {
 								name='sqft'
 								onChange={handleInputChange}
 								value={formData.sqft}
-								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
 					</ul>
 
-					<ul className='grid w-full gap-6 grid-cols-2 mb-6'>
+					<ul className='grid w-full gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 mb-4 sm:mb-6'>
 						<li
 							className={
 								formData.saleParty !== 'BUYER'
@@ -297,7 +303,7 @@ const AddClient = () => {
 								name='budget'
 								onChange={handleInputChange}
 								value={formData.budget}
-								className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
 						{formData.saleParty === 'BUYER' && (
@@ -316,7 +322,7 @@ const AddClient = () => {
 						)}
 					</ul>
 
-					<ul className='grid w-full gap-x-6 grid-cols-2 mb-6'>
+					<ul className='grid w-full gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 mb-6'>
 						<li
 							className={
 								formData.lead === '' ||
@@ -344,7 +350,7 @@ const AddClient = () => {
 									onChange={handleInputChange}
 									value={formData.leadAgentName}
 									placeholder='Agent Name'
-									className='block w-full px-3 py-1.5 text-l bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+									className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 								/>
 							)}
 							{formData.lead === 'ONLINE' && (
