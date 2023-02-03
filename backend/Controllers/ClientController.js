@@ -5,7 +5,7 @@ const ClientModel = require('../Models/ClientModel');
 // @access Public
 module.exports.getAllClientsController = async (req, res) => {
 	try {
-		const clients = await ClientModel.find();
+		const clients = await ClientModel.find().sort({ createdAt: -1 });
 
 		res.status(200).json({
 			success: true,
@@ -42,6 +42,7 @@ module.exports.AddClientController = async (req, res) => {
 			sqft,
 			budget,
 			lead,
+			propertyType,
 		} = req.body;
 
 		const client = new ClientModel({
@@ -56,6 +57,7 @@ module.exports.AddClientController = async (req, res) => {
 			sqft,
 			budget,
 			lead,
+			propertyType,
 		});
 
 		await client.save();
