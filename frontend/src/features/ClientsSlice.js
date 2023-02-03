@@ -27,6 +27,23 @@ export const fetchAllClients = createAsyncThunk(
 	}
 );
 
+export const addClientToDB = createAsyncThunk(
+	'clients/addClientToDB',
+	async (clientData, { rejectWithValue }) => {
+		try {
+			const response = await axios.post(
+				`${process.env.REACT_APP_BASEURL}/clients`,
+				clientData
+			);
+
+			return response.data.data;
+		} catch (error) {
+			console.log(error);
+			return rejectWithValue(error.response.data);
+		}
+	}
+);
+
 const ClientsSlice = createSlice({
 	name: 'clients',
 	initialState,
@@ -54,6 +71,32 @@ const ClientsSlice = createSlice({
 			state.getClientsError = action.payload;
 			state.addClientsStatus = '';
 			state.addClientsError = '';
+			state.deleteClientsStatus = '';
+			state.deleteClientsError = '';
+		});
+
+		builder.addCase(addClientToDB.pending, (state, action) => {
+			state.getClientsStatus = '';
+			state.getClientsError = '';
+			state.addClientsStatus = 'LOADING';
+			state.addClientsError = '';
+			state.deleteClientsStatus = '';
+			state.deleteClientsError = '';
+		});
+		builder.addCase(addClientToDB.fulfilled, (state, action) => {
+			state.clients = [action.payload, ...state.clients];
+			state.getClientsStatus = '';
+			state.getClientsError = '';
+			state.addClientsStatus = 'SUCCESS';
+			state.addClientsError = '';
+			state.deleteClientsStatus = '';
+			state.deleteClientsError = '';
+		});
+		builder.addCase(addClientToDB.rejected, (state, action) => {
+			state.getClientsStatus = '';
+			state.getClientsError = '';
+			state.addClientsStatus = 'FAILURE';
+			state.addClientsError = action.payload;
 			state.deleteClientsStatus = '';
 			state.deleteClientsError = '';
 		});
