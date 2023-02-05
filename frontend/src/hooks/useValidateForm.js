@@ -4,20 +4,29 @@ const useForm = () => {
 	const [formState, setFormState] = useState(initialState);
 
 	const {
-		clientName: { value: clientNameValue },
-		mobile: { value: mobileValue },
-		address: { value: addressValue },
-		propertyType: { value: propertyTypeValue },
-		clientType: { value: clientTypeValue },
-		rentParty: { value: rentPartyValue },
-		saleParty: { value: salePartyValue },
-		loan: { value: loanValue },
-		size: { value: sizeValue },
-		sqft: { value: sqftValue },
-		budget: { value: budgetValue },
-		lead: { value: leadValue },
-		leadAgentName: { value: leadAgentNameValue },
-		leadOnlineName: { value: leadOnlineNameValue },
+		clientName: { value: clientNameValue, isTouched: clientNameIsTouched },
+		mobile: { value: mobileValue, isTouched: mobileIsTouched },
+		address: { value: addressValue, isTouched: addressIsTouched },
+		propertyType: {
+			value: propertyTypeValue,
+			isTouched: propertyTypeIsTouched,
+		},
+		clientType: { value: clientTypeValue, isTouched: clientTypeIsTouched },
+		rentParty: { value: rentPartyValue, isTouched: rentPartyIsTouched },
+		saleParty: { value: salePartyValue, isTouched: salePartyIsTouched },
+		loan: { value: loanValue, isTouched: loanIsTouched },
+		size: { value: sizeValue, isTouched: sizeIsTouched },
+		sqft: { value: sqftValue, isTouched: sqftIsTouched },
+		budget: { value: budgetValue, isTouched: budgetIsTouched },
+		lead: { value: leadValue, isTouched: leadIsTouched },
+		leadAgentName: {
+			value: leadAgentNameValue,
+			isTouched: leadAgentNameIsTouched,
+		},
+		leadOnlineName: {
+			value: leadOnlineNameValue,
+			isTouched: leadOnlineNameIsTouched,
+		},
 	} = formState;
 
 	useEffect(
@@ -41,6 +50,21 @@ const useForm = () => {
 			leadValue,
 			leadAgentNameValue,
 			leadOnlineNameValue,
+
+			clientNameIsTouched,
+			mobileIsTouched,
+			addressIsTouched,
+			propertyTypeIsTouched,
+			clientTypeIsTouched,
+			rentPartyIsTouched,
+			salePartyIsTouched,
+			loanIsTouched,
+			sizeIsTouched,
+			sqftIsTouched,
+			budgetIsTouched,
+			leadIsTouched,
+			leadAgentNameIsTouched,
+			leadOnlineNameIsTouched,
 		]
 	);
 
@@ -48,10 +72,33 @@ const useForm = () => {
 		const name = event.target.name;
 		const value = event.target.value;
 
-		setFormState((prevState) => ({
-			...prevState,
-			[name]: { ...prevState[name], value },
-		}));
+		switch (name) {
+			// case 'mobile':
+			// 	if (isNaN(+value)) return;
+			// 	break;
+
+			case 'sqft':
+			case 'budget':
+				if (!Boolean(Number(value))) {
+					setFormState((prevState) => ({
+						...prevState,
+						[name]: { ...prevState[name], value: '' },
+					}));
+				} else {
+					setFormState((prevState) => ({
+						...prevState,
+						[name]: { ...prevState[name], value: Number(value) },
+					}));
+				}
+				break;
+
+			default:
+				setFormState((prevState) => ({
+					...prevState,
+					[name]: { ...prevState[name], value },
+				}));
+				break;
+		}
 	};
 
 	const inputBlurHandler = (event) => {
@@ -158,10 +205,23 @@ const validateFunc = (stateObj, setStateObj) => {
 				// ? should i also check if clientType is sale ?
 				isValid = value === 'BUYER' || value === 'SELLER';
 
-				setStateObj((prevState) => ({
-					...prevState,
-					[name]: { ...prevState[name], valueIsValid: isValid },
-				}));
+				if (value === 'BUYER') {
+					setStateObj((prevState) => ({
+						...prevState,
+						[name]: { ...prevState[name], valueIsValid: isValid },
+					}));
+				} else if (value === 'SELLER') {
+					setStateObj((prevState) => ({
+						...prevState,
+						[name]: { ...prevState[name], valueIsValid: isValid },
+						loan: {
+							value: false,
+							isTouched: false,
+							valueIsValid: false,
+							hasError: false,
+						},
+					}));
+				}
 				break;
 
 			case 'loan':
@@ -224,6 +284,18 @@ const validateFunc = (stateObj, setStateObj) => {
 						[name]: {
 							...prevState[name],
 							valueIsValid: isValid,
+						},
+						leadAgentName: {
+							value: '',
+							isTouched: false,
+							valueIsValid: false,
+							hasError: false,
+						},
+						leadOnlineName: {
+							value: '',
+							isTouched: false,
+							valueIsValid: false,
+							hasError: false,
 						},
 					}));
 				}
