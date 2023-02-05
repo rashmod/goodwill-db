@@ -73,9 +73,23 @@ const useForm = () => {
 		const value = event.target.value;
 
 		switch (name) {
-			// case 'mobile':
-			// 	if (isNaN(+value)) return;
-			// 	break;
+			case 'mobile':
+				if (isNaN(+value)) {
+					return;
+				} else {
+					setFormState((prevState) => ({
+						...prevState,
+						[name]: { ...prevState[name], value },
+					}));
+				}
+				break;
+
+			case 'loan':
+				setFormState((prevState) => ({
+					...prevState,
+					[name]: { ...prevState[name], value: isTrue(value) },
+				}));
+				break;
 
 			case 'sqft':
 			case 'budget':
