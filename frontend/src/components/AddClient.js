@@ -2,38 +2,77 @@ import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addClientToDB } from '../features/ClientsSlice';
 import useForm from '../hooks/useValidateForm';
+import ErrorMessage from './ErrorMessage';
 
 const AddClient = () => {
 	// * when saving to backend check property key
 	// todo make file for data constants
 
+	const [formIsValid, setFormIsValid] = useState(false);
+
 	const dispatch = useDispatch();
-	const { formState, valueChangeHandler, inputBlurHandler, resetForm } =
-		useForm();
+	const {
+		formState,
+		setFormState,
+		valueChangeHandler,
+		inputBlurHandler,
+		resetForm,
+	} = useForm();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
 
-		dispatch(
-			addClientToDB({
-				name: formState.clientName.value,
-				mobile: formState.mobile.value,
-				address: formState.address.value,
-				propertyType: formState.propertyType.value,
-				clientType: formState.clientType.value,
-				rentParty: formState.rentParty.value,
-				saleParty: formState.saleParty.value,
-				loan: formState.loan.value,
-				size: formState.size.value,
-				sqft: formState.sqft.value,
-				budget: formState.budget.value,
-				lead: formState.lead.value,
-				leadAgentName: formState.leadAgentName.value,
-				leadOnlineName: formState.leadOnlineName.value,
-			})
-		);
+		for (const name in formState) {
+			setFormState((prevState) => ({
+				...prevState,
+				[name]: { ...prevState[name], isTouched: true },
+			}));
+		}
 
-		resetForm();
+		if (
+			formState.clientName.hasError ||
+			formState.mobile.hasError ||
+			formState.address.hasError ||
+			formState.propertyType.hasError ||
+			formState.clientType.hasError ||
+			formState.rentParty.hasError ||
+			formState.saleParty.hasError ||
+			formState.loan.hasError ||
+			formState.size.hasError ||
+			formState.sqft.hasError ||
+			formState.budget.hasError ||
+			formState.lead.hasError ||
+			formState.leadAgentName.hasError ||
+			formState.leadOnlineName.hasError
+		) {
+			return;
+		} else {
+			setFormIsValid(true);
+		}
+
+		if (formIsValid) {
+			dispatch(
+				addClientToDB({
+					name: formState.clientName.value,
+					mobile: formState.mobile.value,
+					address: formState.address.value,
+					propertyType: formState.propertyType.value,
+					clientType: formState.clientType.value,
+					rentParty: formState.rentParty.value,
+					saleParty: formState.saleParty.value,
+					loan: formState.loan.value,
+					size: formState.size.value,
+					sqft: formState.sqft.value,
+					budget: formState.budget.value,
+					lead: formState.lead.value,
+					leadAgentName: formState.leadAgentName.value,
+					leadOnlineName: formState.leadOnlineName.value,
+				})
+			);
+
+			resetForm();
+			setFormIsValid(false);
+		}
 	};
 
 	return (
@@ -56,8 +95,15 @@ const AddClient = () => {
 							onChange={valueChangeHandler}
 							onBlur={inputBlurHandler}
 							value={formState.clientName.value}
-							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+							className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+								formState.clientName.hasError
+									? 'border-red-400'
+									: ''
+							}`}
 						/>
+						{formState.clientName.hasError && (
+							<ErrorMessage msg='Name is Required' />
+						)}
 					</div>
 
 					<div className='mb-3 sm:mb-6'>
@@ -74,8 +120,15 @@ const AddClient = () => {
 							onBlur={inputBlurHandler}
 							value={formState.mobile.value}
 							pattern='^[6-9]\d{9}$'
-							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+							className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+								formState.mobile.hasError
+									? 'border-red-400'
+									: ''
+							}`}
 						/>
+						{formState.mobile.hasError && (
+							<ErrorMessage msg='Mobile Number is Required' />
+						)}
 					</div>
 
 					<div className='mb-5 sm:mb-8'>
@@ -91,8 +144,15 @@ const AddClient = () => {
 							onChange={valueChangeHandler}
 							onBlur={inputBlurHandler}
 							value={formState.address.value}
-							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+							className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+								formState.address.hasError
+									? 'border-red-400'
+									: ''
+							}`}
 						/>
+						{formState.address.hasError && (
+							<ErrorMessage msg='Location is Required' />
+						)}
 					</div>
 
 					<div className='mb-3 sm:mb-6'>
@@ -102,7 +162,11 @@ const AddClient = () => {
 							onChange={valueChangeHandler}
 							onBlur={inputBlurHandler}
 							value={formState.propertyType.value}
-							className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
+							className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
+								formState.propertyType.hasError
+									? 'border border-red-400 '
+									: ''
+							}`}>
 							<option value=''>Select property type</option>
 							<option value='RESIDENTIAL'>Residential</option>
 							<option value='COMMERCIAL'>Commercial</option>
@@ -110,6 +174,9 @@ const AddClient = () => {
 							<option value='OPEN-PLOT'>Open Plot</option>
 							<option value='AGRICULTURAL'>Agricultural</option>
 						</select>
+						{formState.propertyType.hasError && (
+							<ErrorMessage msg='Property Type is Required' />
+						)}
 					</div>
 
 					<ul
@@ -134,7 +201,11 @@ const AddClient = () => {
 							/>
 							<label
 								htmlFor='rent'
-								className='inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110'>
+								className={`inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110 ${
+									formState.clientType.hasError
+										? 'border border-red-400 '
+										: ''
+								}`}>
 								Rent
 							</label>
 						</li>
@@ -152,14 +223,21 @@ const AddClient = () => {
 							/>
 							<label
 								htmlFor='sale'
-								className='inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110'>
+								className={`inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110 ${
+									formState.clientType.hasError
+										? 'border border-red-400 '
+										: ''
+								}`}>
 								Sale
 							</label>
 						</li>
+						{formState.clientType.hasError && (
+							<ErrorMessage msg='Client Type is Required' />
+						)}
 					</ul>
 
 					{formState.clientType.value === 'RENT' && (
-						<ul className='grid w-full gap-6 grid-cols-2 mb-3 sm:mb-6'>
+						<ul className='grid w-full gap-x-6 grid-cols-2 mb-3 sm:mb-6'>
 							<li>
 								<input
 									type='radio'
@@ -177,7 +255,11 @@ const AddClient = () => {
 								/>
 								<label
 									htmlFor='renter'
-									className='inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110'>
+									className={`inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110 ${
+										formState.rentParty.hasError
+											? 'border border-red-400 '
+											: ''
+									}`}>
 									Renter
 								</label>
 							</li>
@@ -199,15 +281,22 @@ const AddClient = () => {
 								/>
 								<label
 									htmlFor='homeowner'
-									className='inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110'>
+									className={`inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110 ${
+										formState.rentParty.hasError
+											? 'border border-red-400 '
+											: ''
+									}`}>
 									Homeowner
 								</label>
 							</li>
+							{formState.rentParty.hasError && (
+								<ErrorMessage msg='Rent Party is Required' />
+							)}
 						</ul>
 					)}
 
 					{formState.clientType.value === 'SALE' && (
-						<ul className='grid w-full gap-6 grid-cols-2 mb-3 sm:mb-6'>
+						<ul className='grid w-full gap-x-6 grid-cols-2 mb-3 sm:mb-6'>
 							<li>
 								<input
 									type='radio'
@@ -225,7 +314,11 @@ const AddClient = () => {
 								/>
 								<label
 									htmlFor='buyer'
-									className='inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110'>
+									className={`inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110 ${
+										formState.saleParty.hasError
+											? 'border border-red-400 '
+											: ''
+									}`}>
 									Buyer
 								</label>
 							</li>
@@ -246,10 +339,17 @@ const AddClient = () => {
 								/>
 								<label
 									htmlFor='Seller'
-									className='inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110'>
+									className={`inline-flex w-full py-2 px-4 bg-[#243b55] rounded cursor-pointer transition ease-in-out peer-checked:bg-accent  hover:bg-opacity-50 peer-checked:hover:brightness-110 ${
+										formState.saleParty.hasError
+											? 'border border-red-400 '
+											: ''
+									}`}>
 									Seller
 								</label>
 							</li>
+							{formState.saleParty.hasError && (
+								<ErrorMessage msg='Sale Party is Required' />
+							)}
 						</ul>
 					)}
 
@@ -267,14 +367,21 @@ const AddClient = () => {
 								}}
 								onBlur={inputBlurHandler}
 								value={formState.size.value}
-								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+								className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+									formState.size.hasError
+										? 'border-red-400'
+										: ''
+								}`}
 							/>
+							{formState.size.hasError && (
+								<ErrorMessage msg='Size is Required' />
+							)}
 						</li>
 						<li>
 							<label
 								htmlFor='sq-ft'
 								className='inline-block mb-2'>
-								Sq. Ft.
+								SQ. FT.
 							</label>
 							<input
 								type='number'
@@ -285,8 +392,15 @@ const AddClient = () => {
 								}}
 								onBlur={inputBlurHandler}
 								value={formState.sqft.value}
-								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+								className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+									formState.sqft.hasError
+										? 'border-red-400'
+										: ''
+								}`}
 							/>
+							{formState.sqft.hasError && (
+								<ErrorMessage msg='SQ. FT. is Required' />
+							)}
 						</li>
 					</ul>
 
@@ -311,11 +425,23 @@ const AddClient = () => {
 								}}
 								onBlur={inputBlurHandler}
 								value={formState.budget.value}
-								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
+								className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+									formState.budget.hasError
+										? 'border-red-400'
+										: ''
+								}`}
 							/>
+							{formState.budget.hasError && (
+								<ErrorMessage msg='Budget is Required' />
+							)}
 						</li>
 						{formState.saleParty.value === 'BUYER' && (
-							<li className='flex items-end'>
+							<li
+								className={`flex ${
+									formState.budget.hasError
+										? 'items-center mt-3'
+										: 'items-end'
+								}`}>
 								<select
 									id='loan'
 									name='loan'
@@ -325,10 +451,25 @@ const AddClient = () => {
 									onBlur={inputBlurHandler}
 									// value={formState.loan.value}
 									className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
-									<option value=''>Select Loan option</option>
-									<option value='true'>Yes</option>
-									<option value='false'>No</option>
+									{/* <option value=''>Select Loan option</option> */}
+									<option
+										value='true'
+										selected={
+											formState.loan.value === true
+										}>
+										Loan: Yes
+									</option>
+									<option
+										value='false'
+										selected={
+											formState.loan.value === false
+										}>
+										Loan: No
+									</option>
 								</select>
+								{formState.loan.hasError && (
+									<ErrorMessage msg='Loan is Required' />
+								)}
 							</li>
 						)}
 					</ul>
@@ -349,46 +490,73 @@ const AddClient = () => {
 								}}
 								onBlur={inputBlurHandler}
 								value={formState.lead.value}
-								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
+								className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
+									formState.lead.hasError
+										? 'border border-red-400 '
+										: ''
+								}`}>
 								<option value=''>Select Lead option</option>
 								<option value='WALK-IN'>Walk In</option>
 								<option value='ONLINE'>Online</option>
 								<option value='REFERENCE'>Reference</option>
 							</select>
+							{formState.lead.hasError && (
+								<ErrorMessage msg='Lead is Required' />
+							)}
 						</li>
 						<li>
 							{formState.lead.value === 'REFERENCE' && (
-								<input
-									type='text'
-									name='leadAgentName'
-									onChange={(e) => {
-										valueChangeHandler(e);
-									}}
-									onBlur={inputBlurHandler}
-									value={formState.leadAgentName.value}
-									placeholder='Agent Name'
-									className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
-								/>
+								<>
+									<input
+										type='text'
+										name='leadAgentName'
+										onChange={(e) => {
+											valueChangeHandler(e);
+										}}
+										onBlur={inputBlurHandler}
+										value={formState.leadAgentName.value}
+										placeholder='Agent Name'
+										className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+											formState.leadAgentName.hasError
+												? 'border-red-400 '
+												: ''
+										}`}
+									/>
+									{formState.leadAgentName.hasError && (
+										<ErrorMessage msg='Agent Name is Required' />
+									)}
+								</>
 							)}
 							{formState.lead.value === 'ONLINE' && (
-								<select
-									id='lead-online'
-									name='leadOnlineName'
-									onChange={(e) => {
-										valueChangeHandler(e);
-									}}
-									onBlur={inputBlurHandler}
-									value={formState.leadOnlineName.value}
-									className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
-									<option value=''>
-										Select online option
-									</option>
-									<option value='UNKNOWN'>Unknown</option>
-									<option value='JUST-DIAL'>Just dial</option>
-									<option value='SQUARE-YARDS'>
-										square yards
-									</option>
-								</select>
+								<>
+									<select
+										id='lead-online'
+										name='leadOnlineName'
+										onChange={(e) => {
+											valueChangeHandler(e);
+										}}
+										onBlur={inputBlurHandler}
+										value={formState.leadOnlineName.value}
+										className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
+											formState.leadOnlineName.hasError
+												? 'border border-red-400 '
+												: ''
+										}`}>
+										<option value=''>
+											Select online option
+										</option>
+										<option value='UNKNOWN'>Unknown</option>
+										<option value='JUST-DIAL'>
+											Just dial
+										</option>
+										<option value='SQUARE-YARDS'>
+											square yards
+										</option>
+									</select>
+									{formState.leadOnlineName.hasError && (
+										<ErrorMessage msg='Online Name is Required' />
+									)}
+								</>
 							)}
 						</li>
 					</ul>
@@ -400,12 +568,6 @@ const AddClient = () => {
 			</div>
 		</div>
 	);
-};
-
-// check if the string is true or false
-const isTrue = (str) => {
-	if (str === 'true') return true;
-	return false;
 };
 
 export default AddClient;

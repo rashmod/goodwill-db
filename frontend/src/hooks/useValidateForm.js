@@ -128,7 +128,13 @@ const useForm = () => {
 		setFormState(initialState);
 	};
 
-	return { formState, valueChangeHandler, inputBlurHandler, resetForm };
+	return {
+		formState,
+		setFormState,
+		valueChangeHandler,
+		inputBlurHandler,
+		resetForm,
+	};
 };
 
 const validateFunc = (stateObj, setStateObj) => {
