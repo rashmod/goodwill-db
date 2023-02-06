@@ -356,7 +356,7 @@ const AddClient = () => {
 					<ul className='grid w-full gap-3 sm:gap-6 grid-cols-1 sm:grid-cols-2 mb-3 sm:mb-6'>
 						<li>
 							<label htmlFor='size' className='inline-block mb-2'>
-								Size
+								Type
 							</label>
 							<input
 								type='text'
@@ -374,14 +374,14 @@ const AddClient = () => {
 								}`}
 							/>
 							{formState.size.hasError && (
-								<ErrorMessage msg='Size is Required' />
+								<ErrorMessage msg='Type is Required' />
 							)}
 						</li>
 						<li>
 							<label
 								htmlFor='sq-ft'
 								className='inline-block mb-2'>
-								SQ. FT.
+								Area
 							</label>
 							<input
 								type='number'
@@ -392,6 +392,7 @@ const AddClient = () => {
 								}}
 								onBlur={inputBlurHandler}
 								value={formState.sqft.value}
+								min='0'
 								className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
 									formState.sqft.hasError
 										? 'border-red-400'
@@ -399,7 +400,7 @@ const AddClient = () => {
 								}`}
 							/>
 							{formState.sqft.hasError && (
-								<ErrorMessage msg='SQ. FT. is Required' />
+								<ErrorMessage msg='Area is Required' />
 							)}
 						</li>
 					</ul>
@@ -425,6 +426,7 @@ const AddClient = () => {
 								}}
 								onBlur={inputBlurHandler}
 								value={formState.budget.value}
+								min='0'
 								className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
 									formState.budget.hasError
 										? 'border-red-400'

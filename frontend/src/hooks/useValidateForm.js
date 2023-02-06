@@ -78,7 +78,7 @@ const useForm = () => {
 			case 'size':
 			case 'leadAgentName':
 				if (name === 'clientName' || name === 'leadAgentName') {
-					re = /^[A-Za-z]+$/;
+					re = /^[A-Za-z\s]+$/;
 				} else {
 					re = /^[a-z\d]+$/i;
 				}
