@@ -7,6 +7,9 @@ import ErrorMessage from './ErrorMessage';
 const AddClient = () => {
 	// * when saving to backend check property key
 	// todo make file for data constants
+	// todo show commas in budget input
+	// todo unit in area input
+	// todo prevent spaces in mobile field
 
 	const [formIsValid, setFormIsValid] = useState(false);
 
@@ -53,9 +56,9 @@ const AddClient = () => {
 		if (formIsValid) {
 			dispatch(
 				addClientToDB({
-					name: formState.clientName.value,
+					name: formState.clientName.value.trim(),
 					mobile: formState.mobile.value,
-					address: formState.address.value,
+					address: formState.address.value.trim(),
 					propertyType: formState.propertyType.value,
 					clientType: formState.clientType.value,
 					rentParty: formState.rentParty.value,
@@ -65,7 +68,7 @@ const AddClient = () => {
 					sqft: formState.sqft.value,
 					budget: formState.budget.value,
 					lead: formState.lead.value,
-					leadAgentName: formState.leadAgentName.value,
+					leadAgentName: formState.leadAgentName.value.trim(),
 					leadOnlineName: formState.leadOnlineName.value,
 				})
 			);
