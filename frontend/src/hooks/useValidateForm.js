@@ -71,8 +71,26 @@ const useForm = () => {
 	const valueChangeHandler = (event) => {
 		const name = event.target.name;
 		const value = event.target.value;
+		let re;
 
 		switch (name) {
+			case 'clientName':
+			case 'size':
+			case 'leadAgentName':
+				if (name === 'clientName' || name === 'leadAgentName') {
+					re = /^[A-Za-z]+$/;
+				} else {
+					re = /^[a-z\d]+$/i;
+				}
+
+				const isKeyValid = re.test(value);
+				if (isKeyValid || value === '') {
+					setFormState((prevState) => ({
+						...prevState,
+						[name]: { ...prevState[name], value },
+					}));
+				}
+				break;
 			case 'mobile':
 				if (isNaN(+value)) {
 					return;
