@@ -34,6 +34,7 @@ module.exports.AddClientController = async (req, res) => {
 			name,
 			mobile,
 			address,
+			propertyType,
 			clientType,
 			saleParty,
 			loan,
@@ -42,13 +43,15 @@ module.exports.AddClientController = async (req, res) => {
 			sqft,
 			budget,
 			lead,
-			propertyType,
+			leadAgentName,
+			leadOnlineName,
 		} = req.body;
 
 		const client = new ClientModel({
 			name,
 			mobile,
 			address,
+			propertyType,
 			clientType,
 			saleParty,
 			loan,
@@ -57,7 +60,8 @@ module.exports.AddClientController = async (req, res) => {
 			sqft,
 			budget,
 			lead,
-			propertyType,
+			leadAgentName,
+			leadOnlineName,
 		});
 
 		await client.save();
