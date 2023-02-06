@@ -1,71 +1,39 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addClientToDB } from '../features/ClientsSlice';
+import useForm from '../hooks/useValidateForm';
 
 const AddClient = () => {
 	// * when saving to backend check property key
-	// todo make form input conditional based on property type input
+	// todo make file for data constants
 
-	const [formData, setFormData] = useState({
-		clientName: '',
-		mobile: '',
-		address: '',
-		propertyType: '',
-		clientType: '',
-		rentParty: '',
-		saleParty: '',
-		loan: false,
-		size: '',
-		sqft: 0,
-		budget: 0,
-		lead: '',
-		leadAgentName: '',
-		leadOnlineName: '',
-	});
+	const dispatch = useDispatch();
+	const { formState, valueChangeHandler, inputBlurHandler, resetForm } =
+		useForm();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-	};
 
-	const handleInputChange = (e) => {
-		// if the input name is mobile and the input is anything other than number return
-		// turn input into and check if NaN
-		if (e.target.name === 'mobile' && isNaN(+e.target.value)) {
-			return;
-		} else if (e.target.name === 'loan') {
-			setFormData({
-				...formData,
-				[e.target.name]: isTrue(e.target.value),
-			});
-		} else if (e.target.name === 'sqft' || e.target.name === 'budget') {
-			// if the input is 0 let it be ''
-			if (!Boolean(Number(e.target.value))) {
-				setFormData({
-					...formData,
-					[e.target.name]: '',
-				});
-			} else {
-				setFormData({
-					...formData,
-					[e.target.name]: Number(e.target.value),
-				});
-			}
-		} else if (e.target.name === 'clientType') {
-			if (e.target.value === 'RENT') {
-				setFormData({
-					...formData,
-					[e.target.name]: e.target.value,
-					saleParty: '',
-					loan: false,
-				});
-			} else {
-				setFormData({
-					...formData,
-					[e.target.name]: e.target.value,
-					rentParty: '',
-				});
-			}
-		} else {
-			setFormData({ ...formData, [e.target.name]: e.target.value });
-		}
+		dispatch(
+			addClientToDB({
+				name: formState.clientName.value,
+				mobile: formState.mobile.value,
+				address: formState.address.value,
+				propertyType: formState.propertyType.value,
+				clientType: formState.clientType.value,
+				rentParty: formState.rentParty.value,
+				saleParty: formState.saleParty.value,
+				loan: formState.loan.value,
+				size: formState.size.value,
+				sqft: formState.sqft.value,
+				budget: formState.budget.value,
+				lead: formState.lead.value,
+				leadAgentName: formState.leadAgentName.value,
+				leadOnlineName: formState.leadOnlineName.value,
+			})
+		);
+
+		resetForm();
 	};
 
 	return (
@@ -85,8 +53,9 @@ const AddClient = () => {
 							type='text'
 							id='client-name'
 							name='clientName'
-							onChange={handleInputChange}
-							value={formData.clientName}
+							onChange={valueChangeHandler}
+							onBlur={inputBlurHandler}
+							value={formState.clientName.value}
 							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
@@ -101,8 +70,9 @@ const AddClient = () => {
 							type='tel'
 							id='phone'
 							name='mobile'
-							onChange={handleInputChange}
-							value={formData.mobile}
+							onChange={valueChangeHandler}
+							onBlur={inputBlurHandler}
+							value={formState.mobile.value}
 							pattern='^[6-9]\d{9}$'
 							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
@@ -112,14 +82,15 @@ const AddClient = () => {
 						<label
 							htmlFor='address'
 							className='inline-block mb-1 sm:mb-2'>
-							Requirement
+							Requirement Location
 						</label>
 						<input
 							type='text'
 							id='address'
 							name='address'
-							onChange={handleInputChange}
-							value={formData.address}
+							onChange={valueChangeHandler}
+							onBlur={inputBlurHandler}
+							value={formState.address.value}
 							className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 						/>
 					</div>
@@ -128,8 +99,9 @@ const AddClient = () => {
 						<select
 							id='propertyType'
 							name='propertyType'
-							onChange={handleInputChange}
-							value={formData.propertyType}
+							onChange={valueChangeHandler}
+							onBlur={inputBlurHandler}
+							value={formState.propertyType.value}
 							className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
 							<option value=''>Select property type</option>
 							<option value='RESIDENTIAL'>Residential</option>
@@ -143,7 +115,7 @@ const AddClient = () => {
 					<ul
 						className={
 							'w-full grid gap-x-6 gap-y-2 grid-cols-2 ' +
-							(formData.clientType === ''
+							(formState.clientType.value === ''
 								? 'mb-3 sm:mb-6'
 								: 'mb-2')
 						}>
@@ -153,9 +125,12 @@ const AddClient = () => {
 								type='radio'
 								id='rent'
 								name='clientType'
-								onChange={handleInputChange}
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
 								value='RENT'
-								className='peer hidden'
+								className='peer absolute opacity-0'
 							/>
 							<label
 								htmlFor='rent'
@@ -168,9 +143,12 @@ const AddClient = () => {
 								type='radio'
 								id='sale'
 								name='clientType'
-								onChange={handleInputChange}
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
 								value='SALE'
-								className='peer hidden'
+								className='peer absolute opacity-0'
 							/>
 							<label
 								htmlFor='sale'
@@ -180,17 +158,22 @@ const AddClient = () => {
 						</li>
 					</ul>
 
-					{formData.clientType === 'RENT' && (
+					{formState.clientType.value === 'RENT' && (
 						<ul className='grid w-full gap-6 grid-cols-2 mb-3 sm:mb-6'>
 							<li>
 								<input
 									type='radio'
 									id='renter'
 									name='rentParty'
-									onChange={handleInputChange}
+									onChange={(e) => {
+										valueChangeHandler(e);
+									}}
+									onBlur={inputBlurHandler}
 									value='RENTER'
-									checked={formData.rentParty === 'RENTER'}
-									className='peer hidden'
+									checked={
+										formState.rentParty.value === 'RENTER'
+									}
+									className='peer absolute opacity-0'
 								/>
 								<label
 									htmlFor='renter'
@@ -203,10 +186,16 @@ const AddClient = () => {
 									type='radio'
 									id='homeowner'
 									name='rentParty'
-									onChange={handleInputChange}
+									onChange={(e) => {
+										valueChangeHandler(e);
+									}}
+									onBlur={inputBlurHandler}
 									value='HOMEOWNER'
-									checked={formData.rentParty === 'HOMEOWNER'}
-									className='peer hidden'
+									checked={
+										formState.rentParty.value ===
+										'HOMEOWNER'
+									}
+									className='peer absolute opacity-0'
 								/>
 								<label
 									htmlFor='homeowner'
@@ -217,17 +206,22 @@ const AddClient = () => {
 						</ul>
 					)}
 
-					{formData.clientType === 'SALE' && (
+					{formState.clientType.value === 'SALE' && (
 						<ul className='grid w-full gap-6 grid-cols-2 mb-3 sm:mb-6'>
 							<li>
 								<input
 									type='radio'
 									id='buyer'
 									name='saleParty'
-									onChange={handleInputChange}
+									onChange={(e) => {
+										valueChangeHandler(e);
+									}}
+									onBlur={inputBlurHandler}
 									value='BUYER'
-									checked={formData.saleParty === 'BUYER'}
-									className='peer hidden'
+									checked={
+										formState.saleParty.value === 'BUYER'
+									}
+									className='peer absolute opacity-0'
 								/>
 								<label
 									htmlFor='buyer'
@@ -240,10 +234,15 @@ const AddClient = () => {
 									type='radio'
 									id='Seller'
 									name='saleParty'
-									onChange={handleInputChange}
+									onChange={(e) => {
+										valueChangeHandler(e);
+									}}
+									onBlur={inputBlurHandler}
 									value='SELLER'
-									checked={formData.saleParty === 'SELLER'}
-									className='peer hidden'
+									checked={
+										formState.saleParty.value === 'SELLER'
+									}
+									className='peer absolute opacity-0'
 								/>
 								<label
 									htmlFor='Seller'
@@ -263,8 +262,11 @@ const AddClient = () => {
 								type='text'
 								id='size'
 								name='size'
-								onChange={handleInputChange}
-								value={formData.size}
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
+								value={formState.size.value}
 								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
@@ -278,8 +280,11 @@ const AddClient = () => {
 								type='number'
 								id='sq-ft'
 								name='sqft'
-								onChange={handleInputChange}
-								value={formData.sqft}
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
+								value={formState.sqft.value}
 								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
@@ -288,7 +293,7 @@ const AddClient = () => {
 					<ul className='grid w-full gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 mb-4 sm:mb-6'>
 						<li
 							className={
-								formData.saleParty !== 'BUYER'
+								formState.saleParty.value !== 'BUYER'
 									? 'col-span-2'
 									: ''
 							}>
@@ -301,40 +306,49 @@ const AddClient = () => {
 								type='number'
 								id='budget'
 								name='budget'
-								onChange={handleInputChange}
-								value={formData.budget}
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
+								value={formState.budget.value}
 								className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 							/>
 						</li>
-						{formData.saleParty === 'BUYER' && (
+						{formState.saleParty.value === 'BUYER' && (
 							<li className='flex items-end'>
 								<select
 									id='loan'
 									name='loan'
-									onChange={handleInputChange}
-									// value={formData.loan}
+									onChange={(e) => {
+										valueChangeHandler(e);
+									}}
+									onBlur={inputBlurHandler}
+									// value={formState.loan.value}
 									className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
 									<option value=''>Select Loan option</option>
-									<option value={true}>Yes</option>
-									<option value={false}>No</option>
+									<option value='true'>Yes</option>
+									<option value='false'>No</option>
 								</select>
 							</li>
 						)}
 					</ul>
 
-					<ul className='grid w-full gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 mb-6'>
+					<ul className='grid w-full gap-x-4 sm:gap-x-6 grid-cols-1 sm:grid-cols-2 mb-6'>
 						<li
 							className={
-								formData.lead === '' ||
-								formData.lead === 'WALK-IN'
+								formState.lead.value === '' ||
+								formState.lead.value === 'WALK-IN'
 									? 'col-span-2'
 									: ''
 							}>
 							<select
 								id='lead'
 								name='lead'
-								onChange={handleInputChange}
-								value={formData.lead}
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
+								value={formState.lead.value}
 								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
 								<option value=''>Select Lead option</option>
 								<option value='WALK-IN'>Walk In</option>
@@ -343,22 +357,28 @@ const AddClient = () => {
 							</select>
 						</li>
 						<li>
-							{formData.lead === 'REFERENCE' && (
+							{formState.lead.value === 'REFERENCE' && (
 								<input
 									type='text'
 									name='leadAgentName'
-									onChange={handleInputChange}
-									value={formData.leadAgentName}
+									onChange={(e) => {
+										valueChangeHandler(e);
+									}}
+									onBlur={inputBlurHandler}
+									value={formState.leadAgentName.value}
 									placeholder='Agent Name'
 									className='block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none'
 								/>
 							)}
-							{formData.lead === 'ONLINE' && (
+							{formState.lead.value === 'ONLINE' && (
 								<select
 									id='lead-online'
 									name='leadOnlineName'
-									onChange={handleInputChange}
-									value={formData.leadOnlineName}
+									onChange={(e) => {
+										valueChangeHandler(e);
+									}}
+									onBlur={inputBlurHandler}
+									value={formState.leadOnlineName.value}
 									className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
 									<option value=''>
 										Select online option
