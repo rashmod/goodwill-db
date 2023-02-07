@@ -10,6 +10,8 @@ const AddClient = () => {
 	// todo show commas in budget input
 	// todo unit in area input
 	// todo prevent spaces in mobile field
+	// todo add loader
+	// todo don't change state if data not added to backend
 
 	const [formIsValid, setFormIsValid] = useState(false);
 

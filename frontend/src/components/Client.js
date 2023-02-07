@@ -1,6 +1,10 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteClientFromDB } from '../features/ClientsSlice';
 
 const Client = ({ client, setExpandedCard, expandedCard }) => {
+	const dispatch = useDispatch();
+
 	const isExpanded = expandedCard === client._id;
 	// ${isExpanded ? 'flex-col' : ''}
 	return (
@@ -46,7 +50,14 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 					<p>{client.leadOnlineName}</p>
 					<p>{client.loan}</p>
 					<p>{client.propertyType}</p> */}
-					<button className='bg-red-400'>Delete</button>
+					<button
+						className='bg-red-400'
+						onClick={() => {
+							dispatch(deleteClientFromDB(client._id));
+							console.log('delete clicked');
+						}}>
+						Delete
+					</button>
 					<button
 						className='bg-orange-300'
 						onClick={() => {

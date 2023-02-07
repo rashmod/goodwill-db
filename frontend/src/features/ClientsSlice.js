@@ -44,6 +44,21 @@ export const addClientToDB = createAsyncThunk(
 	}
 );
 
+export const deleteClientFromDB = createAsyncThunk(
+	'clients/deleteClientFromDB',
+	async (clientId, { rejectWithValue }) => {
+		try {
+			const response = await axios.delete(
+				`${process.env.REACT_APP_BASEURL}/clients/${clientId}`
+			);
+			return response.data.data;
+		} catch (error) {
+			console.log(error);
+			return rejectWithValue(error.response.data);
+		}
+	}
+);
+
 const ClientsSlice = createSlice({
 	name: 'clients',
 	initialState,
@@ -99,6 +114,34 @@ const ClientsSlice = createSlice({
 			state.addClientsError = action.payload;
 			state.deleteClientsStatus = '';
 			state.deleteClientsError = '';
+		});
+
+		builder.addCase(deleteClientFromDB.pending, (state, action) => {
+			state.getClientsStatus = '';
+			state.getClientsError = '';
+			state.addClientsStatus = '';
+			state.addClientsError = '';
+			state.deleteClientsStatus = 'LOADING';
+			state.deleteClientsError = '';
+		});
+		builder.addCase(deleteClientFromDB.fulfilled, (state, action) => {
+			state.clients = state.clients.filter(
+				(client) => client._id !== action.payload._id
+			);
+			state.getClientsStatus = '';
+			state.getClientsError = '';
+			state.addClientsStatus = '';
+			state.addClientsError = '';
+			state.deleteClientsStatus = 'SUCCESS';
+			state.deleteClientsError = '';
+		});
+		builder.addCase(deleteClientFromDB.rejected, (state, action) => {
+			state.getClientsStatus = '';
+			state.getClientsError = '';
+			state.addClientsStatus = '';
+			state.addClientsError = '';
+			state.deleteClientsStatus = 'FAILURE';
+			state.deleteClientsError = action.payload;
 		});
 	},
 });
