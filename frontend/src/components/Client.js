@@ -1,8 +1,18 @@
 import React from 'react';
 
-const Client = ({ client }) => {
+const Client = ({ client, setExpandedCard, expandedCard }) => {
+	const isExpanded = expandedCard === client._id;
+	// ${isExpanded ? 'flex-col' : ''}
 	return (
-		<div className='card cursor-pointer bg-light-black border border-gray-200 border-opacity-30 rounded-lg hover:shadow-md hover:border-white transform hover:-translate-y-1 transition-all duration-200'>
+		<div
+			className={`card cursor-pointer bg-light-black border border-gray-200 border-opacity-30 rounded-lg hover:shadow-md hover:border-white transform hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between ${
+				isExpanded ? 'row-span-2 h-64 sm:h-auto' : ''
+			}`}
+			// onClick={expandCard}
+			onClick={() => {
+				if (isExpanded) return;
+				setExpandedCard(client._id);
+			}}>
 			<div className='m-3 text-[#BFC0C0]'>
 				<div className='flex justify-between mb-2'>
 					<h2 className='text-lg'>{client.name}</h2>
@@ -29,6 +39,24 @@ const Client = ({ client }) => {
 				</div>
 				<p className='text-sm'>{client.address}</p>
 			</div>
+			{isExpanded && (
+				<div className='w-full flex justify-between'>
+					{/* <p>{client.lead}</p>
+					<p>{client.leadAgentName}</p>
+					<p>{client.leadOnlineName}</p>
+					<p>{client.loan}</p>
+					<p>{client.propertyType}</p> */}
+					<button className='bg-red-400'>Delete</button>
+					<button
+						className='bg-orange-300'
+						onClick={() => {
+							setExpandedCard(null);
+						}}>
+						Collapse
+					</button>
+					<button className='bg-lime-400'>Update</button>
+				</div>
+			)}
 		</div>
 	);
 };

@@ -593,12 +593,20 @@ video {
   }
 }
 
+.collapse {
+  visibility: collapse;
+}
+
 .absolute {
   position: absolute;
 }
 
 .col-span-2 {
   grid-column: span 2 / span 2;
+}
+
+.row-span-2 {
+  grid-row: span 2 / span 2;
 }
 
 .m-3 {
@@ -639,6 +647,10 @@ video {
   margin-bottom: 1rem;
 }
 
+.mt-3 {
+  margin-top: 0.75rem;
+}
+
 .mt-6 {
   margin-top: 1.5rem;
 }
@@ -649,10 +661,6 @@ video {
 
 .mt-1 {
   margin-top: 0.25rem;
-}
-
-.mt-3 {
-  margin-top: 0.75rem;
 }
 
 .block {
@@ -681,6 +689,10 @@ video {
 
 .h-full {
   height: 100%;
+}
+
+.h-64 {
+  height: 16rem;
 }
 
 .min-h-screen {
@@ -732,20 +744,12 @@ video {
   align-items: center;
 }
 
-.items-baseline {
-  align-items: baseline;
-}
-
 .justify-center {
   justify-content: center;
 }
 
 .justify-between {
   justify-content: space-between;
-}
-
-.gap-6 {
-  gap: 1.5rem;
 }
 
 .gap-3 {
@@ -756,12 +760,12 @@ video {
   gap: 1.25rem;
 }
 
-.gap-4 {
-  gap: 1rem;
-}
-
 .gap-2 {
   gap: 0.5rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
 }
 
 .gap-x-6 {
@@ -813,14 +817,14 @@ video {
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
-.border-gray-200 {
-  --tw-border-opacity: 1;
-  border-color: rgb(229 231 235 / var(--tw-border-opacity));
-}
-
 .border-red-400 {
   --tw-border-opacity: 1;
   border-color: rgb(248 113 113 / var(--tw-border-opacity));
+}
+
+.border-gray-200 {
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity));
 }
 
 .border-opacity-30 {
@@ -843,6 +847,21 @@ video {
 .bg-\[\#BFC0C0\] {
   --tw-bg-opacity: 1;
   background-color: rgb(191 192 192 / var(--tw-bg-opacity));
+}
+
+.bg-red-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(248 113 113 / var(--tw-bg-opacity));
+}
+
+.bg-orange-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 186 116 / var(--tw-bg-opacity));
+}
+
+.bg-lime-400 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(163 230 53 / var(--tw-bg-opacity));
 }
 
 .bg-gradient-bg {
@@ -1046,6 +1065,10 @@ video {
 
   .sm\:mb-8 {
     margin-bottom: 2rem;
+  }
+
+  .sm\:h-auto {
+    height: auto;
   }
 
   .sm\:min-w-\[500px\] {
