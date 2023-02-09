@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import AddClient from './components/AddClient';
 import ClientList from './components/ClientList';
 import Navbar from './components/Navbar';
+import UpdateClient from './components/UpdateClient';
 import { fetchAllClients } from './features/ClientsSlice';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
 				<Routes>
 					<Route path='/' element={<ClientList />} />
 					<Route path='/addClient' element={<AddClient />} />
+					<Route path='/updateClient' element={<UpdateClient />} />
 				</Routes>
 			</div>
 		</div>

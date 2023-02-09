@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addClientToDB } from '../features/ClientsSlice';
 import useForm from '../hooks/useValidateForm';
 import ErrorMessage from './ErrorMessage';
 
-const ClientForm = () => {
+const ClientForm = ({ updateClient }) => {
 	// * when saving to backend check property key
 	// todo make file for data constants
 	// todo show commas in budget input
@@ -23,6 +23,75 @@ const ClientForm = () => {
 		inputBlurHandler,
 		resetForm,
 	} = useForm();
+
+	const updateFunc = useCallback(() => {
+		if (updateClient) {
+			setFormState((prevState) => {
+				return {
+					clientName: {
+						...prevState.clientName,
+						value: updateClient.client.name,
+					},
+					mobile: {
+						...prevState.mobile,
+						value: updateClient.client.mobile,
+					},
+					address: {
+						...prevState.address,
+						value: updateClient.client.address,
+					},
+					propertyType: {
+						...prevState.propertyType,
+						value: updateClient.client.propertyType,
+					},
+					clientType: {
+						...prevState.clientType,
+						value: updateClient.client.clientType,
+					},
+					rentParty: {
+						...prevState.rentParty,
+						value: updateClient.client.rentParty,
+					},
+					saleParty: {
+						...prevState.saleParty,
+						value: updateClient.client.saleParty,
+					},
+					loan: {
+						...prevState.loan,
+						value: updateClient.client.loan,
+					},
+					size: {
+						...prevState.size,
+						value: updateClient.client.size,
+					},
+					sqft: {
+						...prevState.sqft,
+						value: updateClient.client.sqft,
+					},
+					budget: {
+						...prevState.budget,
+						value: updateClient.client.budget,
+					},
+					lead: {
+						...prevState.lead,
+						value: updateClient.client.lead,
+					},
+					leadAgentName: {
+						...prevState.leadAgentName,
+						value: updateClient.client.leadAgentName,
+					},
+					leadOnlineName: {
+						...prevState.leadOnlineName,
+						value: updateClient.client.leadOnlineName,
+					},
+				};
+			});
+		}
+	}, [setFormState, updateClient]);
+
+	useEffect(() => {
+		updateFunc();
+	}, [updateFunc]);
 
 	const submitHandler = (e) => {
 		e.preventDefault();
@@ -193,6 +262,7 @@ const ClientForm = () => {
 							}}
 							onBlur={inputBlurHandler}
 							value='RENT'
+							checked={formState.clientType.value === 'RENT'}
 							className='peer absolute opacity-0'
 						/>
 						<label
@@ -215,6 +285,7 @@ const ClientForm = () => {
 							}}
 							onBlur={inputBlurHandler}
 							value='SALE'
+							checked={formState.clientType.value === 'SALE'}
 							className='peer absolute opacity-0'
 						/>
 						<label
@@ -432,17 +503,19 @@ const ClientForm = () => {
 									valueChangeHandler(e);
 								}}
 								onBlur={inputBlurHandler}
-								// value={formState.loan.value}
+								value={formState.loan.value.toString()}
 								className='bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none'>
 								{/* <option value=''>Select Loan option</option> */}
 								<option
 									value='true'
-									selected={formState.loan.value === true}>
+									// selected={formState.loan.value === true}
+								>
 									Loan: Yes
 								</option>
 								<option
 									value='false'
-									selected={formState.loan.value === false}>
+									// selected={formState.loan.value === false}
+								>
 									Loan: No
 								</option>
 							</select>

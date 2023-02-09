@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { deleteClientFromDB } from '../features/ClientsSlice';
 
 const Client = ({ client, setExpandedCard, expandedCard }) => {
@@ -65,7 +66,12 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 						}}>
 						Collapse
 					</button>
-					<button className='bg-lime-400'>Update</button>
+					<Link
+						className='bg-lime-400'
+						to='/updateClient'
+						state={{ client }}>
+						Update
+					</Link>
 				</div>
 			)}
 		</div>
