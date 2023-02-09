@@ -113,3 +113,70 @@ module.exports.DeleteClientController = async (req, res) => {
 		});
 	}
 };
+
+// @desc Update client
+// @route PUT /api/clients/:clientId
+// @access Public
+module.exports.UpdateClientController = async (req, res) => {
+	try {
+		const { clientId } = req.params;
+		const {
+			name,
+			mobile,
+			address,
+			propertyType,
+			clientType,
+			saleParty,
+			loan,
+			rentParty,
+			size,
+			sqft,
+			budget,
+			lead,
+			leadAgentName,
+			leadOnlineName,
+		} = req.body;
+
+		const client = await ClientModel.findById(clientId);
+
+		if (client) {
+			const updatedClient = await ClientModel.findByIdAndUpdate(
+				clientId,
+				{
+					name,
+					mobile,
+					address,
+					propertyType,
+					clientType,
+					saleParty,
+					loan,
+					rentParty,
+					size,
+					sqft,
+					budget,
+					lead,
+					leadAgentName,
+					leadOnlineName,
+				}
+			);
+
+			res.status(200).json({
+				success: true,
+				data: updatedClient,
+			});
+		} else {
+			res.status(404).json({
+				success: false,
+				error: 'Could not find the client',
+			});
+		}
+	} catch (error) {
+		console.log('===========ERROR===========');
+		console.log(error);
+		res.status(500).json({
+			success: false,
+			error: 'Server Error',
+			message: error,
+		});
+	}
+};
