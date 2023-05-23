@@ -5,7 +5,9 @@ import { LoadingSkeletonArray } from './LoadingSkeleton';
 
 const ClientList = () => {
 	const clients = useSelector((state) => state.clients.clients);
-	const loading = useSelector((state) => state.clients.getClientsStatus);
+	const getClientsStatus = useSelector(
+		(state) => state.clients.getClientsStatus
+	);
 	const [expandedCard, setExpandedCard] = useState(null);
 
 	return (
@@ -13,9 +15,9 @@ const ClientList = () => {
 			<div className='container max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mt-4 mx-auto'>
 				{
 					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
-						{loading === 'LOADING' ? (
+						{getClientsStatus === 'LOADING' ? (
 							<LoadingSkeletonArray />
-						) : loading === 'SUCCESS' ? (
+						) : getClientsStatus === 'SUCCESS' ? (
 							clients.map((client) => (
 								<Client
 									key={client._id}
