@@ -19,7 +19,8 @@ const ClientList = () => {
 					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
 						{getClientsStatus === 'LOADING' ? (
 							<LoadingSkeletonArray />
-						) : getClientsStatus === 'SUCCESS' ? (
+						) : getClientsStatus === 'SUCCESS' ||
+						  clients.length > 0 ? (
 							clients.map((client) => (
 								<Client
 									key={client._id}
