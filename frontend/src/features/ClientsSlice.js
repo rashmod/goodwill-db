@@ -62,7 +62,16 @@ export const deleteClientFromDB = createAsyncThunk(
 const ClientsSlice = createSlice({
 	name: 'clients',
 	initialState,
-	reducers: {},
+	reducers: {
+		resetStatus(state) {
+			state.getClientsStatus = '';
+			state.getClientsError = '';
+			state.addClientsStatus = '';
+			state.addClientsError = '';
+			state.deleteClientsStatus = '';
+			state.deleteClientsError = '';
+		},
+	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchAllClients.pending, (state, action) => {
 			state.getClientsStatus = 'LOADING';
@@ -146,4 +155,5 @@ const ClientsSlice = createSlice({
 	},
 });
 
+export const { resetStatus } = ClientsSlice.actions;
 export default ClientsSlice.reducer;
