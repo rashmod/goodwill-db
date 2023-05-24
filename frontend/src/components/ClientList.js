@@ -4,6 +4,8 @@ import Client from './Client';
 import { LoadingSkeletonArray } from './LoadingSkeleton';
 
 const ClientList = () => {
+	// todo change loading behavior
+
 	const clients = useSelector((state) => state.clients.clients);
 	const getClientsStatus = useSelector(
 		(state) => state.clients.getClientsStatus
