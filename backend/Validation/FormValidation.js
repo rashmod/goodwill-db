@@ -1,4 +1,5 @@
 const { body } = require('express-validator');
+const CONSTANT_LITERALS = require('../Constants/Constants');
 
 const FormValidation = [
 	body('name')
@@ -23,32 +24,26 @@ const FormValidation = [
 	body('propertyType')
 		.trim()
 		.escape()
-		.isIn([
-			'RESIDENTIAL',
-			'COMMERCIAL',
-			'INDUSTRIAL',
-			'OPEN-PLOT',
-			'AGRICULTURAL',
-		])
+		.isIn(Object.values(CONSTANT_LITERALS.PROPERTY_TYPE))
 		.withMessage('Invalid Property Type'),
 	body('clientType')
 		.trim()
 		.escape()
-		.isIn(['SALE', 'RENT'])
+		.isIn(Object.values(CONSTANT_LITERALS.CLIENT_TYPE))
 		.withMessage('Invalid Client Type'),
 	body('saleParty')
 		.trim()
 		.escape()
-		.if(body('clientType').equals('SALE'))
-		.isIn(['BUYER', 'SELLER'])
+		.if(body('clientType').equals(CONSTANT_LITERALS.CLIENT_TYPE.SALE))
+		.isIn(Object.values(CONSTANT_LITERALS.SALE_PARTY))
 		.withMessage('Invalid Sale Party'),
 	// body('loan').isIn([true, false]).withMessage('Invalid loan value'),
 	body('loan'),
 	body('rentParty')
 		.trim()
 		.escape()
-		.if(body('clientType').equals('RENT'))
-		.isIn(['HOMEOWNER', 'RENTER'])
+		.if(body('clientType').equals(CONSTANT_LITERALS.CLIENT_TYPE.RENT))
+		.isIn(Object.values(CONSTANT_LITERALS.RENT_PARTY))
 		.withMessage('Invalid Rent Party'),
 	body('size')
 		.trim()
@@ -76,12 +71,12 @@ const FormValidation = [
 	body('lead')
 		.trim()
 		.escape()
-		.isIn(['WALK-IN', 'ONLINE', 'REFERENCE'])
+		.isIn(Object.values(CONSTANT_LITERALS.LEAD))
 		.withMessage('Invalid Lead Type'),
 	body('leadAgentName')
 		.trim()
 		.escape()
-		.if(body('lead').equals('REFERENCE'))
+		.if(body('lead').equals(CONSTANT_LITERALS.LEAD.REFERENCE))
 		.notEmpty()
 		.withMessage('Agent Name is required')
 		.isLength({ min: 3 })
@@ -89,8 +84,8 @@ const FormValidation = [
 	body('leadOnlineName')
 		.trim()
 		.escape()
-		.if(body('lead').equals('ONLINE'))
-		.isIn(['UNKNOWN', 'JUST-DIAL', 'SQUARE-YARDS'])
+		.if(body('lead').equals(CONSTANT_LITERALS.LEAD.ONLINE))
+		.isIn(Object.values(CONSTANT_LITERALS.LEAD_ONLINE_NAME))
 		.withMessage('Invalid Online Lead'),
 ];
 
