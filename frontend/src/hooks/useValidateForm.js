@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CONSTANT_LITERALS from '../Constants/Constants';
 
 const useForm = () => {
 	const [formState, setFormState] = useState(initialState);
@@ -182,12 +183,9 @@ const validateFunc = (stateObj, setStateObj) => {
 				break;
 
 			case 'propertyType':
-				isValid =
-					value === 'RESIDENTIAL' ||
-					value === 'COMMERCIAL' ||
-					value === 'INDUSTRIAL' ||
-					value === 'OPEN-PLOT' ||
-					value === 'AGRICULTURAL';
+				isValid = Object.values(
+					CONSTANT_LITERALS.PROPERTY_TYPE
+				).includes(value);
 
 				setStateObj((prevState) => ({
 					...prevState,
@@ -196,9 +194,11 @@ const validateFunc = (stateObj, setStateObj) => {
 				break;
 
 			case 'clientType':
-				isValid = value === 'RENT' || value === 'SALE';
+				isValid = Object.values(CONSTANT_LITERALS.CLIENT_TYPE).includes(
+					value
+				);
 
-				if (value === 'RENT') {
+				if (value === CONSTANT_LITERALS.CLIENT_TYPE.RENT) {
 					setStateObj((prevState) => ({
 						...prevState,
 						[name]: { ...prevState[name], valueIsValid: isValid },
@@ -215,7 +215,7 @@ const validateFunc = (stateObj, setStateObj) => {
 							hasError: false,
 						},
 					}));
-				} else if (value === 'SALE') {
+				} else if (value === CONSTANT_LITERALS.CLIENT_TYPE.SALE) {
 					setStateObj((prevState) => ({
 						...prevState,
 						[name]: { ...prevState[name], valueIsValid: isValid },
@@ -231,7 +231,9 @@ const validateFunc = (stateObj, setStateObj) => {
 
 			case 'rentParty':
 				// ? should i also check if clientType is Rent ?
-				isValid = value === 'RENTER' || value === 'HOMEOWNER';
+				isValid = Object.values(CONSTANT_LITERALS.RENT_PARTY).includes(
+					value
+				);
 
 				setStateObj((prevState) => ({
 					...prevState,
@@ -241,14 +243,16 @@ const validateFunc = (stateObj, setStateObj) => {
 
 			case 'saleParty':
 				// ? should i also check if clientType is sale ?
-				isValid = value === 'BUYER' || value === 'SELLER';
+				isValid = Object.values(CONSTANT_LITERALS.SALE_PARTY).includes(
+					value
+				);
 
-				if (value === 'BUYER') {
+				if (value === CONSTANT_LITERALS.SALE_PARTY.BUYER) {
 					setStateObj((prevState) => ({
 						...prevState,
 						[name]: { ...prevState[name], valueIsValid: isValid },
 					}));
-				} else if (value === 'SELLER') {
+				} else if (value === CONSTANT_LITERALS.SALE_PARTY.SELLER) {
 					setStateObj((prevState) => ({
 						...prevState,
 						[name]: { ...prevState[name], valueIsValid: isValid },
@@ -283,12 +287,9 @@ const validateFunc = (stateObj, setStateObj) => {
 				break;
 
 			case 'lead':
-				isValid =
-					value === 'WALK-IN' ||
-					value === 'ONLINE' ||
-					value === 'REFERENCE';
+				isValid = Object.values(CONSTANT_LITERALS.LEAD).includes(value);
 
-				if (value === 'ONLINE') {
+				if (value === CONSTANT_LITERALS.LEAD.ONLINE) {
 					setStateObj((prevState) => ({
 						...prevState,
 						[name]: {
@@ -302,7 +303,7 @@ const validateFunc = (stateObj, setStateObj) => {
 							hasError: false,
 						},
 					}));
-				} else if (value === 'REFERENCE') {
+				} else if (value === CONSTANT_LITERALS.LEAD.REFERENCE) {
 					setStateObj((prevState) => ({
 						...prevState,
 						[name]: {
@@ -351,10 +352,9 @@ const validateFunc = (stateObj, setStateObj) => {
 				break;
 
 			case 'leadOnlineName':
-				isValid =
-					value === 'UNKNOWN' ||
-					value === 'JUST-DIAL' ||
-					value === 'SQUARE-YARDS';
+				isValid = Object.values(
+					CONSTANT_LITERALS.LEAD_ONLINE_NAME
+				).includes(value);
 
 				setStateObj((prevState) => ({
 					...prevState,

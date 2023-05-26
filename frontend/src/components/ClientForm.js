@@ -3,6 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addClientToDB, resetStatus } from '../features/ClientsSlice';
 import useForm from '../hooks/useValidateForm';
 import ErrorMessage from './ErrorMessage';
+import CONSTANT_LITERALS from '../Constants/Constants';
+
+const capitalizeFirstLetter = (str) => {
+	const arr = str.split('-');
+
+	for (let i = 0; i < arr.length; i++) {
+		arr[i] = arr[i].charAt(0) + arr[i].slice(1).toLowerCase();
+	}
+
+	return arr.join(' ');
+};
 
 const ClientForm = ({ updateClient }) => {
 	// todo make file for data constants
@@ -27,14 +38,17 @@ const ClientForm = ({ updateClient }) => {
 
 	// reset form fields only on success
 	useEffect(() => {
-		if (addClientsStatus === 'SUCCESS') {
+		if (addClientsStatus === CONSTANT_LITERALS.STATUS.SUCCESS) {
 			resetForm();
 		}
 	}, [resetForm, addClientsStatus]);
 
 	// reset add to db status on success or failure
 	useEffect(() => {
-		if (addClientsStatus === 'SUCCESS' || addClientsStatus === 'FAILURE') {
+		if (
+			addClientsStatus === CONSTANT_LITERALS.STATUS.SUCCESS ||
+			addClientsStatus === CONSTANT_LITERALS.STATUS.FAILURE
+		) {
 			setTimeout(() => {
 				dispatch(resetStatus());
 			}, 2000);
@@ -249,11 +263,13 @@ const ClientForm = ({ updateClient }) => {
 								: ''
 						}`}>
 						<option value=''>Select property type</option>
-						<option value='RESIDENTIAL'>Residential</option>
-						<option value='COMMERCIAL'>Commercial</option>
-						<option value='INDUSTRIAL'>Industrial</option>
-						<option value='OPEN-PLOT'>Open Plot</option>
-						<option value='AGRICULTURAL'>Agricultural</option>
+						{Object.values(CONSTANT_LITERALS.PROPERTY_TYPE).map(
+							(item) => (
+								<option value={item} key={item}>
+									{capitalizeFirstLetter(item)}
+								</option>
+							)
+						)}
 					</select>
 					{formState.propertyType.hasError && (
 						<ErrorMessage msg='Property Type is Required' />
@@ -277,8 +293,11 @@ const ClientForm = ({ updateClient }) => {
 								valueChangeHandler(e);
 							}}
 							onBlur={inputBlurHandler}
-							value='RENT'
-							checked={formState.clientType.value === 'RENT'}
+							value={CONSTANT_LITERALS.CLIENT_TYPE.RENT}
+							checked={
+								formState.clientType.value ===
+								CONSTANT_LITERALS.CLIENT_TYPE.RENT
+							}
 							className='peer absolute opacity-0'
 						/>
 						<label
@@ -300,8 +319,11 @@ const ClientForm = ({ updateClient }) => {
 								valueChangeHandler(e);
 							}}
 							onBlur={inputBlurHandler}
-							value='SALE'
-							checked={formState.clientType.value === 'SALE'}
+							value={CONSTANT_LITERALS.CLIENT_TYPE.SALE}
+							checked={
+								formState.clientType.value ===
+								CONSTANT_LITERALS.CLIENT_TYPE.SALE
+							}
 							className='peer absolute opacity-0'
 						/>
 						<label
@@ -319,7 +341,8 @@ const ClientForm = ({ updateClient }) => {
 					)}
 				</ul>
 
-				{formState.clientType.value === 'RENT' && (
+				{formState.clientType.value ===
+					CONSTANT_LITERALS.CLIENT_TYPE.RENT && (
 					<ul className='grid w-full gap-x-6 grid-cols-2 mb-3 sm:mb-6'>
 						<li>
 							<input
@@ -330,8 +353,11 @@ const ClientForm = ({ updateClient }) => {
 									valueChangeHandler(e);
 								}}
 								onBlur={inputBlurHandler}
-								value='RENTER'
-								checked={formState.rentParty.value === 'RENTER'}
+								value={CONSTANT_LITERALS.RENT_PARTY.RENTER}
+								checked={
+									formState.rentParty.value ===
+									CONSTANT_LITERALS.RENT_PARTY.RENTER
+								}
 								className='peer absolute opacity-0'
 							/>
 							<label
@@ -353,9 +379,10 @@ const ClientForm = ({ updateClient }) => {
 									valueChangeHandler(e);
 								}}
 								onBlur={inputBlurHandler}
-								value='HOMEOWNER'
+								value={CONSTANT_LITERALS.RENT_PARTY.HOMEOWNER}
 								checked={
-									formState.rentParty.value === 'HOMEOWNER'
+									formState.rentParty.value ===
+									CONSTANT_LITERALS.RENT_PARTY.HOMEOWNER
 								}
 								className='peer absolute opacity-0'
 							/>
@@ -375,7 +402,8 @@ const ClientForm = ({ updateClient }) => {
 					</ul>
 				)}
 
-				{formState.clientType.value === 'SALE' && (
+				{formState.clientType.value ===
+					CONSTANT_LITERALS.CLIENT_TYPE.SALE && (
 					<ul className='grid w-full gap-x-6 grid-cols-2 mb-3 sm:mb-6'>
 						<li>
 							<input
@@ -386,8 +414,11 @@ const ClientForm = ({ updateClient }) => {
 									valueChangeHandler(e);
 								}}
 								onBlur={inputBlurHandler}
-								value='BUYER'
-								checked={formState.saleParty.value === 'BUYER'}
+								value={CONSTANT_LITERALS.SALE_PARTY.BUYER}
+								checked={
+									formState.saleParty.value ===
+									CONSTANT_LITERALS.SALE_PARTY.BUYER
+								}
 								className='peer absolute opacity-0'
 							/>
 							<label
@@ -409,8 +440,11 @@ const ClientForm = ({ updateClient }) => {
 									valueChangeHandler(e);
 								}}
 								onBlur={inputBlurHandler}
-								value='SELLER'
-								checked={formState.saleParty.value === 'SELLER'}
+								value={CONSTANT_LITERALS.SALE_PARTY.SELLER}
+								checked={
+									formState.saleParty.value ===
+									CONSTANT_LITERALS.SALE_PARTY.SELLER
+								}
 								className='peer absolute opacity-0'
 							/>
 							<label
@@ -478,7 +512,8 @@ const ClientForm = ({ updateClient }) => {
 				<ul className='grid w-full gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 mb-4 sm:mb-6'>
 					<li
 						className={
-							formState.saleParty.value !== 'BUYER'
+							formState.saleParty.value !==
+							CONSTANT_LITERALS.SALE_PARTY.BUYER
 								? 'col-span-2'
 								: ''
 						}>
@@ -505,7 +540,8 @@ const ClientForm = ({ updateClient }) => {
 							<ErrorMessage msg='Budget is Required' />
 						)}
 					</li>
-					{formState.saleParty.value === 'BUYER' && (
+					{formState.saleParty.value ===
+						CONSTANT_LITERALS.SALE_PARTY.BUYER && (
 						<li
 							className={`flex ${
 								formState.budget.hasError
@@ -546,7 +582,8 @@ const ClientForm = ({ updateClient }) => {
 					<li
 						className={
 							formState.lead.value === '' ||
-							formState.lead.value === 'WALK-IN'
+							formState.lead.value ===
+								CONSTANT_LITERALS.LEAD.WALK_IN
 								? 'col-span-2'
 								: ''
 						}>
@@ -564,16 +601,21 @@ const ClientForm = ({ updateClient }) => {
 									: ''
 							}`}>
 							<option value=''>Select Lead option</option>
-							<option value='WALK-IN'>Walk In</option>
-							<option value='ONLINE'>Online</option>
-							<option value='REFERENCE'>Reference</option>
+							{Object.values(CONSTANT_LITERALS.LEAD).map(
+								(item) => (
+									<option value={item} key={item}>
+										{capitalizeFirstLetter(item)}
+									</option>
+								)
+							)}
 						</select>
 						{formState.lead.hasError && (
 							<ErrorMessage msg='Lead is Required' />
 						)}
 					</li>
 					<li>
-						{formState.lead.value === 'REFERENCE' && (
+						{formState.lead.value ===
+							CONSTANT_LITERALS.LEAD.REFERENCE && (
 							<>
 								<input
 									type='text'
@@ -595,7 +637,8 @@ const ClientForm = ({ updateClient }) => {
 								)}
 							</>
 						)}
-						{formState.lead.value === 'ONLINE' && (
+						{formState.lead.value ===
+							CONSTANT_LITERALS.LEAD.ONLINE && (
 							<>
 								<select
 									id='lead-online'
@@ -613,11 +656,13 @@ const ClientForm = ({ updateClient }) => {
 									<option value=''>
 										Select online option
 									</option>
-									<option value='UNKNOWN'>Unknown</option>
-									<option value='JUST-DIAL'>Just dial</option>
-									<option value='SQUARE-YARDS'>
-										square yards
-									</option>
+									{Object.values(
+										CONSTANT_LITERALS.LEAD_ONLINE_NAME
+									).map((item) => (
+										<option value={item} key={item}>
+											{capitalizeFirstLetter(item)}
+										</option>
+									))}
 								</select>
 								{formState.leadOnlineName.hasError && (
 									<ErrorMessage msg='Online Name is Required' />
@@ -631,7 +676,7 @@ const ClientForm = ({ updateClient }) => {
 					<button className='w-full bg-transparent border py-2 mt-6 transition ease-in-out hover:border-none hover:bg-accent'>
 						Submit
 					</button>
-				) : addClientsStatus === 'LOADING' ? (
+				) : addClientsStatus === CONSTANT_LITERALS.STATUS.LOADING ? (
 					<button
 						disabled
 						type='button'
@@ -656,13 +701,13 @@ const ClientForm = ({ updateClient }) => {
 							<span>Loading...</span>
 						</div>
 					</button>
-				) : addClientsStatus === 'SUCCESS' ? (
+				) : addClientsStatus === CONSTANT_LITERALS.STATUS.SUCCESS ? (
 					<button
 						disabled
 						className='w-full py-2 mt-12 bg-accent mr-2 flex justify-center'>
 						Successfully Added!
 					</button>
-				) : addClientsStatus === 'FAILURE' ? (
+				) : addClientsStatus === CONSTANT_LITERALS.STATUS.FAILURE ? (
 					<button
 						disabled
 						className='w-full py-2 mt-12 bg-red-400 mr-2 flex justify-center'>

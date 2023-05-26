@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import CONSTANT_LITERALS from '../Constants/Constants';
 
 const initialState = {
 	clients: [],
@@ -71,7 +72,7 @@ const ClientsSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder.addCase(fetchAllClients.pending, (state, action) => {
-			state.getClientsStatus = 'LOADING';
+			state.getClientsStatus = CONSTANT_LITERALS.STATUS.LOADING;
 			state.getClientsError = '';
 			state.addClientsStatus = '';
 			state.addClientsError = '';
@@ -80,7 +81,7 @@ const ClientsSlice = createSlice({
 		});
 		builder.addCase(fetchAllClients.fulfilled, (state, action) => {
 			state.clients = action.payload;
-			state.getClientsStatus = 'SUCCESS';
+			state.getClientsStatus = CONSTANT_LITERALS.STATUS.SUCCESS;
 			state.getClientsError = '';
 			state.addClientsStatus = '';
 			state.addClientsError = '';
@@ -88,7 +89,7 @@ const ClientsSlice = createSlice({
 			state.deleteClientsError = '';
 		});
 		builder.addCase(fetchAllClients.rejected, (state, action) => {
-			state.getClientsStatus = 'FAILURE';
+			state.getClientsStatus = CONSTANT_LITERALS.STATUS.FAILURE;
 			state.getClientsError = action.payload;
 			state.addClientsStatus = '';
 			state.addClientsError = '';
@@ -99,7 +100,7 @@ const ClientsSlice = createSlice({
 		builder.addCase(addClientToDB.pending, (state, action) => {
 			state.getClientsStatus = '';
 			state.getClientsError = '';
-			state.addClientsStatus = 'LOADING';
+			state.addClientsStatus = CONSTANT_LITERALS.STATUS.LOADING;
 			state.addClientsError = '';
 			state.deleteClientsStatus = '';
 			state.deleteClientsError = '';
@@ -108,7 +109,7 @@ const ClientsSlice = createSlice({
 			state.clients = [action.payload, ...state.clients];
 			state.getClientsStatus = '';
 			state.getClientsError = '';
-			state.addClientsStatus = 'SUCCESS';
+			state.addClientsStatus = CONSTANT_LITERALS.STATUS.SUCCESS;
 			state.addClientsError = '';
 			state.deleteClientsStatus = '';
 			state.deleteClientsError = '';
@@ -116,7 +117,7 @@ const ClientsSlice = createSlice({
 		builder.addCase(addClientToDB.rejected, (state, action) => {
 			state.getClientsStatus = '';
 			state.getClientsError = '';
-			state.addClientsStatus = 'FAILURE';
+			state.addClientsStatus = CONSTANT_LITERALS.STATUS.FAILURE;
 			state.addClientsError = action.payload;
 			state.deleteClientsStatus = '';
 			state.deleteClientsError = '';
@@ -127,7 +128,7 @@ const ClientsSlice = createSlice({
 			state.getClientsError = '';
 			state.addClientsStatus = '';
 			state.addClientsError = '';
-			state.deleteClientsStatus = 'LOADING';
+			state.deleteClientsStatus = CONSTANT_LITERALS.STATUS.LOADING;
 			state.deleteClientsError = '';
 		});
 		builder.addCase(deleteClientFromDB.fulfilled, (state, action) => {
@@ -138,7 +139,7 @@ const ClientsSlice = createSlice({
 			state.getClientsError = '';
 			state.addClientsStatus = '';
 			state.addClientsError = '';
-			state.deleteClientsStatus = 'SUCCESS';
+			state.deleteClientsStatus = CONSTANT_LITERALS.STATUS.SUCCESS;
 			state.deleteClientsError = '';
 		});
 		builder.addCase(deleteClientFromDB.rejected, (state, action) => {
@@ -146,7 +147,7 @@ const ClientsSlice = createSlice({
 			state.getClientsError = '';
 			state.addClientsStatus = '';
 			state.addClientsError = '';
-			state.deleteClientsStatus = 'FAILURE';
+			state.deleteClientsStatus = CONSTANT_LITERALS.STATUS.FAILURE;
 			state.deleteClientsError = action.payload;
 		});
 	},
