@@ -16,7 +16,6 @@ const capitalizeFirstLetter = (str) => {
 };
 
 const ClientForm = ({ updateClient }) => {
-	// todo make file for data constants
 	// todo show commas in budget input
 	// todo unit in area input
 	// todo prevent spaces in mobile field
