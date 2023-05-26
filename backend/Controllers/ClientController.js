@@ -152,6 +152,9 @@ module.exports.UpdateClientController = async (req, res) => {
 					lead,
 					leadAgentName,
 					leadOnlineName,
+				},
+				{
+					runValidators: true,
 				}
 			);
 
