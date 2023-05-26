@@ -5,15 +5,11 @@ import useForm from '../hooks/useValidateForm';
 import ErrorMessage from './ErrorMessage';
 
 const ClientForm = ({ updateClient }) => {
-	// * when saving to backend check property key
 	// todo make file for data constants
 	// todo show commas in budget input
 	// todo unit in area input
 	// todo prevent spaces in mobile field
-	// todo add loader
-	// todo don't change state if data not added to backend
-	// todo change button behavior after submitting
-	// todo display error msg
+	// todo display error msg when submit fails
 
 	const [formIsValid, setFormIsValid] = useState(false);
 	const addClientsStatus = useSelector(
