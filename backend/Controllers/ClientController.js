@@ -6,6 +6,8 @@ const { validationResult } = require('express-validator');
 // todo error handling
 // todo add pagination
 // todo authentication and authorization
+// todo format user input appropriately
+// ? should error message have valid field inputs?
 
 // @desc Get all clients
 // @route GET /api/clients
@@ -34,7 +36,6 @@ module.exports.getAllClientsController = async (req, res) => {
 // @route POST /api/clients
 // @access Public
 
-// todo format user input appropriately
 module.exports.AddClientController = async (req, res) => {
 	try {
 		const {
@@ -54,32 +55,43 @@ module.exports.AddClientController = async (req, res) => {
 			leadOnlineName,
 		} = req.body;
 
+		const loanValue =
+			clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
+
 		const errors = validationResult(req);
 		console.log(errors.array());
 
-		const client = new ClientModel({
-			name,
-			mobile,
-			address,
-			propertyType,
-			clientType,
-			saleParty,
-			loan,
-			rentParty,
-			size,
-			sqft,
-			budget,
-			lead,
-			leadAgentName,
-			leadOnlineName,
-		});
+		if (errors.array().length === 0) {
+			const client = new ClientModel({
+				name,
+				mobile,
+				address,
+				propertyType,
+				clientType,
+				saleParty,
+				loan: loanValue,
+				rentParty,
+				size,
+				sqft,
+				budget,
+				lead,
+				leadAgentName,
+				leadOnlineName,
+			});
 
-		await client.save();
+			await client.save();
 
-		res.status(200).json({
-			success: true,
-			data: client,
-		});
+			res.status(200).json({
+				success: true,
+				data: client,
+			});
+		} else {
+			res.status(400).json({
+				success: false,
+				error: 'Validation Error',
+				message: errors.array(),
+			});
+		}
 	} catch (error) {
 		console.log('===========ERROR===========');
 		console.log(error);
@@ -147,33 +159,47 @@ module.exports.UpdateClientController = async (req, res) => {
 			leadOnlineName,
 		} = req.body;
 
+		const loanValue =
+			clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
+
+		const errors = validationResult(req);
+		console.log(errors.array());
+
 		const client = await ClientModel.findById(clientId);
 
 		if (client) {
-			const updatedClient = await ClientModel.findByIdAndUpdate(
-				clientId,
-				{
-					name,
-					mobile,
-					address,
-					propertyType,
-					clientType,
-					saleParty,
-					loan,
-					rentParty,
-					size,
-					sqft,
-					budget,
-					lead,
-					leadAgentName,
-					leadOnlineName,
-				}
-			);
+			if (errors.array().length === 0) {
+				const updatedClient = await ClientModel.findByIdAndUpdate(
+					clientId,
+					{
+						name,
+						mobile,
+						address,
+						propertyType,
+						clientType,
+						saleParty,
+						loan: loanValue,
+						rentParty,
+						size,
+						sqft,
+						budget,
+						lead,
+						leadAgentName,
+						leadOnlineName,
+					}
+				);
 
-			res.status(200).json({
-				success: true,
-				data: updatedClient,
-			});
+				res.status(200).json({
+					success: true,
+					data: updatedClient,
+				});
+			} else {
+				res.status(400).json({
+					success: false,
+					error: 'Validation Error',
+					message: errors.array(),
+				});
+			}
 		} else {
 			res.status(404).json({
 				success: false,
