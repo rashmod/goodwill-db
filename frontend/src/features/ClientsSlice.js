@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
+// todo reset only status not errors
+
 const initialState = {
 	clients: [],
 	getClientsStatus: '',

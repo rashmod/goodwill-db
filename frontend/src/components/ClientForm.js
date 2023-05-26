@@ -165,15 +165,6 @@ const ClientForm = ({ updateClient }) => {
 				})
 			);
 
-			// if (addClientsStatus === 'SUCCESS') {
-			// 	resetForm();
-			// }
-
-			// setTimeout(() => {
-			// 	console.log('hit');
-			// 	dispatch(resetStatus());
-			// }, 2000);
-
 			setFormIsValid(false);
 		}
 	};
