@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { addClientToDB, resetStatus } from '../features/ClientsSlice';
 import useForm from '../hooks/useValidateForm';
 import ErrorMessage from './ErrorMessage';
@@ -12,12 +14,15 @@ const ClientForm = ({ updateClient }) => {
 	// todo prevent spaces in mobile field
 	// todo display error msg when submit fails
 
+	const { pathname } = useLocation();
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+
 	const [formIsValid, setFormIsValid] = useState(false);
 	const addClientsStatus = useSelector(
 		(state) => state.clients.addClientsStatus
 	);
 
-	const dispatch = useDispatch();
 	const {
 		formState,
 		setFormState,
@@ -25,6 +30,17 @@ const ClientForm = ({ updateClient }) => {
 		inputBlurHandler,
 		resetForm,
 	} = useForm();
+
+	useEffect(() => {
+		if (
+			pathname === '/updateClient' &&
+			addClientsStatus === CONSTANT_LITERALS.STATUS.SUCCESS
+		) {
+			setTimeout(() => {
+				navigate('/', { replace: true });
+			}, 500);
+		}
+	}, [addClientsStatus, pathname, navigate]);
 
 	// reset form fields only on success
 	useEffect(() => {
@@ -695,7 +711,8 @@ const ClientForm = ({ updateClient }) => {
 					<button
 						disabled
 						className='w-full py-2 mt-12 bg-accent mr-2 flex justify-center'>
-						Successfully Added!
+						Successfully{' '}
+						{pathname === '/updateClient' ? 'Updated' : 'Added'}!
 					</button>
 				) : addClientsStatus === CONSTANT_LITERALS.STATUS.FAILURE ? (
 					<button
