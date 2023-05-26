@@ -1,3 +1,7 @@
+// this takes the controller func as argument
+// it returns a func for the routes method
+// the async controller func is caught
+
 const catchAsyncError = (fn) => {
 	return function (req, res) {
 		fn(req, res).catch((error) => {
