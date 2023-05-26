@@ -13,23 +13,13 @@ const { validationResult } = require('express-validator');
 // @route GET /api/clients
 // @access Public
 module.exports.getAllClientsController = async (req, res) => {
-	try {
-		const clients = await ClientModel.find().sort({ createdAt: -1 });
+	const clients = await ClientModel.find().sort({ createdAt: -1 });
 
-		res.status(200).json({
-			success: true,
-			count: clients.length,
-			data: clients,
-		});
-	} catch (error) {
-		console.log('===========ERROR===========');
-		console.log(error);
-		res.status(500).json({
-			success: false,
-			error: 'Server Error',
-			message: error,
-		});
-	}
+	res.status(200).json({
+		success: true,
+		count: clients.length,
+		data: clients,
+	});
 };
 
 // @desc Add client
@@ -37,15 +27,38 @@ module.exports.getAllClientsController = async (req, res) => {
 // @access Public
 
 module.exports.AddClientController = async (req, res) => {
-	try {
-		const {
+	const {
+		name,
+		mobile,
+		address,
+		propertyType,
+		clientType,
+		saleParty,
+		loan,
+		rentParty,
+		size,
+		sqft,
+		budget,
+		lead,
+		leadAgentName,
+		leadOnlineName,
+	} = req.body;
+
+	const loanValue =
+		clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
+
+	const errors = validationResult(req);
+	console.log(errors.array());
+
+	if (errors.array().length === 0) {
+		const client = new ClientModel({
 			name,
 			mobile,
 			address,
 			propertyType,
 			clientType,
 			saleParty,
-			loan,
+			loan: loanValue,
 			rentParty,
 			size,
 			sqft,
@@ -53,52 +66,19 @@ module.exports.AddClientController = async (req, res) => {
 			lead,
 			leadAgentName,
 			leadOnlineName,
-		} = req.body;
+		});
 
-		const loanValue =
-			clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
+		await client.save();
 
-		const errors = validationResult(req);
-		console.log(errors.array());
-
-		if (errors.array().length === 0) {
-			const client = new ClientModel({
-				name,
-				mobile,
-				address,
-				propertyType,
-				clientType,
-				saleParty,
-				loan: loanValue,
-				rentParty,
-				size,
-				sqft,
-				budget,
-				lead,
-				leadAgentName,
-				leadOnlineName,
-			});
-
-			await client.save();
-
-			res.status(200).json({
-				success: true,
-				data: client,
-			});
-		} else {
-			res.status(400).json({
-				success: false,
-				error: 'Validation Error',
-				message: errors.array(),
-			});
-		}
-	} catch (error) {
-		console.log('===========ERROR===========');
-		console.log(error);
-		res.status(500).json({
+		res.status(200).json({
+			success: true,
+			data: client,
+		});
+	} else {
+		res.status(400).json({
 			success: false,
-			error: 'Server Error',
-			message: error,
+			error: 'Validation Error',
+			message: errors.array(),
 		});
 	}
 };
@@ -107,31 +87,21 @@ module.exports.AddClientController = async (req, res) => {
 // @route DELETE /api/clients/:clientId
 // @access Public
 module.exports.DeleteClientController = async (req, res) => {
-	try {
-		const { clientId } = req.params;
+	const { clientId } = req.params;
 
-		const client = await ClientModel.findById(clientId);
+	const client = await ClientModel.findById(clientId);
 
-		if (client) {
-			await ClientModel.findByIdAndDelete(clientId);
+	if (client) {
+		await ClientModel.findByIdAndDelete(clientId);
 
-			res.status(200).json({
-				success: true,
-				data: client,
-			});
-		} else {
-			res.status(404).json({
-				success: false,
-				error: 'Could not find the client',
-			});
-		}
-	} catch (error) {
-		console.log('===========ERROR===========');
-		console.log(error);
-		res.status(500).json({
+		res.status(200).json({
+			success: true,
+			data: client,
+		});
+	} else {
+		res.status(404).json({
 			success: false,
-			error: 'Server Error',
-			message: error,
+			error: 'Could not find the client',
 		});
 	}
 };
@@ -140,79 +110,69 @@ module.exports.DeleteClientController = async (req, res) => {
 // @route PUT /api/clients/:clientId
 // @access Public
 module.exports.UpdateClientController = async (req, res) => {
-	try {
-		const { clientId } = req.params;
-		const {
-			name,
-			mobile,
-			address,
-			propertyType,
-			clientType,
-			saleParty,
-			loan,
-			rentParty,
-			size,
-			sqft,
-			budget,
-			lead,
-			leadAgentName,
-			leadOnlineName,
-		} = req.body;
+	const { clientId } = req.params;
+	const {
+		name,
+		mobile,
+		address,
+		propertyType,
+		clientType,
+		saleParty,
+		loan,
+		rentParty,
+		size,
+		sqft,
+		budget,
+		lead,
+		leadAgentName,
+		leadOnlineName,
+	} = req.body;
 
-		const loanValue =
-			clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
+	const loanValue =
+		clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
 
-		const errors = validationResult(req);
-		console.log(errors.array());
+	const errors = validationResult(req);
+	console.log(errors.array());
 
-		const client = await ClientModel.findById(clientId);
+	const client = await ClientModel.findById(clientId);
 
-		if (client) {
-			if (errors.array().length === 0) {
-				const updatedClient = await ClientModel.findByIdAndUpdate(
-					clientId,
-					{
-						name,
-						mobile,
-						address,
-						propertyType,
-						clientType,
-						saleParty,
-						loan: loanValue,
-						rentParty,
-						size,
-						sqft,
-						budget,
-						lead,
-						leadAgentName,
-						leadOnlineName,
-					}
-				);
+	if (client) {
+		if (errors.array().length === 0) {
+			const updatedClient = await ClientModel.findByIdAndUpdate(
+				clientId,
+				{
+					name,
+					mobile,
+					address,
+					propertyType,
+					clientType,
+					saleParty,
+					loan: loanValue,
+					rentParty,
+					size,
+					sqft,
+					budget,
+					lead,
+					leadAgentName,
+					leadOnlineName,
+				}
+			);
 
-				res.status(200).json({
-					success: true,
-					data: updatedClient,
-				});
-			} else {
-				res.status(400).json({
-					success: false,
-					error: 'Validation Error',
-					message: errors.array(),
-				});
-			}
+			res.status(200).json({
+				success: true,
+				data: updatedClient,
+			});
 		} else {
-			res.status(404).json({
+			res.status(400).json({
 				success: false,
-				error: 'Could not find the client',
+				error: 'Validation Error',
+				message: errors.array(),
 			});
 		}
-	} catch (error) {
-		console.log('===========ERROR===========');
-		console.log(error);
-		res.status(500).json({
+	} else {
+		res.status(404).json({
 			success: false,
-			error: 'Server Error',
-			message: error,
+			error: 'Could not find the client',
 		});
 	}
 };
