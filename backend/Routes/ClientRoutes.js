@@ -5,12 +5,13 @@ const {
 	DeleteClientController,
 	UpdateClientController,
 } = require('../Controllers/ClientController');
+const FormValidation = require('../Validation/FormValidation');
 
 const router = express.Router();
 
 router.get('/', getAllClientsController);
-router.post('/', AddClientController);
+router.post('/', FormValidation, AddClientController);
 router.delete('/:clientId', DeleteClientController);
-router.put('/:clientId', UpdateClientController);
+router.put('/:clientId', FormValidation, UpdateClientController);
 
 module.exports = router;

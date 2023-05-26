@@ -1,4 +1,11 @@
 const ClientModel = require('../Models/ClientModel');
+const { validationResult } = require('express-validator');
+
+// todo backend validation
+// todo filters and search
+// todo error handling
+// todo add pagination
+// todo authentication and authorization
 
 // @desc Get all clients
 // @route GET /api/clients
@@ -46,6 +53,9 @@ module.exports.AddClientController = async (req, res) => {
 			leadAgentName,
 			leadOnlineName,
 		} = req.body;
+
+		const errors = validationResult(req);
+		console.log(errors.array());
 
 		const client = new ClientModel({
 			name,
