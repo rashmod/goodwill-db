@@ -242,7 +242,7 @@ const ClientForm = ({ updateClient }) => {
 						name='mobile'
 						onChange={valueChangeHandler}
 						onBlur={inputBlurHandler}
-						value={formState.mobile.value}
+						value={formState.mobile.value.replace(/[^0-9.]/g, '')}
 						pattern='^[6-9]\d{9}$'
 						className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
 							formState.mobile.hasError ? 'border-red-400' : ''
