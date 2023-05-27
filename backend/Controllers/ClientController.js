@@ -155,6 +155,7 @@ module.exports.UpdateClientController = async (req, res) => {
 				},
 				{
 					runValidators: true,
+					new: true,
 				}
 			);
 
