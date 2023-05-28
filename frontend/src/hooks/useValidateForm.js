@@ -72,7 +72,7 @@ const useForm = () => {
 	const valueChangeHandler = (event) => {
 		const name = event.target.name;
 		const value = event.target.value;
-		let re;
+		let re, newValue;
 
 		switch (name) {
 			case 'clientName':
@@ -93,12 +93,13 @@ const useForm = () => {
 				}
 				break;
 			case 'mobile':
-				if (isNaN(+value)) {
+				newValue = value.replace(/[^0-9.]/g, '');
+				if (isNaN(+newValue)) {
 					return;
 				} else {
 					setFormState((prevState) => ({
 						...prevState,
-						[name]: { ...prevState[name], value },
+						[name]: { ...prevState[name], value: newValue },
 					}));
 				}
 				break;
@@ -110,9 +111,29 @@ const useForm = () => {
 				}));
 				break;
 
+			// case 'budget':
+			// 	const newValue = value.split(',').join('');
+			// 	if (!isValidCurrencyFormat(value)) {
+			// 		setFormState((prevState) => ({
+			// 			...prevState,
+			// 			[name]: { ...prevState[name], value: '' },
+			// 		}));
+			// 	} else {
+			// 		setFormState((prevState) => ({
+			// 			...prevState,
+			// 			[name]: {
+			// 				...prevState[name],
+			// 				value: Number(value.split(',').join('')),
+			// 			},
+			// 		}));
+			// 	}
+			// 	break;
+
 			case 'sqft':
 			case 'budget':
-				if (!Boolean(Number(value))) {
+				newValue = value.split(',').join('');
+
+				if (!Boolean(Number(newValue))) {
 					setFormState((prevState) => ({
 						...prevState,
 						[name]: { ...prevState[name], value: '' },
@@ -120,7 +141,7 @@ const useForm = () => {
 				} else {
 					setFormState((prevState) => ({
 						...prevState,
-						[name]: { ...prevState[name], value: Number(value) },
+						[name]: { ...prevState[name], value: Number(newValue) },
 					}));
 				}
 				break;
@@ -473,5 +494,12 @@ const isTrue = (str) => {
 	if (str === 'true') return true;
 	return false;
 };
+
+// check if the input is indian currency format
+function isValidCurrencyFormat(input) {
+	const regexTest = /(\d{1,2}(,\d{2})*(,\d{3}))|(\d{1,3})/g;
+	// const regexFormat = /\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g; // format string to indian currency format
+	return regexTest.test(input);
+}
 
 export default useForm;
