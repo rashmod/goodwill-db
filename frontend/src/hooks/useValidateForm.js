@@ -28,6 +28,7 @@ const useForm = () => {
 			value: leadOnlineNameValue,
 			isTouched: leadOnlineNameIsTouched,
 		},
+		dealStatus: { value: dealStatusValue, isTouched: dealStatusIsTouched },
 	} = formState;
 
 	useEffect(
@@ -51,6 +52,7 @@ const useForm = () => {
 			leadValue,
 			leadAgentNameValue,
 			leadOnlineNameValue,
+			dealStatusValue,
 
 			clientNameIsTouched,
 			mobileIsTouched,
@@ -66,6 +68,7 @@ const useForm = () => {
 			leadIsTouched,
 			leadAgentNameIsTouched,
 			leadOnlineNameIsTouched,
+			dealStatusIsTouched,
 		]
 	);
 
@@ -382,6 +385,17 @@ const validateFunc = (stateObj, setStateObj) => {
 				}));
 				break;
 
+			case 'dealStatus':
+				isValid = Object.values(CONSTANT_LITERALS.DEAL_STATUS).includes(
+					value
+				);
+
+				setStateObj((prevState) => ({
+					...prevState,
+					[name]: { ...prevState[name], valueIsValid: isValid },
+				}));
+				break;
+
 			default:
 				break;
 		}
@@ -482,6 +496,12 @@ const initialState = {
 	},
 	leadOnlineName: {
 		value: '',
+		isTouched: false,
+		valueIsValid: false,
+		hasError: false,
+	},
+	dealStatus: {
+		value: CONSTANT_LITERALS.DEAL_STATUS.ONGOING,
 		isTouched: false,
 		valueIsValid: false,
 		hasError: false,
