@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
 import AddClient from './components/AddClient';
 import ClientList from './components/ClientList';
-import Navbar from './components/Navbar';
+import Navbar from './UI/Navbar';
 import UpdateClient from './components/UpdateClient';
 import { fetchAllClients } from './features/ClientsSlice';
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Client from './Client';
-import { LoadingSkeletonArray } from './LoadingSkeleton';
+import { LoadingSkeletonArray } from '../UI/LoadingSkeleton';
 import CONSTANT_LITERALS from '../Constants/Constants';
 
 const ClientList = () => {
