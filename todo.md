@@ -1,20 +1,16 @@
 # FRONTEND
 
-## components/AddClient
-
--   show commas in budget input
--   unit in area input
--   prevent spaces in mobile field
-
 ## components/ClientForm
 
 -   unit in area input
 -   display error msg when submit fails
 -   budget field resets the caret position on editing the field
+-   edit dealStatus on update
 
 ## hooks/useValidateForm
 
 -   recheck logic if it needs change in validateFunc (leadAgentName)
+-   add dealStatus validation to valueChangeHandler and validateFunc
 
 # BACKEND
 
@@ -26,6 +22,6 @@
 -   add author model
 -   join author and client model
 
-## Models/ClientModel
+## Validation/FormValidation
 
--   add status of deal property
+-   add dealStatus validation

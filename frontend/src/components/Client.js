@@ -74,7 +74,10 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 							</p>
 						)}
 
-						<p className='mb-1 text-sm'>Deal Status: Ongoing</p>
+						<p className='mb-1 text-sm'>
+							Deal Status:{' '}
+							{capitalizeFirstLetter(client.dealStatus)}
+						</p>
 					</div>
 					<div className='flex justify-between mt-3 transition ease-in-out duration-75'>
 						<button
