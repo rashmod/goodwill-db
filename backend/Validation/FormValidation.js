@@ -87,6 +87,11 @@ const FormValidation = [
 		.if(body('lead').equals(CONSTANT_LITERALS.LEAD.ONLINE))
 		.isIn(Object.values(CONSTANT_LITERALS.LEAD_ONLINE_NAME))
 		.withMessage('Invalid Online Lead'),
+	body('dealStatus')
+		.trim()
+		.escape()
+		.isIn(Object.values(CONSTANT_LITERALS.DEAL_STATUS))
+		.withMessage('Invalid Deal Status'),
 ];
 
 module.exports = FormValidation;
