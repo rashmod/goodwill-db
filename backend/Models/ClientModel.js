@@ -40,6 +40,11 @@ const ClientSchema = new Schema(
 		},
 		leadAgentName: { type: String },
 		leadOnlineName: { type: String },
+		dealStatus: {
+			type: String,
+			required: true,
+			enum: ['ONGOING', 'CLOSED', 'DROPPED'],
+		},
 	},
 	{ discriminatorKey: 'clientType', timestamps: true }
 );
