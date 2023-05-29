@@ -496,10 +496,10 @@ const isTrue = (str) => {
 };
 
 // check if the input is indian currency format
-function isValidCurrencyFormat(input) {
-	const regexTest = /(\d{1,2}(,\d{2})*(,\d{3}))|(\d{1,3})/g;
-	// const regexFormat = /\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g; // format string to indian currency format
-	return regexTest.test(input);
-}
+// function isValidCurrencyFormat(input) {
+// 	const regexTest = /(\d{1,2}(,\d{2})*(,\d{3}))|(\d{1,3})/g;
+// 	// const regexFormat = /\B(?=(?:(\d\d)+(\d)(?!\d))+(?!\d))/g; // format string to indian currency format
+// 	return regexTest.test(input);
+// }
 
 export default useForm;

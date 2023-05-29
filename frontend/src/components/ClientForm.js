@@ -17,9 +17,7 @@ import SubmitButton from '../UI/SubmitButton';
 import FailureButton from '../UI/FailureButton';
 
 const ClientForm = ({ updateClient }) => {
-	// todo will have to change validation logic for budget input for comma
 	// todo unit in area input
-	// todo prevent spaces in mobile field
 	// todo display error msg when submit fails
 	// todo budget field resets the caret position on editing the field
 
@@ -523,7 +521,7 @@ const ClientForm = ({ updateClient }) => {
 								valueChangeHandler(e);
 							}}
 							onBlur={inputBlurHandler}
-							value={formState.sqft.value}
+							value={Number(formState.sqft.value).toString()}
 							min='0'
 							className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
 								formState.sqft.hasError ? 'border-red-400' : ''
