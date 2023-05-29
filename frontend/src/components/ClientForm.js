@@ -8,7 +8,7 @@ import {
 	resetStatus,
 } from '../features/ClientsSlice';
 import useForm from '../hooks/useValidateForm';
-import ErrorMessage from './ErrorMessage';
+import ErrorMessage from '../UI/ErrorMessage';
 import CONSTANT_LITERALS from '../Constants/Constants';
 import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
 import SuccessButton from '../UI/SuccessButton';
