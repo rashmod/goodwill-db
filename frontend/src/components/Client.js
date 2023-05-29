@@ -1,13 +1,11 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { deleteClientFromDB } from '../features/ClientsSlice';
 import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
 import CONSTANT_LITERALS from '../Constants/Constants';
+import UpdateButton from '../UI/UpdateButton';
+import CollapseButton from '../UI/CollapseButton';
+import DeleteButton from '../UI/DeleteButton';
 
 const Client = ({ client, setExpandedCard, expandedCard }) => {
-	const dispatch = useDispatch();
-
 	const isExpanded = expandedCard === client._id;
 	// ${isExpanded ? 'flex-col' : ''}
 	return (
@@ -80,36 +78,9 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 						</p>
 					</div>
 					<div className='flex justify-between mt-3 transition ease-in-out duration-75'>
-						<button
-							className='bg-red-500/75 py-1 px-2 rounded-md hover:bg-red-400'
-							onClick={() => {
-								dispatch(deleteClientFromDB(client._id));
-								console.log('delete clicked');
-							}}>
-							Delete
-						</button>
-						<button
-							className='h-10 w-10'
-							onClick={() => {
-								setExpandedCard(null);
-							}}>
-							<svg
-								id='Icons'
-								version='1.1'
-								viewBox='0 0 32 32'
-								className='fill-[#BFC0C0]/50 hover:fill-[#BFC0C0]'
-								xmlns='http://www.w3.org/2000/svg'>
-								<path d='M16,2C8.3,2,2,8.3,2,16s6.3,14,14,14s14-6.3,14-14S23.7,2,16,2z M21.7,18.7C21.5,18.9,21.3,19,21,19s-0.5-0.1-0.7-0.3  L16,14.4l-4.3,4.3c-0.4,0.4-1,0.4-1.4,0s-0.4-1,0-1.4l5-5c0.4-0.4,1-0.4,1.4,0l5,5C22.1,17.7,22.1,18.3,21.7,18.7z' />
-							</svg>
-						</button>
-						<Link
-							className='bg-accent/75 py-1 px-2 rounded-md hover:bg-accent'
-							to='/updateClient'
-							state={{ client }}>
-							<span className='inline-block align-middle'>
-								Update
-							</span>
-						</Link>
+						<DeleteButton clientId={client._id} />
+						<CollapseButton setExpandedCard={setExpandedCard} />
+						<UpdateButton client={client} />
 					</div>
 				</div>
 			)}
