@@ -17,10 +17,6 @@ import SubmitButton from '../UI/SubmitButton';
 import FailureButton from '../UI/FailureButton';
 
 const ClientForm = ({ updateClient }) => {
-	// todo unit in area input
-	// todo display error msg when submit fails
-	// todo budget field resets the caret position on editing the field
-
 	const { pathname, state: locationState } = useLocation();
 	const navigate = useNavigate();
 	const dispatch = useDispatch();

@@ -1,9 +1,6 @@
 const ClientModel = require('../Models/ClientModel');
 const { validationResult } = require('express-validator');
 
-// todo filters and search
-// todo add pagination
-// todo authentication and authorization
 // ? should error message have valid field inputs?
 
 // @desc Get all clients

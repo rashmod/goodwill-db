@@ -363,7 +363,6 @@ const validateFunc = (stateObj, setStateObj) => {
 				break;
 
 			case 'leadAgentName':
-				// todo recheck logic if it needs change
 				isValid = value.trim() !== '';
 
 				setStateObj((prevState) => ({
