@@ -126,6 +126,10 @@ const ClientForm = ({ updateClient }) => {
 						...prevState.leadOnlineName,
 						value: updateClient.client.leadOnlineName,
 					},
+					dealStatus: {
+						...prevState.dealStatus,
+						value: updateClient.client.dealStatus,
+					},
 				};
 			});
 		}
@@ -159,7 +163,8 @@ const ClientForm = ({ updateClient }) => {
 			formState.budget.hasError ||
 			formState.lead.hasError ||
 			formState.leadAgentName.hasError ||
-			formState.leadOnlineName.hasError
+			formState.leadOnlineName.hasError ||
+			formState.dealStatus.hasError
 		) {
 			return;
 		} else {
@@ -182,6 +187,7 @@ const ClientForm = ({ updateClient }) => {
 				lead: formState.lead.value,
 				leadAgentName: formState.leadAgentName.value.trim(),
 				leadOnlineName: formState.leadOnlineName.value,
+				dealStatus: formState.dealStatus.value,
 			};
 
 			if (pathname === '/updateClient') {
@@ -198,6 +204,7 @@ const ClientForm = ({ updateClient }) => {
 			setFormIsValid(false);
 		}
 	};
+
 	return (
 		<div className='p-6 rounded-lg min-w-[300px] sm:min-w-[500px] w-1/3 mx-auto bg-light-black shadow-[0_15px_25px_rgba(0,0,0,.6)] sm:text-xl'>
 			<form action='' onSubmit={submitHandler}>
@@ -270,31 +277,63 @@ const ClientForm = ({ updateClient }) => {
 					)}
 				</div>
 
-				<div className='mb-3 sm:mb-6'>
-					<select
-						id='propertyType'
-						name='propertyType'
-						onChange={valueChangeHandler}
-						onBlur={inputBlurHandler}
-						value={formState.propertyType.value}
-						className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
-							formState.propertyType.hasError
-								? 'border border-red-400 '
-								: ''
-						}`}>
-						<option value=''>Select property type</option>
-						{Object.values(CONSTANT_LITERALS.PROPERTY_TYPE).map(
-							(item) => (
-								<option value={item} key={item}>
-									{capitalizeFirstLetter(item)}
-								</option>
-							)
+				<ul className='mb-3 sm:mb-6 grid w-full gap-x-4 sm:gap-x-6 grid-cols-1 sm:grid-cols-2'>
+					<li
+						className={
+							pathname === '/updateClient' ? '' : 'col-span-2'
+						}>
+						<select
+							id='propertyType'
+							name='propertyType'
+							onChange={valueChangeHandler}
+							onBlur={inputBlurHandler}
+							value={formState.propertyType.value}
+							className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
+								formState.propertyType.hasError
+									? 'border border-red-400 '
+									: ''
+							}`}>
+							<option value=''>Select property type</option>
+							{Object.values(CONSTANT_LITERALS.PROPERTY_TYPE).map(
+								(item) => (
+									<option value={item} key={item}>
+										{capitalizeFirstLetter(item)}
+									</option>
+								)
+							)}
+						</select>
+						{formState.propertyType.hasError && (
+							<ErrorMessage msg='Property Type is Required' />
 						)}
-					</select>
-					{formState.propertyType.hasError && (
-						<ErrorMessage msg='Property Type is Required' />
+					</li>
+					{pathname === '/updateClient' && (
+						<li>
+							<select
+								id='dealStatus'
+								name='dealStatus'
+								onChange={valueChangeHandler}
+								onBlur={inputBlurHandler}
+								value={formState.dealStatus.value}
+								className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
+									formState.dealStatus.hasError
+										? 'border border-red-400 '
+										: ''
+								}`}>
+								<option value=''>Select deal status</option>
+								{Object.values(
+									CONSTANT_LITERALS.DEAL_STATUS
+								).map((item) => (
+									<option value={item} key={item}>
+										{capitalizeFirstLetter(item)}
+									</option>
+								))}
+							</select>
+							{formState.dealStatus.hasError && (
+								<ErrorMessage msg='Deal Status is Required' />
+							)}
+						</li>
 					)}
-				</div>
+				</ul>
 
 				<ul
 					className={
