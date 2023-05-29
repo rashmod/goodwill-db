@@ -36,6 +36,7 @@ module.exports.AddClientController = async (req, res) => {
 		lead,
 		leadAgentName,
 		leadOnlineName,
+		dealStatus,
 	} = req.body;
 
 	const loanValue =
@@ -60,6 +61,7 @@ module.exports.AddClientController = async (req, res) => {
 			lead,
 			leadAgentName,
 			leadOnlineName,
+			dealStatus,
 		});
 
 		await client.save();
@@ -120,6 +122,7 @@ module.exports.UpdateClientController = async (req, res) => {
 		lead,
 		leadAgentName,
 		leadOnlineName,
+		dealStatus,
 	} = req.body;
 
 	const loanValue =
@@ -149,6 +152,7 @@ module.exports.UpdateClientController = async (req, res) => {
 					lead,
 					leadAgentName,
 					leadOnlineName,
+					dealStatus,
 				},
 				{
 					runValidators: true,
