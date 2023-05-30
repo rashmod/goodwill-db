@@ -155,6 +155,7 @@ module.exports.UpdateClientController = async (req, res) => {
 					dealStatus,
 				},
 				{
+					overwriteDiscriminatorKey: true,
 					runValidators: true,
 					new: true,
 				}
