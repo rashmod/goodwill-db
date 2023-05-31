@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import Client from '../components/Client';
 import { LoadingSkeletonArray } from '../UI/LoadingSkeleton';
 import CONSTANT_LITERALS from '../Constants/Constants';
+import LoadMoreButton from '../UI/LoadMoreButton';
 
 const ClientList = () => {
 	const clients = useSelector((state) => state.clients.clients);
@@ -13,9 +14,9 @@ const ClientList = () => {
 
 	return (
 		<>
-			<div className='container pb-5 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mt-4 mx-auto'>
+			<div className='container pb-5 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mt-4 mx-auto flex flex-col items-center'>
 				{
-					<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
+					<div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
 						{getClientsStatus ===
 						CONSTANT_LITERALS.STATUS.LOADING ? (
 							<LoadingSkeletonArray />
@@ -33,6 +34,7 @@ const ClientList = () => {
 						) : null}
 					</div>
 				}
+				<LoadMoreButton />
 			</div>
 		</>
 	);
