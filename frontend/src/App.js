@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Routes } from 'react-router-dom';
-import AddClient from './components/AddClient';
-import ClientList from './components/ClientList';
+import AddClient from './pages/AddClient';
+import ClientList from './pages/ClientList';
 import Navbar from './UI/Navbar';
-import UpdateClient from './components/UpdateClient';
+import UpdateClient from './pages/UpdateClient';
 import { fetchAllClients } from './features/ClientsSlice';
 
 function App() {

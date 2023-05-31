@@ -1,5 +1,5 @@
 import React from 'react';
-import ClientForm from './ClientForm';
+import ClientForm from '../components/ClientForm';
 
 const AddClient = () => {
 	return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import ClientForm from './ClientForm';
+import ClientForm from '../components/ClientForm';
 
 const UpdateClient = () => {
 	const location = useLocation();
