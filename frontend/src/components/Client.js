@@ -18,7 +18,9 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 			}}>
 			<div className='m-3'>
 				<div className='flex justify-between mb-2'>
-					<h2 className='text-lg'>{client.name}</h2>
+					<h2 className={`text-lg ${isExpanded ? '' : 'truncate'}`}>
+						{client.name}
+					</h2>
 					<div>
 						<span className='text-xs py-1 bg-[#243b55] inline rounded-full rounded-r-none px-2'>
 							{client.clientType}
@@ -40,7 +42,9 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 					<p className='text-sm'>{client.size}</p>
 					<p className='text-sm'>{client.area} sq.ft.</p>
 				</div>
-				<p className='text-sm'>{client.address}</p>
+				<p className={`text-sm ${isExpanded ? '' : 'line-clamp-2'}`}>
+					{client.address}
+				</p>
 			</div>
 			{isExpanded && (
 				<div className='m-3 mt-0 flex flex-col flex-grow justify-between'>
