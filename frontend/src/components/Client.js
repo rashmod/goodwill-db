@@ -7,13 +7,11 @@ import DeleteButton from '../UI/DeleteButton';
 
 const Client = ({ client, setExpandedCard, expandedCard }) => {
 	const isExpanded = expandedCard === client._id;
-	// ${isExpanded ? 'flex-col' : ''}
 	return (
 		<div
 			className={`card cursor-pointer text-[#BFC0C0] bg-light-black border border-gray-200 border-opacity-30 rounded-lg hover:shadow-md hover:border-white transform hover:-translate-y-1 transition-all duration-200 flex flex-col ${
 				isExpanded ? 'row-span-2 h-56 sm:h-auto' : ''
 			}`}
-			// onClick={expandCard}
 			onClick={() => {
 				if (isExpanded) return;
 				setExpandedCard(client._id);
@@ -40,7 +38,7 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 				</div>
 				<div className='flex justify-between items-center mb-1'>
 					<p className='text-sm'>{client.size}</p>
-					<p className='text-sm'>{client.sqft} SQ.FT.</p>
+					<p className='text-sm'>{client.area} sq.ft.</p>
 				</div>
 				<p className='text-sm'>{client.address}</p>
 			</div>

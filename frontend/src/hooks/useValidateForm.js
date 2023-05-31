@@ -17,7 +17,7 @@ const useForm = () => {
 		saleParty: { value: salePartyValue, isTouched: salePartyIsTouched },
 		loan: { value: loanValue, isTouched: loanIsTouched },
 		size: { value: sizeValue, isTouched: sizeIsTouched },
-		sqft: { value: sqftValue, isTouched: sqftIsTouched },
+		area: { value: areaValue, isTouched: areaIsTouched },
 		budget: { value: budgetValue, isTouched: budgetIsTouched },
 		lead: { value: leadValue, isTouched: leadIsTouched },
 		leadAgentName: {
@@ -47,7 +47,7 @@ const useForm = () => {
 			salePartyValue,
 			loanValue,
 			sizeValue,
-			sqftValue,
+			areaValue,
 			budgetValue,
 			leadValue,
 			leadAgentNameValue,
@@ -63,7 +63,7 @@ const useForm = () => {
 			salePartyIsTouched,
 			loanIsTouched,
 			sizeIsTouched,
-			sqftIsTouched,
+			areaIsTouched,
 			budgetIsTouched,
 			leadIsTouched,
 			leadAgentNameIsTouched,
@@ -132,7 +132,7 @@ const useForm = () => {
 			// 	}
 			// 	break;
 
-			case 'sqft':
+			case 'area':
 			case 'budget':
 				newValue = value.split(',').join('');
 
@@ -300,7 +300,7 @@ const validateFunc = (stateObj, setStateObj) => {
 				}));
 				break;
 
-			case 'sqft':
+			case 'area':
 			case 'budget':
 				isValid = value > 0;
 
@@ -470,7 +470,7 @@ const initialState = {
 		valueIsValid: false,
 		hasError: false,
 	},
-	sqft: {
+	area: {
 		value: 0,
 		isTouched: false,
 		valueIsValid: false,

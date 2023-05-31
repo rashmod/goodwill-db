@@ -106,9 +106,9 @@ const ClientForm = ({ updateClient }) => {
 						...prevState.size,
 						value: updateClient.client.size,
 					},
-					sqft: {
-						...prevState.sqft,
-						value: updateClient.client.sqft,
+					area: {
+						...prevState.area,
+						value: updateClient.client.area,
 					},
 					budget: {
 						...prevState.budget,
@@ -159,7 +159,7 @@ const ClientForm = ({ updateClient }) => {
 			formState.saleParty.hasError ||
 			formState.loan.hasError ||
 			formState.size.hasError ||
-			formState.sqft.hasError ||
+			formState.area.hasError ||
 			formState.budget.hasError ||
 			formState.lead.hasError ||
 			formState.leadAgentName.hasError ||
@@ -182,7 +182,7 @@ const ClientForm = ({ updateClient }) => {
 				saleParty: formState.saleParty.value,
 				loan: formState.loan.value,
 				size: formState.size.value,
-				sqft: formState.sqft.value,
+				area: formState.area.value,
 				budget: formState.budget.value,
 				lead: formState.lead.value,
 				leadAgentName: formState.leadAgentName.value.trim(),
@@ -545,24 +545,24 @@ const ClientForm = ({ updateClient }) => {
 						)}
 					</li>
 					<li>
-						<label htmlFor='sq-ft' className='inline-block mb-2'>
+						<label htmlFor='area' className='inline-block mb-2'>
 							Area
 						</label>
 						<input
 							type='number'
-							id='sq-ft'
-							name='sqft'
+							id='area'
+							name='area'
 							onChange={(e) => {
 								valueChangeHandler(e);
 							}}
 							onBlur={inputBlurHandler}
-							value={Number(formState.sqft.value).toString()}
+							value={Number(formState.area.value).toString()}
 							min='0'
 							className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
-								formState.sqft.hasError ? 'border-red-400' : ''
+								formState.area.hasError ? 'border-red-400' : ''
 							}`}
 						/>
-						{formState.sqft.hasError && (
+						{formState.area.hasError && (
 							<ErrorMessage msg='Area is Required' />
 						)}
 					</li>
