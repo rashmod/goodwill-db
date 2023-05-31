@@ -1,3 +1,4 @@
+const CONSTANT_LITERALS = require('../Constants/Constants');
 const ClientModel = require('../Models/ClientModel');
 const { validationResult } = require('express-validator');
 
@@ -42,6 +43,20 @@ module.exports.AddClientController = async (req, res) => {
 	const loanValue =
 		clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
 
+	const sale_rent_party =
+		clientType === CONSTANT_LITERALS.CLIENT_TYPE.RENT
+			? { rentParty }
+			: saleParty === CONSTANT_LITERALS.SALE_PARTY.SELLER
+			? { saleParty }
+			: { saleParty, loan: loanValue };
+
+	const leadObj =
+		lead === CONSTANT_LITERALS.LEAD.WALK_IN
+			? { lead }
+			: lead === CONSTANT_LITERALS.LEAD.ONLINE
+			? { lead, leadOnlineName }
+			: { lead, leadAgentName };
+
 	const errors = validationResult(req);
 	console.log(errors.array());
 
@@ -52,15 +67,11 @@ module.exports.AddClientController = async (req, res) => {
 			address,
 			propertyType,
 			clientType,
-			saleParty,
-			loan: loanValue,
-			rentParty,
+			...sale_rent_party,
 			size,
 			area,
 			budget,
-			lead,
-			leadAgentName,
-			leadOnlineName,
+			...leadObj,
 			dealStatus,
 		});
 
@@ -128,6 +139,34 @@ module.exports.UpdateClientController = async (req, res) => {
 	const loanValue =
 		clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
 
+	const sale_rent_party =
+		clientType === CONSTANT_LITERALS.CLIENT_TYPE.RENT
+			? { rentParty }
+			: saleParty === CONSTANT_LITERALS.SALE_PARTY.SELLER
+			? { saleParty }
+			: { saleParty, loan: loanValue };
+
+	const leadObj =
+		lead === CONSTANT_LITERALS.LEAD.WALK_IN
+			? { lead }
+			: lead === CONSTANT_LITERALS.LEAD.ONLINE
+			? { lead, leadOnlineName }
+			: { lead, leadAgentName };
+
+	let unset = {};
+
+	unset =
+		clientType === CONSTANT_LITERALS.CLIENT_TYPE.RENT
+			? { ...unset, saleParty: 1, loan: 1 }
+			: { ...unset, rentParty: 1 };
+
+	unset =
+		lead === CONSTANT_LITERALS.LEAD.WALK_IN
+			? { ...unset, leadOnlineName: 1, leadAgentName: 1 }
+			: lead === CONSTANT_LITERALS.LEAD.ONLINE
+			? { ...unset, leadAgentName: 1 }
+			: { ...unset, leadOnlineName: 1 };
+
 	const errors = validationResult(req);
 	console.log(errors.array());
 
@@ -138,24 +177,22 @@ module.exports.UpdateClientController = async (req, res) => {
 			const updatedClient = await ClientModel.findByIdAndUpdate(
 				clientId,
 				{
-					name,
-					mobile,
-					address,
-					propertyType,
-					clientType,
-					saleParty,
-					loan: loanValue,
-					rentParty,
-					size,
-					area,
-					budget,
-					lead,
-					leadAgentName,
-					leadOnlineName,
-					dealStatus,
+					$set: {
+						name,
+						mobile,
+						address,
+						propertyType,
+						clientType,
+						...sale_rent_party,
+						size,
+						area,
+						budget,
+						...leadObj,
+						dealStatus,
+					},
+					$unset: unset,
 				},
 				{
-					overwriteDiscriminatorKey: true,
 					runValidators: true,
 					new: true,
 				}
