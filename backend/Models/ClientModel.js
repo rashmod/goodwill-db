@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const CONSTANT_LITERALS = require('../Constants/Constants');
+
 const Schema = mongoose.Schema;
 
 const ClientSchema = new Schema(
@@ -18,13 +20,33 @@ const ClientSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		propertyType: { type: String, required: true },
-		clientType: { type: String, required: true },
+		propertyType: {
+			type: String,
+			required: true,
+			enum: Object.values(CONSTANT_LITERALS.PROPERTY_TYPE),
+		},
+		clientType: {
+			type: String,
+			required: true,
+			enum: Object.values(CONSTANT_LITERALS.CLIENT_TYPE),
+		},
+		rentParty: {
+			type: String,
+			enum: Object.values(CONSTANT_LITERALS.RENT_PARTY),
+		},
+		saleParty: {
+			type: String,
+			enum: Object.values(CONSTANT_LITERALS.SALE_PARTY),
+		},
+		loan: {
+			type: Boolean,
+			default: false,
+		},
 		size: {
 			type: String,
 			required: true,
 		},
-		sqft: {
+		area: {
 			type: Number,
 			required: true,
 			min: 0,
@@ -37,44 +59,22 @@ const ClientSchema = new Schema(
 		lead: {
 			type: String,
 			required: true,
+			enum: Object.values(CONSTANT_LITERALS.LEAD),
 		},
 		leadAgentName: { type: String },
-		leadOnlineName: { type: String },
+		leadOnlineName: {
+			type: String,
+			enum: Object.values(CONSTANT_LITERALS.LEAD_ONLINE_NAME),
+		},
 		dealStatus: {
 			type: String,
 			required: true,
-			enum: ['ONGOING', 'CLOSED', 'DROPPED'],
+			enum: Object.values(CONSTANT_LITERALS.DEAL_STATUS),
 		},
 	},
-	{ discriminatorKey: 'clientType', timestamps: true }
+	{ timestamps: true }
 );
 
 const ClientModel = mongoose.model('Client', ClientSchema);
-
-const RentClient = ClientModel.discriminator(
-	'RENT',
-	new Schema({
-		rentParty: {
-			type: String,
-			enum: ['RENTER', 'HOMEOWNER'],
-			required: true,
-		},
-	})
-);
-
-const SaleClient = ClientModel.discriminator(
-	'SALE',
-	new Schema({
-		saleParty: {
-			type: String,
-			enum: ['BUYER', 'SELLER'],
-			required: true,
-		},
-		loan: {
-			type: Boolean,
-			default: false,
-		},
-	})
-);
 
 module.exports = ClientModel;
