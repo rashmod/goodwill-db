@@ -50,7 +50,7 @@ const FormValidation = [
 		.notEmpty()
 		.escape()
 		.withMessage('Property size is required'),
-	body('sqft')
+	body('area')
 		.trim()
 		.notEmpty()
 		.escape()
