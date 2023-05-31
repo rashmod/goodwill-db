@@ -366,7 +366,7 @@ const validateFunc = (stateObj, setStateObj) => {
 				break;
 
 			case 'leadAgentName':
-				isValid = value.trim() !== '';
+				isValid = value && value.trim() !== '';
 
 				setStateObj((prevState) => ({
 					...prevState,
