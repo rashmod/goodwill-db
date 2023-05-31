@@ -1,6 +1,7 @@
 const CONSTANT_LITERALS = require('../Constants/Constants');
 const ClientModel = require('../Models/ClientModel');
 const { validationResult } = require('express-validator');
+const APIFeatures = require('../Utilities/apiFeatures');
 
 // ? should error message have valid field inputs?
 
@@ -8,11 +9,28 @@ const { validationResult } = require('express-validator');
 // @route GET /api/clients
 // @access Public
 module.exports.getAllClientsController = async (req, res) => {
-	const clients = await ClientModel.find().sort({ createdAt: -1 });
+	const resPerPage = 20;
+	const clientCount = await ClientModel.countDocuments();
+
+	const apiFeatures = new APIFeatures(
+		ClientModel.find().sort({ createdAt: -1 }),
+		req.query
+	)
+		.search()
+		.filter()
+		.pagination(resPerPage);
+
+	const clients = await apiFeatures.query;
+	const filteredCount = await apiFeatures.filteredCount();
+
+	// const clients = await ClientModel.find().sort({ createdAt: -1 });
 
 	res.status(200).json({
 		success: true,
-		count: clients.length,
+		responseCount: clients.length,
+		totalClientCount: clientCount,
+		resPerPage,
+		filteredCount,
 		data: clients,
 	});
 };
