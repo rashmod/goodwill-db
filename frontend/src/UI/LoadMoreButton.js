@@ -1,8 +1,29 @@
 import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadMoreClients } from '../features/ClientsSlice';
 
-const LoadMoreButton = () => {
+const LoadMoreButton = ({ isFilterActive }) => {
+	const dispatch = useDispatch();
+	const page = useSelector((state) => state.clients.page);
+	console.log({ page });
+
+	const onClickHandler = (e) => {
+		if (isFilterActive) {
+			dispatch(
+				loadMoreClients({
+					page: page + 1,
+					filters: { size: '6BHK' }, //change this to dynamic filters
+				})
+			);
+		} else {
+			dispatch(loadMoreClients({ page: page + 1, filters: {} }));
+		}
+	};
+
 	return (
-		<button className='min-w-fit w-40 bg-transparent border py-2 mt-6 transition ease-in-out hover:border-none hover:bg-accent'>
+		<button
+			className='min-w-fit w-40 bg-transparent border py-2 mt-6 transition ease-in-out hover:border-none hover:bg-accent'
+			onClick={onClickHandler}>
 			<svg
 				aria-hidden='true'
 				role='status'

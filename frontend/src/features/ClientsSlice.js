@@ -4,6 +4,7 @@ import CONSTANT_LITERALS from '../Constants/Constants';
 
 const initialState = {
 	clients: [],
+	filteredClients: [],
 	getClientsStatus: '',
 	getClientsError: '',
 	addClientsStatus: '',
@@ -12,17 +13,36 @@ const initialState = {
 	deleteClientsError: '',
 	updateClientsStatus: '',
 	updateClientsError: '',
+	page: 1,
 };
 
-export const fetchAllClients = createAsyncThunk(
-	'clients/fetchAllClients',
-	async (dummyArgument = null, { rejectWithValue }) => {
+export const fetchClients = createAsyncThunk(
+	'clients/fetchClients',
+	async (filters = {}, { rejectWithValue }) => {
 		try {
 			const response = await axios.get(
-				`${process.env.REACT_APP_BASEURL}/clients`
+				`${process.env.REACT_APP_BASEURL}/clients`,
+				{ params: filters }
 			);
 
-			return response.data.data;
+			return { data: response.data.data, filters };
+		} catch (error) {
+			console.log(error);
+			return rejectWithValue(error.response.data);
+		}
+	}
+);
+
+export const loadMoreClients = createAsyncThunk(
+	'clients/loadMoreClients',
+	async ({ filters, page }, { rejectWithValue }) => {
+		try {
+			const response = await axios.get(
+				`${process.env.REACT_APP_BASEURL}/clients`,
+				{ params: { ...filters, page } }
+			);
+			console.log({ page, filters });
+			return { data: response.data.data, filters };
 		} catch (error) {
 			console.log(error);
 			return rejectWithValue(error.response.data);
@@ -91,7 +111,7 @@ const ClientsSlice = createSlice({
 		},
 	},
 	extraReducers: (builder) => {
-		builder.addCase(fetchAllClients.pending, (state, action) => {
+		builder.addCase(fetchClients.pending, (state, action) => {
 			state.getClientsStatus = CONSTANT_LITERALS.STATUS.LOADING;
 			state.getClientsError = '';
 			state.addClientsStatus = '';
@@ -101,8 +121,19 @@ const ClientsSlice = createSlice({
 			state.updateClientsStatus = '';
 			state.updateClientsError = '';
 		});
-		builder.addCase(fetchAllClients.fulfilled, (state, action) => {
-			state.clients = action.payload;
+		builder.addCase(fetchClients.fulfilled, (state, action) => {
+			const { data, filters } = action.payload;
+
+			const filtersLen = Object.keys(filters).length;
+			const isFilterObj = filters.constructor === Object;
+
+			if (filtersLen === 0 && isFilterObj) {
+				state.clients = data;
+				state.filteredClients = [];
+			} else {
+				state.filteredClients = data;
+			}
+
 			state.getClientsStatus = CONSTANT_LITERALS.STATUS.SUCCESS;
 			state.getClientsError = '';
 			state.addClientsStatus = '';
@@ -112,7 +143,50 @@ const ClientsSlice = createSlice({
 			state.updateClientsStatus = '';
 			state.updateClientsError = '';
 		});
-		builder.addCase(fetchAllClients.rejected, (state, action) => {
+		builder.addCase(fetchClients.rejected, (state, action) => {
+			state.getClientsStatus = CONSTANT_LITERALS.STATUS.FAILURE;
+			state.getClientsError = action.payload;
+			state.addClientsStatus = '';
+			state.addClientsError = '';
+			state.deleteClientsStatus = '';
+			state.deleteClientsError = '';
+			state.updateClientsStatus = '';
+			state.updateClientsError = '';
+		});
+
+		builder.addCase(loadMoreClients.pending, (state, action) => {
+			state.getClientsStatus = CONSTANT_LITERALS.STATUS.LOADING;
+			state.getClientsError = '';
+			state.addClientsStatus = '';
+			state.addClientsError = '';
+			state.deleteClientsStatus = '';
+			state.deleteClientsError = '';
+			state.updateClientsStatus = '';
+			state.updateClientsError = '';
+		});
+		builder.addCase(loadMoreClients.fulfilled, (state, action) => {
+			const { data, filters } = action.payload;
+
+			const filtersLen = Object.keys(filters).length;
+			const isFilterObj = filters.constructor === Object;
+
+			if (filtersLen === 0 && isFilterObj) {
+				state.clients = state.clients.concat(data);
+			} else {
+				state.filteredClients = state.filteredClients.concat(data);
+			}
+
+			state.getClientsStatus = CONSTANT_LITERALS.STATUS.SUCCESS;
+			state.getClientsError = '';
+			state.addClientsStatus = '';
+			state.addClientsError = '';
+			state.deleteClientsStatus = '';
+			state.deleteClientsError = '';
+			state.updateClientsStatus = '';
+			state.updateClientsError = '';
+			state.page++;
+		});
+		builder.addCase(loadMoreClients.rejected, (state, action) => {
 			state.getClientsStatus = CONSTANT_LITERALS.STATUS.FAILURE;
 			state.getClientsError = action.payload;
 			state.addClientsStatus = '';

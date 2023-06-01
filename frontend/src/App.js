@@ -5,13 +5,13 @@ import AddClient from './pages/AddClient';
 import ClientList from './pages/ClientList';
 import Navbar from './UI/Navbar';
 import UpdateClient from './pages/UpdateClient';
-import { fetchAllClients } from './features/ClientsSlice';
+import { fetchClients } from './features/ClientsSlice';
 
 function App() {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(fetchAllClients());
+		dispatch(fetchClients());
 	}, [dispatch]);
 
 	return (
