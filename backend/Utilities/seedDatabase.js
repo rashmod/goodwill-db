@@ -99,15 +99,25 @@ const generateClients = (num) => {
 const addClientsToDB = async (num = 1) => {
 	const clients = generateClients(num);
 
-	const docs = await ClientModel.insertMany(clients);
-	console.log(`${docs.length} users have been inserted into the database.`);
+	// const docs = await ClientModel.insertMany(clients);
+	// console.log(`${docs.length} users have been inserted into the database.`);
+
+	for (let i = 0; i < clients.length; i++) {
+		const delay = randomNum(1000, 500); // Random delay between 500ms and 1000ms
+		await new Promise((resolve) => setTimeout(resolve, delay));
+
+		const client = clients[i];
+		const doc = new ClientModel(client);
+		await doc.save();
+		console.log(`Client ${i + 1} has been inserted into the database.`);
+	}
 };
 
 const deleteAll = async () => {
 	const clients = await ClientModel.deleteMany({});
 };
 
-const displayAll = async (limit = 5) => {
+const displayAll = async (limit = 3) => {
 	const clients = await ClientModel.find().limit(limit);
 	const count = await ClientModel.countDocuments();
 	console.log(count);
