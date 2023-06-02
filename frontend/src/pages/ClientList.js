@@ -5,6 +5,7 @@ import { LoadingSkeletonArray } from '../UI/LoadingSkeleton';
 import CONSTANT_LITERALS from '../Constants/Constants';
 import LoadMoreButton from '../UI/LoadMoreButton';
 import { fetchClients } from '../features/ClientsSlice';
+import SearchBar from '../components/SearchBar';
 
 const ClientList = () => {
 	const dispatch = useDispatch();
@@ -23,11 +24,11 @@ const ClientList = () => {
 	return (
 		<>
 			<div className='container pb-5 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mt-4 mx-auto flex flex-col items-center'>
+				<SearchBar />
 				<div className='w-full flex justify-around'>
 					<button
 						onClick={() => {
 							setIsFilterActive(true);
-							dispatch(fetchClients({ size: '6BHK' }));
 						}}>
 						fetch filter
 					</button>
