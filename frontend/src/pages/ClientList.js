@@ -1,15 +1,12 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Client from '../components/Client';
 import { LoadingSkeletonArray } from '../UI/LoadingSkeleton';
 import CONSTANT_LITERALS from '../Constants/Constants';
 import LoadMoreButton from '../UI/LoadMoreButton';
-import { fetchClients } from '../features/ClientsSlice';
 import SearchBar from '../components/SearchBar';
 
 const ClientList = () => {
-	const dispatch = useDispatch();
-
 	const clients = useSelector((state) => state.clients.clients);
 	const filteredClients = useSelector(
 		(state) => state.clients.filteredClients
@@ -17,28 +14,16 @@ const ClientList = () => {
 	const getClientsStatus = useSelector(
 		(state) => state.clients.getClientsStatus
 	);
+	const filteredCount = useSelector((state) => state.clients.filteredCount);
+	const totalCount = useSelector((state) => state.clients.totalCount);
 
 	const [expandedCard, setExpandedCard] = useState(null);
 	const [isFilterActive, setIsFilterActive] = useState(false);
 
 	return (
 		<>
-			<div className='container pb-5 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mt-4 mx-auto flex flex-col items-center'>
-				<SearchBar />
-				<div className='w-full flex justify-around'>
-					<button
-						onClick={() => {
-							setIsFilterActive(true);
-						}}>
-						fetch filter
-					</button>
-					<button
-						onClick={() => {
-							setIsFilterActive((prev) => !prev);
-						}}>
-						filter change
-					</button>
-				</div>
+			<div className='container pb-5 px-3 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mt-4 mx-auto flex flex-col items-center'>
+				<SearchBar setIsFilterActive={setIsFilterActive} />
 				{
 					<div className='w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2'>
 						{!isFilterActive &&
@@ -71,7 +56,10 @@ const ClientList = () => {
 						)}
 					</div>
 				}
-				<LoadMoreButton isFilterActive={isFilterActive} />
+				{(isFilterActive && filteredClients.length < filteredCount) ||
+				(!isFilterActive && clients.length < totalCount) ? (
+					<LoadMoreButton isFilterActive={isFilterActive} />
+				) : null}
 			</div>
 		</>
 	);
