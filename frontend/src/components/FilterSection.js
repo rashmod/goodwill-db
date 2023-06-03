@@ -45,6 +45,7 @@ const FilterSection = ({ label, options, name, inputType = 'radio' }) => {
 								id={item}
 								onClick={handleRadioChange}
 								value={item}
+								checked={filterValue === item}
 							/>
 							<label
 								htmlFor={item}
