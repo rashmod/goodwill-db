@@ -39,8 +39,14 @@ const FiltersSlice = createSlice({
 			state[minName] = min;
 			state[maxName] = max;
 		},
+		resetFilter(state) {
+			for (const name in state) {
+				state[name] = initialState[name];
+			}
+		},
 	},
 });
 
-export const { updateSearch, updateFilter, updateRange } = FiltersSlice.actions;
+export const { updateSearch, updateFilter, updateRange, resetFilter } =
+	FiltersSlice.actions;
 export default FiltersSlice.reducer;
