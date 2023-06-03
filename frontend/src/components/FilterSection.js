@@ -1,28 +1,21 @@
 import React from 'react';
 import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateFilter } from '../features/FiltersSlice';
 
-const FilterSection = ({
-	label,
-	options,
-	name,
-	inputType = 'radio',
-	filter,
-	setFilter,
-}) => {
+const FilterSection = ({ label, options, name, inputType = 'radio' }) => {
+	const dispatch = useDispatch();
+	const filterValue = useSelector((state) => state.filters[name]);
+
 	const handleChange = (e) => {
 		const name = e.target.name;
 		const value = e.target.value;
 
-		if (e.target.checked && filter[name] === value) {
+		if (e.target.checked && filterValue === value) {
 			e.target.checked = false;
 		}
 
-		setFilter((prevState) => {
-			return {
-				...prevState,
-				[name]: e.target.checked ? value : '',
-			};
-		});
+		dispatch(updateFilter({ name, value }));
 	};
 
 	return (

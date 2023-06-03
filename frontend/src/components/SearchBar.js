@@ -1,24 +1,45 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import Filter from './Filter';
+import { updateSearch } from '../features/FiltersSlice';
+import { fetchClients } from '../features/ClientsSlice';
+import removeEmpty from '../utilities/removeEmpty';
+import debounce from '../utilities/debounce';
 
 const SearchBar = ({ setIsFilterActive }) => {
-	const [searchState, setSearchState] = useState('');
+	const dispatch = useDispatch();
+
+	const filters = useSelector((state) => state.filters);
+
 	const [showFilter, setShowFilter] = useState(false);
+
+	const handleSearch = useMemo(
+		() => debounce((inputVal) => dispatch(updateSearch(inputVal)), 200),
+		[dispatch]
+	);
 
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
 
-		setIsFilterActive(true);
-		// dispatch(fetchClients({ keyword: searchState, ...filters }));
+		dispatch(fetchClients(removeEmpty(filters)));
+
+		if (Object.keys(removeEmpty(filters)).length === 0) {
+			setIsFilterActive(false);
+		} else {
+			setIsFilterActive(true);
+		}
 	};
+
 	return (
 		<form className='w-full p-0 mb-6' onSubmit={onSubmitHandler}>
 			<div className='w-full flex items-center flex-wrap sm:flex-nowrap gap-2'>
 				<button
+					type='button'
 					className='inline-flex items-center order-last sm:order-none sm:grow-0 grow py-2.5 px-3 text-sm font-medium bg-transparent border rounded transition ease-in-out hover:border-accent hover:bg-accent'
 					onClick={() => setShowFilter((prev) => !prev)}>
 					<svg
-						className='w-5 h-5 mr-2 -ml-1 dark:text-white'
+						className='w-5 h-5 mr-2 -ml-1 text-white'
 						fill='none'
 						stroke='currentColor'
 						viewBox='0 0 24 24'
@@ -51,8 +72,10 @@ const SearchBar = ({ setIsFilterActive }) => {
 						id='voice-search'
 						className='block w-full bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none text-sm pl-10 p-2.5'
 						placeholder='Search by Name or Address'
-						value={searchState}
-						onChange={(e) => setSearchState(e.target.value)}
+						name='keyword'
+						onChange={(e) => {
+							handleSearch(e.target.value);
+						}}
 					/>
 				</div>
 				<button

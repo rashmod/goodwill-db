@@ -1,7 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
+import { useDispatch } from 'react-redux';
 
-const RangeSlider = ({ label, min, max, step, setFilter }) => {
+import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
+import { updateRange } from '../features/FiltersSlice';
+import debounce from '../utilities/debounce';
+
+const RangeSlider = ({ label, min, max, step }) => {
+	const dispatch = useDispatch();
+
 	const [minValue, setMinValue] = useState(min);
 	const [maxValue, setMaxValue] = useState(max);
 
@@ -37,13 +43,17 @@ const RangeSlider = ({ label, min, max, step, setFilter }) => {
 		progressRef.current.style.right = `${right}%`;
 	}, [minValue, maxValue, max, min]);
 
+	const debouncedDispatch = debounce((newMinValue, newMaxValue) => {
+		dispatch(
+			updateRange({ min: newMinValue, max: newMaxValue, name: label })
+		);
+	}, 300);
+
 	useEffect(() => {
-		const currMin = `min${capitalizeFirstLetter(label)}`;
-		const currMax = `max${capitalizeFirstLetter(label)}`;
-		setFilter((prevState) => {
-			return { ...prevState, [currMin]: minValue, [currMax]: maxValue };
-		});
-	}, [setFilter, label, minValue, maxValue]);
+		debouncedDispatch(minValue, maxValue);
+
+		return () => debouncedDispatch.cancel();
+	}, [debouncedDispatch, maxValue, minValue]);
 
 	return (
 		<div className='flex flex-col'>
