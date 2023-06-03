@@ -1,22 +1,47 @@
 import React from 'react';
 import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
 
-const FilterSection = ({ label, options, name, inputType = 'checkbox' }) => {
+const FilterSection = ({
+	label,
+	options,
+	name,
+	inputType = 'radio',
+	filter,
+	setFilter,
+}) => {
+	const handleChange = (e) => {
+		const name = e.target.name;
+		const value = e.target.value;
+
+		if (e.target.checked && filter[name] === value) {
+			e.target.checked = false;
+		}
+
+		setFilter((prevState) => {
+			return {
+				...prevState,
+				[name]: e.target.checked ? value : '',
+			};
+		});
+	};
+
 	return (
 		<div>
 			<h3 className='mb-2 font-medium text-base'>
-				{inputType === 'checkbox' && label}
+				{inputType === 'radio' && label}
 				{inputType === 'text' && <label htmlFor={label}>{label}</label>}
 			</h3>
-			{inputType === 'checkbox' && (
+			{inputType === 'radio' && (
 				<ul className='grid w-full gap-1.5'>
 					{options.map((item) => (
 						<li key={item}>
 							<input
-								type='checkbox'
+								type='radio'
 								className='hidden peer'
 								name={name}
 								id={item}
+								onClick={handleChange}
+								value={item}
 							/>
 							<label
 								htmlFor={item}
