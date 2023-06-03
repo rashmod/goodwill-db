@@ -98,7 +98,12 @@ const SearchBar = ({ setIsFilterActive }) => {
 					Search
 				</button>
 			</div>
-			{showFilter && <Filter setShowFilter={setShowFilter} />}
+			{showFilter && (
+				<Filter
+					setShowFilter={setShowFilter}
+					setIsFilterActive={setIsFilterActive}
+				/>
+			)}
 		</form>
 	);
 };

@@ -3,12 +3,11 @@ import CONSTANT_LITERALS from '../Constants/Constants';
 import FilterSection from './FilterSection';
 import RangeSlider from './RangeSlider';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-	initialState as initialFilterState,
-	updateFilter,
-} from '../features/FiltersSlice';
+import { resetFilter } from '../features/FiltersSlice';
+import { fetchClients } from '../features/ClientsSlice';
+import removeEmpty from '../utilities/removeEmpty';
 
-const Filter = ({ setShowFilter }) => {
+const Filter = ({ setShowFilter, setIsFilterActive }) => {
 	const dispatch = useDispatch();
 
 	const filters = useSelector((state) => state.filters);
@@ -109,7 +108,11 @@ const Filter = ({ setShowFilter }) => {
 
 			<div className='flex flex-col gap-2 col-end-[-1] self-center mt-2'>
 				<button
-					onClick={() => setShowFilter(false)}
+					onClick={() => {
+						setShowFilter(false);
+						setIsFilterActive(true);
+						dispatch(fetchClients(removeEmpty(filters)));
+					}}
 					type='submit'
 					className='w-full max-h-10 bg-accent/75 rounded py-2 transition ease-in-out hover:border-accent hover:bg-accent'>
 					Apply
@@ -117,7 +120,7 @@ const Filter = ({ setShowFilter }) => {
 				<button
 					type='button'
 					className='w-full max-h-10 rounded py-2 bg-red-500/75 hover:bg-red-400'
-					onClick={() => dispatch(updateFilter(initialFilterState))}>
+					onClick={() => dispatch(resetFilter())}>
 					Clear
 				</button>
 				<button
