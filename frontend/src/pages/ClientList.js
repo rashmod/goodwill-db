@@ -5,6 +5,7 @@ import { LoadingSkeletonArray } from '../UI/LoadingSkeleton';
 import CONSTANT_LITERALS from '../Constants/Constants';
 import LoadMoreButton from '../UI/LoadMoreButton';
 import SearchBar from '../components/SearchBar';
+import ClientNotFound from '../UI/ClientNotFound';
 
 const ClientList = () => {
 	const clients = useSelector((state) => state.clients.clients);
@@ -60,6 +61,9 @@ const ClientList = () => {
 				(!isFilterActive && clients.length < totalCount) ? (
 					<LoadMoreButton isFilterActive={isFilterActive} />
 				) : null}
+				{isFilterActive && filteredClients.length === 0 && (
+					<ClientNotFound />
+				)}
 			</div>
 		</>
 	);
