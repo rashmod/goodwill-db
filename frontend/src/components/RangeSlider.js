@@ -5,7 +5,7 @@ import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
 import { updateRange } from '../features/FiltersSlice';
 import debounce from '../utilities/debounce';
 
-const RangeSlider = ({ label, min, max, step }) => {
+const RangeSlider = React.memo(({ label, min, max, step }) => {
 	const dispatch = useDispatch();
 
 	const [minValue, setMinValue] = useState(min);
@@ -110,5 +110,5 @@ const RangeSlider = ({ label, min, max, step }) => {
 			</div>
 		</div>
 	);
-};
+});
 export default RangeSlider;
