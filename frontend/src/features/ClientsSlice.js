@@ -14,6 +14,9 @@ const initialState = {
 	updateClientsStatus: '',
 	updateClientsError: '',
 	page: 1,
+	filterPage: 1,
+	totalCount: 0,
+	filteredCount: 0,
 };
 
 export const fetchClients = createAsyncThunk(
@@ -25,7 +28,12 @@ export const fetchClients = createAsyncThunk(
 				{ params: filters }
 			);
 
-			return { data: response.data.data, filters };
+			return {
+				data: response.data.data,
+				filters,
+				totalCount: response.data.totalClientCount,
+				filteredCount: response.data.filteredCount,
+			};
 		} catch (error) {
 			console.log(error);
 			return rejectWithValue(error.response.data);
@@ -41,7 +49,6 @@ export const loadMoreClients = createAsyncThunk(
 				`${process.env.REACT_APP_BASEURL}/clients`,
 				{ params: { ...filters, page } }
 			);
-			console.log({ page, filters });
 			return { data: response.data.data, filters };
 		} catch (error) {
 			console.log(error);
@@ -122,7 +129,7 @@ const ClientsSlice = createSlice({
 			state.updateClientsError = '';
 		});
 		builder.addCase(fetchClients.fulfilled, (state, action) => {
-			const { data, filters } = action.payload;
+			const { data, filters, totalCount, filteredCount } = action.payload;
 
 			const filtersLen = Object.keys(filters).length;
 			const isFilterObj = filters.constructor === Object;
@@ -130,6 +137,7 @@ const ClientsSlice = createSlice({
 			if (filtersLen === 0 && isFilterObj) {
 				state.clients = data;
 				state.filteredClients = [];
+				state.filterPage = 1;
 			} else {
 				state.filteredClients = data;
 			}
@@ -142,6 +150,8 @@ const ClientsSlice = createSlice({
 			state.deleteClientsError = '';
 			state.updateClientsStatus = '';
 			state.updateClientsError = '';
+			state.totalCount = totalCount;
+			state.filteredCount = filteredCount;
 		});
 		builder.addCase(fetchClients.rejected, (state, action) => {
 			state.getClientsStatus = CONSTANT_LITERALS.STATUS.FAILURE;
@@ -172,8 +182,10 @@ const ClientsSlice = createSlice({
 
 			if (filtersLen === 0 && isFilterObj) {
 				state.clients = state.clients.concat(data);
+				state.page++;
 			} else {
 				state.filteredClients = state.filteredClients.concat(data);
+				state.filterPage++;
 			}
 
 			state.getClientsStatus = CONSTANT_LITERALS.STATUS.SUCCESS;
@@ -184,7 +196,6 @@ const ClientsSlice = createSlice({
 			state.deleteClientsError = '';
 			state.updateClientsStatus = '';
 			state.updateClientsError = '';
-			state.page++;
 		});
 		builder.addCase(loadMoreClients.rejected, (state, action) => {
 			state.getClientsStatus = CONSTANT_LITERALS.STATUS.FAILURE;
