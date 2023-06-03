@@ -62,7 +62,7 @@ const ClientList = () => {
 					<LoadMoreButton isFilterActive={isFilterActive} />
 				) : null}
 				{isFilterActive && filteredClients.length === 0 && (
-					<ClientNotFound />
+					<ClientNotFound setIsFilterActive={setIsFilterActive} />
 				)}
 			</div>
 		</>

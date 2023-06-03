@@ -1,6 +1,10 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { resetFilter } from '../features/FiltersSlice';
 
-const ClientNotFound = () => {
+const ClientNotFound = ({ setIsFilterActive }) => {
+	const dispatch = useDispatch();
+
 	return (
 		<section className='flex items-center w-full'>
 			<div className='container flex flex-col items-center justify-center px-5 mx-auto mt-4 mb-8'>
@@ -13,7 +17,12 @@ const ClientNotFound = () => {
 						But don't worry, you can find plenty of other Clients on
 						the homepage.
 					</p>
-					<button className='px-8 py-3 font-semibold rounded bg-accent/75 hover:bg-accent'>
+					<button
+						className='px-8 py-3 font-semibold rounded bg-accent/75 hover:bg-accent'
+						onClick={() => {
+							dispatch(resetFilter());
+							setIsFilterActive(false);
+						}}>
 						Back to homepage
 					</button>
 				</div>
