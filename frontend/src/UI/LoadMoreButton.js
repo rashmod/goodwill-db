@@ -2,17 +2,17 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadMoreClients } from '../features/ClientsSlice';
 
-const LoadMoreButton = ({ isFilterActive }) => {
+const LoadMoreButton = ({ isFilterActive, filters }) => {
 	const dispatch = useDispatch();
 	const page = useSelector((state) => state.clients.page);
-	console.log({ page });
+	const filterPage = useSelector((state) => state.clients.filterPage);
 
 	const onClickHandler = (e) => {
 		if (isFilterActive) {
 			dispatch(
 				loadMoreClients({
-					page: page + 1,
-					filters: { size: '6BHK' }, //change this to dynamic filters
+					page: filterPage + 1,
+					filters: filters,
 				})
 			);
 		} else {
