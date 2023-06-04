@@ -15,9 +15,9 @@ export const initialState = {
 	leadOnlineName: '',
 	leadAgentName: '',
 	minBudget: -1,
-	maxBudget: 0,
+	maxBudget: -1,
 	minArea: -1,
-	maxArea: 0,
+	maxArea: -1,
 };
 
 const FiltersSlice = createSlice({

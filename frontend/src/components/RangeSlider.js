@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
 import { updateRange } from '../features/FiltersSlice';
@@ -7,9 +7,18 @@ import debounce from '../utilities/debounce';
 
 const RangeSlider = React.memo(({ label, min, max, step }) => {
 	const dispatch = useDispatch();
+	const minName = `min${capitalizeFirstLetter(label)}`;
+	const maxName = `max${capitalizeFirstLetter(label)}`;
 
-	const [minValue, setMinValue] = useState(min);
-	const [maxValue, setMaxValue] = useState(max);
+	const minFilterValue = useSelector((state) => state.filters[minName]);
+	const maxFilterValue = useSelector((state) => state.filters[maxName]);
+
+	const [minValue, setMinValue] = useState(
+		minFilterValue >= 0 ? minFilterValue : min
+	);
+	const [maxValue, setMaxValue] = useState(
+		maxFilterValue >= 0 ? maxFilterValue : max
+	);
 
 	let progressRef = useRef(null);
 
@@ -67,7 +76,7 @@ const RangeSlider = React.memo(({ label, min, max, step }) => {
 						min={min}
 						max={max}
 						step={step}
-						name={`min${capitalizeFirstLetter(label)}`}
+						name={`minName`}
 						value={minValue}
 						onKeyDown={(e) => {
 							if (e.key === 'Enter') e.preventDefault();
@@ -83,7 +92,7 @@ const RangeSlider = React.memo(({ label, min, max, step }) => {
 						min={min}
 						max={max}
 						step={step}
-						name={`min${capitalizeFirstLetter(label)}`}
+						name={`minName`}
 						value={maxValue}
 						onKeyDown={(e) => {
 							if (e.key === 'Enter') e.preventDefault();
