@@ -131,6 +131,18 @@ class APIFeatures {
 			query.area = areaObj;
 		}
 
+		if (query.hasOwnProperty('leadAgentName')) {
+			const leadAgentName = query.leadAgentName;
+			delete query.leadAgentName;
+
+			const leadAgentNameObj = {
+				$regex: leadAgentName,
+				$options: 'i',
+			};
+
+			query.leadAgentName = leadAgentNameObj;
+		}
+
 		return query;
 	}
 }
