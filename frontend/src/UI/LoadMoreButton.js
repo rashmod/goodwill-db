@@ -2,14 +2,17 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadMoreClients } from '../features/ClientsSlice';
 import CONSTANT_LITERALS from '../Constants/Constants';
+import removeEmpty from '../utilities/removeEmpty';
 
-const LoadMoreButton = ({ isFilterActive, filters }) => {
+const LoadMoreButton = ({ isFilterActive }) => {
 	const dispatch = useDispatch();
+
 	const getClientsStatus = useSelector(
 		(state) => state.clients.getClientsStatus
 	);
 	const page = useSelector((state) => state.clients.page);
 	const filterPage = useSelector((state) => state.clients.filterPage);
+	const filters = removeEmpty(useSelector((state) => state.filters));
 
 	const onClickHandler = (e) => {
 		if (isFilterActive) {
