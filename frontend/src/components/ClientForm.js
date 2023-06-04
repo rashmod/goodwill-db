@@ -639,7 +639,7 @@ const ClientForm = ({ updateClient }) => {
 					)}
 				</ul>
 
-				<ul className='grid w-full gap-x-4 sm:gap-x-6 grid-cols-1 sm:grid-cols-2 mb-6'>
+				<ul className='grid w-full gap-4 sm:gap-x-6 grid-cols-1 sm:grid-cols-2 mb-6'>
 					<li
 						className={
 							formState.lead.value === '' ||
@@ -674,63 +674,58 @@ const ClientForm = ({ updateClient }) => {
 							<ErrorMessage msg='Lead is Required' />
 						)}
 					</li>
-					<li>
-						{formState.lead.value ===
-							CONSTANT_LITERALS.LEAD.REFERENCE && (
-							<>
-								<input
-									type='text'
-									name='leadAgentName'
-									onChange={(e) => {
-										valueChangeHandler(e);
-									}}
-									onBlur={inputBlurHandler}
-									value={formState.leadAgentName.value}
-									placeholder='Agent Name'
-									className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
-										formState.leadAgentName.hasError
-											? 'border-red-400 '
-											: ''
-									}`}
-								/>
-								{formState.leadAgentName.hasError && (
-									<ErrorMessage msg='Agent Name is Required' />
-								)}
-							</>
-						)}
-						{formState.lead.value ===
-							CONSTANT_LITERALS.LEAD.ONLINE && (
-							<>
-								<select
-									id='lead-online'
-									name='leadOnlineName'
-									onChange={(e) => {
-										valueChangeHandler(e);
-									}}
-									onBlur={inputBlurHandler}
-									value={formState.leadOnlineName.value}
-									className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
-										formState.leadOnlineName.hasError
-											? 'border border-red-400 '
-											: ''
-									}`}>
-									<option value=''>
-										Select online option
+					{formState.lead.value ===
+						CONSTANT_LITERALS.LEAD.REFERENCE && (
+						<li>
+							<input
+								type='text'
+								name='leadAgentName'
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
+								value={formState.leadAgentName.value}
+								placeholder='Agent Name'
+								className={`block w-full px-3 py-1.5 bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none ${
+									formState.leadAgentName.hasError
+										? 'border-red-400 '
+										: ''
+								}`}
+							/>
+							{formState.leadAgentName.hasError && (
+								<ErrorMessage msg='Agent Name is Required' />
+							)}
+						</li>
+					)}
+					{formState.lead.value === CONSTANT_LITERALS.LEAD.ONLINE && (
+						<li>
+							<select
+								id='lead-online'
+								name='leadOnlineName'
+								onChange={(e) => {
+									valueChangeHandler(e);
+								}}
+								onBlur={inputBlurHandler}
+								value={formState.leadOnlineName.value}
+								className={`bg-[#243b55] rounded w-full px-3 py-1.5 focus:border-none ${
+									formState.leadOnlineName.hasError
+										? 'border border-red-400 '
+										: ''
+								}`}>
+								<option value=''>Select online option</option>
+								{Object.values(
+									CONSTANT_LITERALS.LEAD_ONLINE_NAME
+								).map((item) => (
+									<option value={item} key={item}>
+										{capitalizeFirstLetter(item)}
 									</option>
-									{Object.values(
-										CONSTANT_LITERALS.LEAD_ONLINE_NAME
-									).map((item) => (
-										<option value={item} key={item}>
-											{capitalizeFirstLetter(item)}
-										</option>
-									))}
-								</select>
-								{formState.leadOnlineName.hasError && (
-									<ErrorMessage msg='Online Name is Required' />
-								)}
-							</>
-						)}
-					</li>
+								))}
+							</select>
+							{formState.leadOnlineName.hasError && (
+								<ErrorMessage msg='Online Name is Required' />
+							)}
+						</li>
+					)}
 				</ul>
 
 				{pathname !== '/updateClient' &&
