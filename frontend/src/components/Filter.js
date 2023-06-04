@@ -12,6 +12,20 @@ const Filter = ({ setShowFilter, setIsFilterActive }) => {
 
 	const filters = useSelector((state) => state.filters);
 
+	const applyHandler = () => {
+		if (Object.keys(removeEmpty(filters)).length === 0) {
+			setIsFilterActive(false);
+		} else {
+			setIsFilterActive(true);
+		}
+		setShowFilter(false);
+		dispatch(fetchClients(removeEmpty(filters)));
+	};
+
+	const clearHandler = () => dispatch(resetFilter());
+
+	const closeHandler = () => setShowFilter(false);
+
 	return (
 		<div className='grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 text-sm mt-6 bg-light-black p-3 rounded-md'>
 			{/* 228 */}
@@ -108,11 +122,7 @@ const Filter = ({ setShowFilter, setIsFilterActive }) => {
 
 			<div className='flex flex-col gap-2 col-end-[-1] self-center mt-2'>
 				<button
-					onClick={() => {
-						setShowFilter(false);
-						setIsFilterActive(true);
-						dispatch(fetchClients(removeEmpty(filters)));
-					}}
+					onClick={applyHandler}
 					type='submit'
 					className='w-full max-h-10 bg-accent/75 rounded py-2 transition ease-in-out hover:border-accent hover:bg-accent'>
 					Apply
@@ -120,13 +130,13 @@ const Filter = ({ setShowFilter, setIsFilterActive }) => {
 				<button
 					type='button'
 					className='w-full max-h-10 rounded py-2 bg-red-500/75 hover:bg-red-400'
-					onClick={() => dispatch(resetFilter())}>
+					onClick={clearHandler}>
 					Clear
 				</button>
 				<button
 					type='button'
 					className='w-full max-h-10 rounded py-2 border hover:bg-light-black'
-					onClick={() => setShowFilter(false)}>
+					onClick={closeHandler}>
 					Close
 				</button>
 			</div>
