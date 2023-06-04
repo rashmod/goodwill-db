@@ -16,16 +16,32 @@ const SearchBar = ({ setIsFilterActive }) => {
 	const [showFilter, setShowFilter] = useState(false);
 	const [searchKeyword, setSearchKeyword] = useState('');
 
-	const handleSearch = useMemo(
-		() => debounce((inputVal) => dispatch(updateSearch(inputVal)), 200),
-		[dispatch]
-	);
-
 	useEffect(() => {
 		if (keyword === '') {
 			setSearchKeyword('');
 		}
 	}, [keyword]);
+
+	const handleSearch = useMemo(
+		() => debounce((inputVal) => dispatch(updateSearch(inputVal)), 200),
+		[dispatch]
+	);
+
+	const searchHandler = () => {
+		if (Object.keys(removeEmpty(filters)).length === 0) {
+			setIsFilterActive(false);
+		} else {
+			setIsFilterActive(true);
+		}
+		setShowFilter(false);
+	};
+
+	const searchInputHandler = (e) => {
+		handleSearch(e.target.value);
+		setSearchKeyword(e.target.value);
+	};
+
+	const filterHandler = () => setShowFilter((prev) => !prev);
 
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
@@ -45,7 +61,7 @@ const SearchBar = ({ setIsFilterActive }) => {
 				<button
 					type='button'
 					className='inline-flex items-center order-last sm:order-none sm:grow-0 grow py-2.5 px-3 text-sm font-medium bg-transparent border rounded transition ease-in-out hover:border-accent hover:bg-accent'
-					onClick={() => setShowFilter((prev) => !prev)}>
+					onClick={filterHandler}>
 					<svg
 						className='w-5 h-5 mr-2 -ml-1 text-white'
 						fill='none'
@@ -82,15 +98,12 @@ const SearchBar = ({ setIsFilterActive }) => {
 						placeholder='Search by Name or Address'
 						name='keyword'
 						value={searchKeyword}
-						onChange={(e) => {
-							handleSearch(e.target.value);
-							setSearchKeyword(e.target.value);
-						}}
+						onChange={searchInputHandler}
 					/>
 				</div>
 				<button
 					type='submit'
-					onClick={() => setShowFilter(false)}
+					onClick={searchHandler}
 					className='inline-flex items-center grow sm:grow-0 py-2.5 px-3 text-sm font-medium bg-transparent border rounded transition ease-in-out hover:border-accent hover:bg-accent'>
 					<svg
 						aria-hidden='true'
