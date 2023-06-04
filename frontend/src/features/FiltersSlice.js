@@ -14,9 +14,9 @@ export const initialState = {
 	lead: '',
 	leadOnlineName: '',
 	leadAgentName: '',
-	minBudget: 0,
+	minBudget: -1,
 	maxBudget: 0,
-	minArea: 0,
+	minArea: -1,
 	maxArea: 0,
 };
 
