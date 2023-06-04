@@ -38,21 +38,21 @@ const Filter = ({ setShowFilter, setIsFilterActive }) => {
 			</div>
 
 			<div className='grid gap-2'>
-				<RangeSlider label='Area' min={250} max={3000} step={50} />
+				<RangeSlider label='Area' min={0} max={5000} step={50} />
 				{filters.clientType === CONSTANT_LITERALS.CLIENT_TYPE.RENT && (
 					<RangeSlider
 						label='Budget'
-						min={10000}
-						max={200000}
-						step={1000}
+						min={0}
+						max={300000}
+						step={5000}
 					/>
 				)}
 				{filters.clientType === CONSTANT_LITERALS.CLIENT_TYPE.SALE && (
 					<RangeSlider
 						label='Budget'
-						min={3000000}
+						min={0}
 						max={100000000}
-						step={100000}
+						step={500000}
 					/>
 				)}
 			</div>
