@@ -90,6 +90,7 @@ const SearchBar = ({ setIsFilterActive }) => {
 				</div>
 				<button
 					type='submit'
+					onClick={() => setShowFilter(false)}
 					className='inline-flex items-center grow sm:grow-0 py-2.5 px-3 text-sm font-medium bg-transparent border rounded transition ease-in-out hover:border-accent hover:bg-accent'>
 					<svg
 						aria-hidden='true'
