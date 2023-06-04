@@ -16,7 +16,7 @@ const FilterSection = ({ label, options, name, inputType = 'radio' }) => {
 			e.target.checked = false;
 		}
 
-		dispatch(updateFilter({ name, value }));
+		dispatch(updateFilter({ name, value: e.target.checked ? value : '' }));
 	};
 
 	const handleInputChange = useMemo(
@@ -44,6 +44,7 @@ const FilterSection = ({ label, options, name, inputType = 'radio' }) => {
 								name={name}
 								id={item}
 								onClick={handleRadioChange}
+								onChange={() => {}}
 								value={item}
 								checked={filterValue === item}
 							/>
