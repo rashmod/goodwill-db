@@ -1,3 +1,5 @@
+const CONSTANT_LITERALS = require('../Constants/Constants');
+
 class APIFeatures {
 	constructor(query, queryStr) {
 		this.query = query;
@@ -30,18 +32,9 @@ class APIFeatures {
 	}
 
 	filter() {
-		const queryCopy = { ...this.queryStr };
+		const query = this.setFilterFields();
 
-		const removeFields = ['keyword', 'page', 'limit'];
-		removeFields.forEach((el) => delete queryCopy[el]);
-
-		let queryStr = JSON.stringify(queryCopy);
-		queryStr = queryStr.replace(
-			/\b(gt|gte|lt|lte)\b/g,
-			(match) => `$${match}`
-		);
-
-		this.query = this.query.find(JSON.parse(queryStr));
+		this.query = this.query.find(query);
 		return this;
 	}
 
@@ -73,24 +66,72 @@ class APIFeatures {
 			  }
 			: {};
 
-		const query = { ...this.queryStr };
-
-		const removeFields = ['keyword', 'page', 'limit'];
-		removeFields.forEach((el) => delete query[el]);
-
-		let queryStr = JSON.stringify(query);
-		queryStr = queryStr.replace(
-			/\b(gt|gte|lt|lte)\b/g,
-			(match) => `$${match}`
-		);
+		const query = this.setFilterFields();
 
 		const countQuery = this.query.model
-			.find(JSON.parse(queryStr))
+			.find(query)
 			.find(keyword)
 			.countDocuments();
 
 		const count = await countQuery;
 		return count;
+	}
+
+	setFilterFields() {
+		const query = { ...this.queryStr };
+
+		const removeFields = ['keyword', 'page', 'limit'];
+		removeFields.forEach((el) => delete query[el]);
+
+		if (
+			query.hasOwnProperty('minBudget') &&
+			query.hasOwnProperty('maxBudget')
+		) {
+			const minBudget =
+				query.minBudget <= query.maxBudget
+					? query.minBudget
+					: query.maxBudget;
+			const maxBudget = query.maxBudget;
+
+			delete query.minBudget;
+			delete query.maxBudget;
+
+			const _maxBudget =
+				query.clientType === CONSTANT_LITERALS.CLIENT_TYPE.RENT
+					? CONSTANT_LITERALS.VALUES.MAX_RENT_BUDGET
+					: query.clientType === CONSTANT_LITERALS.CLIENT_TYPE.SALE
+					? CONSTANT_LITERALS.VALUES.MAX_SALE_BUDGET
+					: null;
+
+			const budgetObj =
+				+minBudget === _maxBudget && +maxBudget === _maxBudget
+					? { $gte: +minBudget }
+					: { $gte: +minBudget, $lte: +maxBudget };
+
+			query.budget = budgetObj;
+		}
+
+		if (
+			query.hasOwnProperty('minArea') &&
+			query.hasOwnProperty('maxArea')
+		) {
+			const minArea = query.minArea;
+			const maxArea = query.maxArea;
+
+			delete query.minArea;
+			delete query.maxArea;
+
+			const _maxArea = CONSTANT_LITERALS.VALUES.MAX_AREA;
+
+			const areaObj =
+				+minArea === _maxArea && +maxArea === _maxArea
+					? { $gte: +minArea }
+					: { $gte: +minArea, $lte: +maxArea };
+
+			query.area = areaObj;
+		}
+
+		return query;
 	}
 }
 
