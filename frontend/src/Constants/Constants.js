@@ -38,6 +38,14 @@ const CONSTANT_LITERALS = {
 		CLOSED: 'CLOSED',
 		DROPPED: 'DROPPED',
 	},
+	FIELD_NAMES: {
+		CLIENT_TYPE: 'clientType',
+		SALE_PARTY: 'saleParty',
+		RENT_PARTY: 'rentParty',
+		LEAD: 'lead',
+		LEAD_ONLINE_NAME: 'leadOnlineName',
+		LEAD_AGENT_NAME: 'leadAgentName',
+	},
 };
 
 module.exports = CONSTANT_LITERALS;
