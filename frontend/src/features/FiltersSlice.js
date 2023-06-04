@@ -1,3 +1,4 @@
+import CONSTANT_LITERALS from '../Constants/Constants';
 import capitalizeFirstLetter from '../utilities/capitalizeFirstLetter';
 
 const { createSlice } = require('@reduxjs/toolkit');
@@ -28,7 +29,46 @@ const FiltersSlice = createSlice({
 		},
 		updateFilter(state, action) {
 			const { name, value } = action.payload;
-			console.log(action.payload);
+
+			if (
+				name === CONSTANT_LITERALS.FIELD_NAMES.CLIENT_TYPE &&
+				value === ''
+			) {
+				state[CONSTANT_LITERALS.FIELD_NAMES.SALE_PARTY] = '';
+				state[CONSTANT_LITERALS.FIELD_NAMES.RENT_PARTY] = '';
+			} else if (
+				name === CONSTANT_LITERALS.FIELD_NAMES.CLIENT_TYPE &&
+				value === CONSTANT_LITERALS.CLIENT_TYPE.SALE
+			) {
+				state[CONSTANT_LITERALS.FIELD_NAMES.RENT_PARTY] = '';
+			} else if (
+				name === CONSTANT_LITERALS.FIELD_NAMES.CLIENT_TYPE &&
+				value === CONSTANT_LITERALS.CLIENT_TYPE.RENT
+			) {
+				state[CONSTANT_LITERALS.FIELD_NAMES.SALE_PARTY] = '';
+			}
+
+			if (name === CONSTANT_LITERALS.FIELD_NAMES.LEAD && value === '') {
+				state[CONSTANT_LITERALS.FIELD_NAMES.LEAD_AGENT_NAME] = '';
+				state[CONSTANT_LITERALS.FIELD_NAMES.LEAD_ONLINE_NAME] = '';
+			} else if (
+				name === CONSTANT_LITERALS.FIELD_NAMES.LEAD &&
+				value === CONSTANT_LITERALS.LEAD.WALK_IN
+			) {
+				state[CONSTANT_LITERALS.FIELD_NAMES.LEAD_AGENT_NAME] = '';
+				state[CONSTANT_LITERALS.FIELD_NAMES.LEAD_ONLINE_NAME] = '';
+			} else if (
+				name === CONSTANT_LITERALS.FIELD_NAMES.LEAD &&
+				value === CONSTANT_LITERALS.LEAD.ONLINE
+			) {
+				state[CONSTANT_LITERALS.FIELD_NAMES.LEAD_AGENT_NAME] = '';
+			} else if (
+				name === CONSTANT_LITERALS.FIELD_NAMES.LEAD &&
+				value === CONSTANT_LITERALS.LEAD.REFERENCE
+			) {
+				state[CONSTANT_LITERALS.FIELD_NAMES.LEAD_ONLINE_NAME] = '';
+			}
+
 			state[name] = value;
 		},
 		updateRange(state, action) {
