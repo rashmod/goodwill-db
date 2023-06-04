@@ -64,6 +64,9 @@ const RangeSlider = React.memo(({ label, min, max, step }) => {
 					<input
 						onChange={(e) => handleMin(e)}
 						type='number'
+						min={min}
+						max={max}
+						step={step}
 						name={`min${capitalizeFirstLetter(label)}`}
 						value={minValue}
 						className='w-full px-2 py-1 bg-transparent border-2 border-solid border-gray-700 rounded transition duration-100 ease-in-out focus:border-accent focus:outline-none'
@@ -74,6 +77,9 @@ const RangeSlider = React.memo(({ label, min, max, step }) => {
 					<input
 						onChange={(e) => handleMax(e)}
 						type='number'
+						min={min}
+						max={max}
+						step={step}
 						name={`min${capitalizeFirstLetter(label)}`}
 						value={maxValue}
 						className='w-full px-2 py-1 bg-transparent border-2 border-solid border-gray-700 rounded transition duration-100 ease-in-out focus:border-accent focus:outline-none'
