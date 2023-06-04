@@ -59,7 +59,10 @@ const generateClients = (num) => {
 				: { saleParty, loan: LOAN[randomNum(LOAN.length)] };
 		const size = SIZE[randomNum(SIZE.length)];
 		const area = randomNum(5000, 400);
-		const budget = randomNum(200000000, 50000);
+		const budget =
+			clientType === CONSTANT_LITERALS.CLIENT_TYPE.RENT
+				? randomNum(300000, 10000)
+				: randomNum(100000000, 3000000);
 		const lead = LEAD[randomNum(LEAD.length)];
 		const leadObj =
 			lead === CONSTANT_LITERALS.LEAD.WALK_IN
