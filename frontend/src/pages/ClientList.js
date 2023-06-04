@@ -17,6 +17,8 @@ const ClientList = () => {
 	);
 	const filteredCount = useSelector((state) => state.clients.filteredCount);
 	const totalCount = useSelector((state) => state.clients.totalCount);
+	// const page = useSelector((state) => state.clients.page);
+	const filterPage = useSelector((state) => state.clients.filterPage);
 
 	const [expandedCard, setExpandedCard] = useState(null);
 	const [isFilterActive, setIsFilterActive] = useState(false);
@@ -57,13 +59,22 @@ const ClientList = () => {
 						)}
 					</div>
 				}
-				{(isFilterActive && filteredClients.length < filteredCount) ||
+
+				{(isFilterActive &&
+					filteredClients.length < filteredCount &&
+					((filterPage === 1 &&
+						getClientsStatus ===
+							CONSTANT_LITERALS.STATUS.SUCCESS) ||
+						filterPage > 1)) ||
 				(!isFilterActive && clients.length < totalCount) ? (
 					<LoadMoreButton isFilterActive={isFilterActive} />
 				) : null}
-				{isFilterActive && filteredClients.length === 0 && (
-					<ClientNotFound setIsFilterActive={setIsFilterActive} />
-				)}
+
+				{isFilterActive &&
+					filteredClients.length === 0 &&
+					getClientsStatus === CONSTANT_LITERALS.STATUS.SUCCESS && (
+						<ClientNotFound setIsFilterActive={setIsFilterActive} />
+					)}
 			</div>
 		</>
 	);
