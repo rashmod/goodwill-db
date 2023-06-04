@@ -69,6 +69,9 @@ const RangeSlider = React.memo(({ label, min, max, step }) => {
 						step={step}
 						name={`min${capitalizeFirstLetter(label)}`}
 						value={minValue}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') e.preventDefault();
+						}}
 						className='w-full px-2 py-1 bg-transparent border-2 border-solid border-gray-700 rounded transition duration-100 ease-in-out focus:border-accent focus:outline-none'
 					/>
 				</div>
@@ -82,6 +85,9 @@ const RangeSlider = React.memo(({ label, min, max, step }) => {
 						step={step}
 						name={`min${capitalizeFirstLetter(label)}`}
 						value={maxValue}
+						onKeyDown={(e) => {
+							if (e.key === 'Enter') e.preventDefault();
+						}}
 						className='w-full px-2 py-1 bg-transparent border-2 border-solid border-gray-700 rounded transition duration-100 ease-in-out focus:border-accent focus:outline-none'
 					/>
 				</div>

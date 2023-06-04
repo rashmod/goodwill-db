@@ -64,6 +64,9 @@ const FilterSection = ({ label, options, name, inputType = 'radio' }) => {
 					className='block w-full px-2 py-1 bg-transparent border-2 border-solid border-gray-700 rounded transition duration-100 ease-in-out focus:border-accent focus:outline-none'
 					name={name}
 					id={label}
+					onKeyDown={(e) => {
+						if (e.key === 'Enter') e.preventDefault();
+					}}
 					onChange={(e) => {
 						if (name === 'size') {
 							e.target.value = e.target.value.toUpperCase();
