@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Filter from './Filter';
@@ -11,13 +11,21 @@ const SearchBar = ({ setIsFilterActive }) => {
 	const dispatch = useDispatch();
 
 	const filters = useSelector((state) => state.filters);
+	const keyword = useSelector((state) => state.filters.keyword);
 
 	const [showFilter, setShowFilter] = useState(false);
+	const [searchKeyword, setSearchKeyword] = useState('');
 
 	const handleSearch = useMemo(
 		() => debounce((inputVal) => dispatch(updateSearch(inputVal)), 200),
 		[dispatch]
 	);
+
+	useEffect(() => {
+		if (keyword === '') {
+			setSearchKeyword('');
+		}
+	}, [keyword]);
 
 	const onSubmitHandler = (e) => {
 		e.preventDefault();
@@ -73,8 +81,10 @@ const SearchBar = ({ setIsFilterActive }) => {
 						className='block w-full bg-transparent border border-solid border-gray-300 rounded transition ease-in-out focus:border-accent focus:outline-none text-sm pl-10 p-2.5'
 						placeholder='Search by Name or Address'
 						name='keyword'
+						value={searchKeyword}
 						onChange={(e) => {
 							handleSearch(e.target.value);
+							setSearchKeyword(e.target.value);
 						}}
 					/>
 				</div>
