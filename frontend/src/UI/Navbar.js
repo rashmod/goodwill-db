@@ -24,6 +24,15 @@ const Navbar = () => {
 						Add Client
 					</NavLink>
 				</li>
+				<li>
+					<NavLink
+						className={({ isActive }) =>
+							isActive ? 'underline underline-offset-4' : ''
+						}
+						to='/signup'>
+						Sign Up
+					</NavLink>
+				</li>
 			</ul>
 		</nav>
 	);
