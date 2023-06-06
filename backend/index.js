@@ -6,6 +6,7 @@ const expressSession = require('express-session');
 
 const connectDB = require('./Database/database');
 const ClientRoutes = require('./Routes/ClientRoutes');
+const AuthRoutes = require('./Routes/AuthRoutes');
 const passportGoogle = require('./auth/passportGoogle');
 
 const app = express();
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(cors());
 
 app.use('/api/clients', ClientRoutes);
+app.use('/api/auth', AuthRoutes);
 
 connectDB();
 
