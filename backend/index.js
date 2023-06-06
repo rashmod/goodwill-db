@@ -6,6 +6,7 @@ const expressSession = require('express-session');
 
 const connectDB = require('./Database/database');
 const ClientRoutes = require('./Routes/ClientRoutes');
+const passportGoogle = require('./auth/passportGoogle');
 
 const app = express();
 
