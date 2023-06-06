@@ -12,8 +12,6 @@ passport.use(
 			scope: ['profile'],
 		},
 		async (_accessToken, _refreshToken, profile, done) => {
-			console.log(profile);
-
 			const user = await UserModel.findOne({ googleId: profile.id });
 			if (user) {
 				return done(null, user);
@@ -29,4 +27,9 @@ passport.use(
 
 passport.serializeUser((user, done) => {
 	done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+	const user = await UserModel.findById(id);
+	done(null, user);
 });
