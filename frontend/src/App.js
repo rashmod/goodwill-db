@@ -6,6 +6,7 @@ import ClientList from './pages/ClientList';
 import Navbar from './UI/Navbar';
 import UpdateClient from './pages/UpdateClient';
 import { fetchClients } from './features/ClientsSlice';
+import SignUp from './pages/SignUp';
 
 function App() {
 	const dispatch = useDispatch();
@@ -22,6 +23,7 @@ function App() {
 					<Route path='/' element={<ClientList />} />
 					<Route path='/addClient' element={<AddClient />} />
 					<Route path='/updateClient' element={<UpdateClient />} />
+					<Route path='/signup' element={<SignUp />} />
 				</Routes>
 			</div>
 		</div>
