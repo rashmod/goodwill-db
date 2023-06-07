@@ -2,7 +2,13 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import CONSTANT_LITERALS from '../Constants/Constants';
 
-const initialState = { id: '', status: '', error: '', isLoggedIn: false };
+const initialState = {
+	id: '',
+	username: '',
+	status: '',
+	error: '',
+	isLoggedIn: false,
+};
 
 export const userSignUp = createAsyncThunk(
 	'user/userSignUp',
@@ -46,12 +52,14 @@ const UserSlice = createSlice({
 			state.status = CONSTANT_LITERALS.STATUS.LOADING;
 			state.error = '';
 			state.id = '';
+			state.username = '';
 			state.isLoggedIn = false;
 		});
 
 		builder.addCase(userSignUp.fulfilled, (state, action) => {
 			state.status = CONSTANT_LITERALS.STATUS.SUCCESS;
 			state.id = action.payload._id;
+			state.username = action.payload.username;
 			state.isLoggedIn = true;
 			state.error = '';
 		});
@@ -60,6 +68,7 @@ const UserSlice = createSlice({
 			state.status = CONSTANT_LITERALS.STATUS.FAILURE;
 			state.error = action.payload.error;
 			state.isLoggedIn = false;
+			state.username = '';
 			state.id = '';
 		});
 
@@ -67,6 +76,7 @@ const UserSlice = createSlice({
 			state.status = CONSTANT_LITERALS.STATUS.LOADING;
 			state.error = '';
 			state.id = '';
+			state.username = '';
 			state.isLoggedIn = true;
 		});
 
@@ -75,6 +85,7 @@ const UserSlice = createSlice({
 			state.id = '';
 			state.isLoggedIn = false;
 			state.error = '';
+			state.username = '';
 		});
 
 		builder.addCase(userSignOut.rejected, (state, action) => {
@@ -82,6 +93,7 @@ const UserSlice = createSlice({
 			state.error = action.payload.error;
 			state.isLoggedIn = false;
 			state.id = '';
+			state.username = '';
 		});
 	},
 });
