@@ -14,9 +14,9 @@ const Navbar = () => {
 		user.error === '';
 
 	return (
-		<nav className='flex justify-between container text-sm sm:text-base py-4 px-4 sm:px-0 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto'>
+		<nav className='flex justify-between items-center container text-sm sm:text-base py-4 px-4 sm:px-0 max-w-xs sm:max-w-lg md:max-w-3xl lg:max-w-5xl mx-auto'>
 			<span>Goodwill DB</span>
-			<ul className='flex gap-6 sm:gap-16'>
+			<ul className='flex items-center gap-6 sm:gap-16'>
 				<li>
 					<NavLink
 						className={({ isActive }) =>
@@ -36,11 +36,15 @@ const Navbar = () => {
 					</NavLink>
 				</li>
 				{isSignedIn ? (
-					<li>
+					<li className='group relative py-1 px-5 rounded-md border-2 border-slate-400 hover:bg-accent/30 hover:border-accent hover:border-b-transparent hover:rounded-b-none'>
+						<p>
+							{user.username}{' '}
+							<div class='w-4 overflow-hidden inline-block'>
+								<div class=' h-2.5 w-2.5 bg-slate-400 group-hover:bg-accent -rotate-45 transform origin-top-left'></div>
+							</div>
+						</p>
 						<NavLink
-							className={({ isActive }) =>
-								isActive ? 'underline underline-offset-4' : ''
-							}
+							className='hidden -bottom-7 top-full -left-0.5 -right-0.5 absolute py-1 pb-7 px-5 bg-accent/30 border-2 border-t-0 rounded-b-md border-accent group-hover:block'
 							onClick={() => dispatch(userSignOut())}
 							to='/signup'>
 							Sign Out
