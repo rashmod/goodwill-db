@@ -22,7 +22,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
 
 app.use('/api/clients', ClientRoutes);
 app.use('/api/auth', AuthRoutes);
