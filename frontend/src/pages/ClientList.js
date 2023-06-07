@@ -6,6 +6,7 @@ import CONSTANT_LITERALS from '../Constants/Constants';
 import LoadMoreButton from '../UI/LoadMoreButton';
 import SearchBar from '../components/SearchBar';
 import ClientNotFound from '../UI/ClientNotFound';
+import { Navigate } from 'react-router-dom';
 
 const ClientList = () => {
 	const clients = useSelector((state) => state.clients.clients);
@@ -20,8 +21,25 @@ const ClientList = () => {
 	// const page = useSelector((state) => state.clients.page);
 	const filterPage = useSelector((state) => state.clients.filterPage);
 
+	const user = useSelector((state) => state.user);
+	const isSignedIn =
+		user.isLoggedIn &&
+		user.id.length > 0 &&
+		user.status === CONSTANT_LITERALS.STATUS.SUCCESS &&
+		user.error === '';
+
 	const [expandedCard, setExpandedCard] = useState(null);
 	const [isFilterActive, setIsFilterActive] = useState(false);
+
+	if (!isSignedIn) {
+		return (
+			<Navigate
+				to='/signup'
+				replace={true}
+				state={{ error: 'Access Restricted:', msg: 'Please Log In' }}
+			/>
+		);
+	}
 
 	return (
 		<>
