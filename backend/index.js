@@ -11,20 +11,33 @@ const passportGoogle = require('./auth/passportGoogle');
 
 const app = express();
 
-app.set('trust proxy', 1);
+if (process.env.NODE_ENV === 'PRODUCTION') {
+	app.set('trust proxy', 1);
 
-app.use(
-	expressSession({
-		secret: process.env.COOKIE_SECRET,
-		resave: true,
-		saveUninitialized: true,
-		cookie: {
-			sameSite: 'none',
-			secure: true,
-			maxAge: 1000 * 60 * 60 * 24 * 7, // one week
-		},
-	})
-);
+	app.use(
+		expressSession({
+			secret: process.env.COOKIE_SECRET,
+			resave: true,
+			saveUninitialized: true,
+			cookie: {
+				sameSite: 'none',
+				secure: true,
+				maxAge: 1000 * 60 * 60 * 24 * 7, // one week
+			},
+		})
+	);
+}
+
+if (process.env.NODE_ENV === 'DEVELOPMENT') {
+	app.use(
+		expressSession({
+			secret: process.env.COOKIE_SECRET,
+			resave: true,
+			saveUninitialized: true,
+		})
+	);
+}
+
 app.use(passport.initialize());
 app.use(passport.session());
 
