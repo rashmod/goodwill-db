@@ -18,6 +18,7 @@ passport.use(
 			} else {
 				const newUser = await UserModel.create({
 					googleId: profile.id,
+					username: profile.displayName,
 				});
 				return done(null, newUser);
 			}
