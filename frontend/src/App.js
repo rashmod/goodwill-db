@@ -5,16 +5,11 @@ import AddClient from './pages/AddClient';
 import ClientList from './pages/ClientList';
 import Navbar from './UI/Navbar';
 import UpdateClient from './pages/UpdateClient';
-import { fetchClients } from './features/ClientsSlice';
 import SignUp from './pages/SignUp';
 import { userSignUp } from './features/UserSlice';
 
 function App() {
 	const dispatch = useDispatch();
-
-	useEffect(() => {
-		dispatch(fetchClients());
-	}, [dispatch]);
 
 	useEffect(() => {
 		dispatch(userSignUp());

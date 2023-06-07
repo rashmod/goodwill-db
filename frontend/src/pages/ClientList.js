@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Client from '../components/Client';
 import { LoadingSkeletonArray } from '../UI/LoadingSkeleton';
 import CONSTANT_LITERALS from '../Constants/Constants';
@@ -7,6 +7,7 @@ import LoadMoreButton from '../UI/LoadMoreButton';
 import SearchBar from '../components/SearchBar';
 import ClientNotFound from '../UI/ClientNotFound';
 import { Navigate } from 'react-router-dom';
+import { fetchClients } from '../features/ClientsSlice';
 
 const ClientList = () => {
 	const clients = useSelector((state) => state.clients.clients);
@@ -30,6 +31,13 @@ const ClientList = () => {
 
 	const [expandedCard, setExpandedCard] = useState(null);
 	const [isFilterActive, setIsFilterActive] = useState(false);
+
+	const dispatch = useDispatch();
+	useEffect(() => {
+		if (isSignedIn) {
+			dispatch(fetchClients());
+		}
+	}, [dispatch, isSignedIn]);
 
 	if (!isSignedIn) {
 		return (
