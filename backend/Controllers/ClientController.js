@@ -10,10 +10,11 @@ const APIFeatures = require('../Utilities/apiFeatures');
 // @access Public
 module.exports.getAllClientsController = async (req, res) => {
 	const resPerPage = 20;
+	const authorId = req.user._id;
 	const clientCount = await ClientModel.countDocuments();
 
 	const apiFeatures = new APIFeatures(
-		ClientModel.find().sort({ createdAt: -1 }),
+		ClientModel.find({ author: authorId }).sort({ createdAt: -1 }),
 		req.query
 	)
 		.search()
