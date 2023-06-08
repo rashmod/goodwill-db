@@ -10,7 +10,7 @@ const Client = ({ client, setExpandedCard, expandedCard }) => {
 	return (
 		<div
 			className={`card cursor-pointer text-[#BFC0C0] bg-light-black border border-gray-200 border-opacity-30 rounded-lg hover:shadow-md hover:border-white transform hover:-translate-y-1 transition-all duration-200 flex flex-col ${
-				isExpanded ? 'row-span-2 h-56 sm:h-auto' : ''
+				isExpanded ? 'row-span-2' : ''
 			}`}
 			onClick={() => {
 				if (isExpanded) return;
