@@ -7,7 +7,8 @@ const {
 } = require('../Controllers/ClientController');
 const FormValidation = require('../Validation/FormValidation');
 const catchAsyncError = require('../Utilities/catchAsyncError');
-const { isSignedIn } = require('../middlewares/isSignedIn');
+const isSignedIn = require('../middlewares/isSignedIn');
+const isAuthor = require('../middlewares/isAuthor');
 
 const router = express.Router();
 
@@ -21,11 +22,13 @@ router.post(
 router.delete(
 	'/:clientId',
 	isSignedIn,
+	isAuthor,
 	catchAsyncError(DeleteClientController)
 );
 router.put(
 	'/:clientId',
 	isSignedIn,
+	isAuthor,
 	FormValidation,
 	catchAsyncError(UpdateClientController)
 );
