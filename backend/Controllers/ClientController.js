@@ -59,6 +59,8 @@ module.exports.AddClientController = async (req, res) => {
 		dealStatus,
 	} = req.body;
 
+	const authorId = req.user._id;
+
 	const loanValue =
 		clientType === 'SALE' && saleParty === 'BUYER' && loan === true;
 
@@ -92,6 +94,7 @@ module.exports.AddClientController = async (req, res) => {
 			budget,
 			...leadObj,
 			dealStatus,
+			author: authorId,
 		});
 
 		await client.save();
