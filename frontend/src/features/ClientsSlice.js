@@ -25,7 +25,7 @@ export const fetchClients = createAsyncThunk(
 		try {
 			const response = await axios.get(
 				`${process.env.REACT_APP_BASEURL}/clients`,
-				{ params: filters }
+				{ params: filters, withCredentials: true }
 			);
 
 			return {
@@ -47,7 +47,7 @@ export const loadMoreClients = createAsyncThunk(
 		try {
 			const response = await axios.get(
 				`${process.env.REACT_APP_BASEURL}/clients`,
-				{ params: { ...filters, page } }
+				{ params: { ...filters, page }, withCredentials: true }
 			);
 			return { data: response.data.data, filters };
 		} catch (error) {
@@ -63,7 +63,8 @@ export const addClientToDB = createAsyncThunk(
 		try {
 			const response = await axios.post(
 				`${process.env.REACT_APP_BASEURL}/clients`,
-				clientData
+				clientData,
+				{ withCredentials: true }
 			);
 
 			return response.data.data;
@@ -79,7 +80,8 @@ export const deleteClientFromDB = createAsyncThunk(
 	async (clientId, { rejectWithValue }) => {
 		try {
 			const response = await axios.delete(
-				`${process.env.REACT_APP_BASEURL}/clients/${clientId}`
+				`${process.env.REACT_APP_BASEURL}/clients/${clientId}`,
+				{ withCredentials: true }
 			);
 			return response.data.data;
 		} catch (error) {
@@ -95,7 +97,8 @@ export const updateClientToDB = createAsyncThunk(
 		try {
 			const response = await axios.put(
 				`${process.env.REACT_APP_BASEURL}/clients/${clientId}`,
-				clientData
+				clientData,
+				{ withCredentials: true }
 			);
 
 			return response.data.data;
