@@ -49,7 +49,7 @@ const Navbar = () => {
 				/>
 			</div>
 			<div
-				className={`flex justify-center items-center absolute bg-black/95 z-50 inset-0 top-14 translate-x-full transition-all ${
+				className={`flex justify-center items-center fixed bg-black/95 z-50 inset-0 top-14 translate-x-full transition-all ${
 					hamburger ? 'translate-x-0' : ''
 				}`}>
 				<div className='flex flex-col items-center gap-24 text-2xl font-semibold'>

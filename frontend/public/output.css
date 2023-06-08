@@ -609,6 +609,10 @@ video {
   pointer-events: none;
 }
 
+.fixed {
+  position: fixed;
+}
+
 .absolute {
   position: absolute;
 }
@@ -962,6 +966,10 @@ video {
 
 .w-1 {
   width: 0.25rem;
+}
+
+.w-0 {
+  width: 0px;
 }
 
 .min-w-\[300px\] {
