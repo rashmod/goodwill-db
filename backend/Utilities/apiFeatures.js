@@ -46,7 +46,7 @@ class APIFeatures {
 		return this;
 	}
 
-	async filteredCount() {
+	async filteredCount(authorObj) {
 		const keyword = this.queryStr.keyword
 			? {
 					$or: [
@@ -69,6 +69,7 @@ class APIFeatures {
 		const query = this.setFilterFields();
 
 		const countQuery = this.query.model
+			.find(authorObj)
 			.find(query)
 			.find(keyword)
 			.countDocuments();

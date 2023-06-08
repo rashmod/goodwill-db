@@ -11,7 +11,7 @@ const APIFeatures = require('../Utilities/apiFeatures');
 module.exports.getAllClientsController = async (req, res) => {
 	const resPerPage = 20;
 	const authorId = req.user._id;
-	const clientCount = await ClientModel.countDocuments();
+	const clientCount = await ClientModel.countDocuments({ author: authorId });
 
 	const apiFeatures = new APIFeatures(
 		ClientModel.find({ author: authorId }).sort({ createdAt: -1 }),
@@ -22,7 +22,7 @@ module.exports.getAllClientsController = async (req, res) => {
 		.pagination(resPerPage);
 
 	const clients = await apiFeatures.query;
-	const filteredCount = await apiFeatures.filteredCount();
+	const filteredCount = await apiFeatures.filteredCount({ author: authorId });
 
 	// const clients = await ClientModel.find().sort({ createdAt: -1 });
 
