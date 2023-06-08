@@ -80,6 +80,7 @@ const generateClients = (num) => {
 						leadAgentName: faker.person.fullName(),
 				  };
 		const dealStatus = DEAL_STATUS[randomNum(DEAL_STATUS.length)];
+		const author = '64803775567793519dd0619f';
 
 		arr.push({
 			name,
@@ -93,6 +94,7 @@ const generateClients = (num) => {
 			budget,
 			...leadObj,
 			dealStatus,
+			author,
 		});
 	}
 
