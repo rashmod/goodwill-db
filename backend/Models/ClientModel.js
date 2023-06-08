@@ -71,6 +71,11 @@ const ClientSchema = new Schema(
 			required: true,
 			enum: Object.values(CONSTANT_LITERALS.DEAL_STATUS),
 		},
+		author: {
+			type: mongoose.Types.ObjectId,
+			ref: 'User',
+			required: true,
+		},
 	},
 	{ timestamps: true }
 );
