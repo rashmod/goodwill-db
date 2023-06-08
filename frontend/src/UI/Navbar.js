@@ -37,12 +37,12 @@ const Navbar = () => {
 				</li>
 				{isSignedIn ? (
 					<li className='group relative py-1 px-5 rounded-md border-2 border-slate-400 hover:bg-accent/30 hover:border-accent hover:border-b-transparent hover:rounded-b-none'>
-						<p>
+						<div>
 							{user.username}{' '}
-							<div class='w-4 overflow-hidden inline-block'>
-								<div class=' h-2.5 w-2.5 bg-slate-400 group-hover:bg-accent -rotate-45 transform origin-top-left'></div>
+							<div className='w-4 overflow-hidden inline-block'>
+								<div className='h-2.5 w-2.5 bg-slate-400 group-hover:bg-accent -rotate-45 transform origin-top-left'></div>
 							</div>
-						</p>
+						</div>
 						<NavLink
 							className='hidden -bottom-7 top-full -left-0.5 -right-0.5 absolute py-1 pb-7 px-5 bg-accent/30 border-2 border-t-0 rounded-b-md border-accent group-hover:block'
 							onClick={() => dispatch(userSignOut())}
