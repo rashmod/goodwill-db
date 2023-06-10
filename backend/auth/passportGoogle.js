@@ -2,6 +2,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 
 const UserModel = require('../Models/UserModel');
+const addClientsToDB = require('../seedDB/addClientsToDB');
 
 passport.use(
 	new GoogleStrategy(
@@ -20,6 +21,7 @@ passport.use(
 					googleId: profile.id,
 					username: profile.displayName,
 				});
+				await addClientsToDB(10, newUser._id);
 				return done(null, newUser);
 			}
 		}

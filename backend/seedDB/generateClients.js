@@ -1,21 +1,7 @@
-const mongoose = require('mongoose');
-const dotenv = require('dotenv').config();
 const { faker, fakerEN_IN } = require('@faker-js/faker');
 
-const ClientModel = require('../Models/ClientModel');
 const CONSTANT_LITERALS = require('../Constants/Constants');
-
-mongoose.connect(process.env.MONGO_URI);
-
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'database connection error'));
-db.once('open', () => {
-	console.log('database connected');
-});
-
-const randomNum = (max, min = 0) => {
-	return Math.floor(Math.random() * (max - min) + min);
-};
+const randomNum = require('./randomNum');
 
 const generateSizes = (limit) => {
 	const arr = [];
@@ -37,7 +23,7 @@ const DEAL_STATUS = Object.values(CONSTANT_LITERALS.DEAL_STATUS);
 const LOAN = [true, false];
 const SIZE = generateSizes(10);
 
-const generateClients = (num) => {
+const generateClients = (num, authorId = null) => {
 	const arr = [];
 
 	for (let i = 0; i < num; i++) {
@@ -80,7 +66,7 @@ const generateClients = (num) => {
 						leadAgentName: faker.person.fullName(),
 				  };
 		const dealStatus = DEAL_STATUS[randomNum(DEAL_STATUS.length)];
-		const author = '64803775567793519dd0619f';
+		const author = authorId || '64803775567793519dd0619f';
 
 		arr.push({
 			name,
@@ -101,52 +87,4 @@ const generateClients = (num) => {
 	return arr;
 };
 
-const addClientsToDB = async (num = 1) => {
-	const clients = generateClients(num);
-
-	// const docs = await ClientModel.insertMany(clients);
-	// console.log(`${docs.length} users have been inserted into the database.`);
-
-	for (let i = 0; i < clients.length; i++) {
-		const delay = randomNum(1000, 500); // Random delay between 500ms and 1000ms
-		await new Promise((resolve) => setTimeout(resolve, delay));
-
-		const client = clients[i];
-		const doc = new ClientModel(client);
-		await doc.save();
-		console.log(`Client ${i + 1} has been inserted into the database.`);
-	}
-};
-
-const deleteAll = async () => {
-	const clients = await ClientModel.deleteMany({});
-};
-
-const displayAll = async (limit = 3) => {
-	const clients = await ClientModel.find().limit(limit);
-	const count = await ClientModel.countDocuments();
-	console.log(count);
-	console.log(clients);
-};
-
-// console.log(generateClients(1));
-
-// addClientsToDB();
-
-// addClientsToDB(50).then(() => {
-// 	console.log('closing db connection');
-// 	db.close();
-// 	console.log('closed db connection');
-// });
-
-// deleteAll().then(() => {
-// 	console.log('closing db connection');
-// 	db.close();
-// 	console.log('closed db connection');
-// });
-
-displayAll().then(() => {
-	console.log('closing db connection');
-	db.close();
-	console.log('closed db connection');
-});
+module.exports = generateClients;
